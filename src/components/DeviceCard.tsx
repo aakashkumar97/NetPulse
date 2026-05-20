@@ -80,7 +80,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
           }}
           variant="outline" 
-          className="w-full font-headline font-bold tracking-widest bg-white/5 border-white/10 hover:bg-primary/5 hover:border-primary/30 hover:text-primary transition-all duration-500 rounded-xl h-10 text-[10px]"
+          className="w-full font-headline font-medium tracking-widest bg-white/5 border-white/10 hover:bg-primary/5 hover:border-primary/30 text-white transition-all duration-500 rounded-xl h-10 text-[10px]"
         >
           <QrCode className="mr-2 h-3.5 w-3.5 text-primary" />
           SHOW WIFI QR
@@ -89,7 +89,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Button 
           asChild 
           variant="outline" 
-          className="w-full font-headline font-bold tracking-widest bg-primary/5 border-primary/20 hover:bg-primary hover:text-background hover:border-primary transition-all duration-500 rounded-xl h-10 text-[10px]"
+          className="w-full font-headline font-medium tracking-widest bg-primary/5 border-primary/20 hover:bg-primary hover:text-background hover:border-primary text-white transition-all duration-500 rounded-xl h-10 text-[10px]"
         >
           <a href={device.webGuiUrl} target="_blank" rel="noopener noreferrer">
             <Terminal className="mr-2 h-3.5 w-3.5" />
@@ -166,7 +166,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 bg-primary/5 border border-primary/20 text-primary hover:bg-primary hover:text-background rounded-xl font-headline font-bold h-10 text-[10px] tracking-widest transition-all duration-500 shrink-0"
+          className="mt-4 bg-primary/5 border border-primary/20 text-white hover:bg-primary hover:text-background rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-500 shrink-0"
         >
           BACK
         </Button>
@@ -199,7 +199,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
         <Button 
           onClick={() => setShowQR(false)}
-          className="mt-4 bg-primary/5 border border-primary/20 text-primary hover:bg-primary hover:text-background rounded-xl font-headline font-bold h-10 text-[10px] tracking-widest transition-all duration-500 shrink-0"
+          className="mt-4 bg-primary/5 border border-primary/20 text-white hover:bg-primary hover:text-background rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-500 shrink-0"
         >
           CLOSE QR
         </Button>
