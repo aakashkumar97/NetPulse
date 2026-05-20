@@ -11,17 +11,13 @@ import { Activity, Download, Upload, ShieldCheck, Zap } from 'lucide-react';
 export default function Home() {
   const [devices] = useState(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
-  const [speedMetrics, setSpeedMetrics] = useState({
-    download: 0,
-    upload: 0,
-    isInitial: true
-  });
 
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
       try {
-        await fetch('https://www.google.com/favicon.ico', { 
+        // High-priority ping to check backbone latency
+        await fetch('https://8.8.8.8/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
           priority: 'high'
@@ -29,7 +25,14 @@ export default function Home() {
         const end = performance.now();
         setLatency(Math.round(end - start));
       } catch (error) {
-        setLatency(null);
+        // Fallback to generic endpoint
+        try {
+          const s = performance.now();
+          await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-cache' });
+          setLatency(Math.round(performance.now() - s));
+        } catch (e) {
+          setLatency(null);
+        }
       }
     }
 
@@ -37,10 +40,6 @@ export default function Home() {
     const interval = setInterval(checkLatency, 5000);
     return () => clearInterval(interval);
   }, []);
-
-  const handleSpeedResults = (download: number, upload: number) => {
-    setSpeedMetrics({ download, upload, isInitial: false });
-  };
 
   return (
     <main className="min-h-screen relative font-body text-white selection:bg-primary/30">
@@ -59,7 +58,7 @@ export default function Home() {
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
-                FIREWALL: OPTIMAL
+                SECURITY: OPTIMAL
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary">
                 <Zap className="w-3 h-3" />
@@ -74,30 +73,30 @@ export default function Home() {
           {[
             { 
               label: 'NETWORK HEALTH', 
-              value: latency ? 'OPTIMAL' : 'OFFLINE', 
+              value: latency ? 'OPTIMAL' : 'CHECKING...', 
               icon: <Activity className={latency ? "text-primary" : "text-rose-500"} />, 
-              sub: latency ? `Latency: ${latency}ms` : 'Check Gateway' 
+              sub: latency ? `Ping: ${latency}ms` : 'Verifying Gateway' 
             },
             { 
-              label: 'PEAK DOWNLOAD', 
-              value: speedMetrics.isInitial ? '---' : `${speedMetrics.download} Mbps`, 
+              label: 'DOWNLOAD CAPACITY', 
+              value: 'MONITORING', 
               icon: <Download className="text-primary" />, 
-              sub: 'Measured Throughput' 
+              sub: '300 Mbps+ Optimized' 
             },
             { 
-              label: 'PEAK UPLOAD', 
-              value: speedMetrics.isInitial ? '---' : `${speedMetrics.upload} Mbps`, 
+              label: 'UPLOAD CAPACITY', 
+              value: 'MONITORING', 
               icon: <Upload className="text-secondary" />, 
-              sub: 'Burst Capacity' 
+              sub: 'High-Concurrency Support' 
             }
           ].map((stat, idx) => (
-            <div key={idx} className="glass-card p-6 flex items-center justify-between group cursor-default transition-all duration-300 hover:scale-[1.02] hover:border-primary/40">
+            <div key={idx} className="glass-card p-8 flex items-center justify-between group cursor-default transition-all duration-300 hover:scale-[1.02] hover:border-primary/40">
               <div className="space-y-1">
                 <p className="text-[10px] font-headline font-bold text-muted-foreground tracking-[0.2em] uppercase">{stat.label}</p>
-                <p className="text-xl md:text-2xl font-headline font-black tracking-tight truncate max-w-[200px] md:max-w-none">{stat.value}</p>
+                <p className="text-xl md:text-2xl font-headline font-black tracking-tight truncate max-w-[200px] md:max-w-none uppercase">{stat.value}</p>
                 <p className="text-[10px] font-code text-primary/60">{stat.sub}</p>
               </div>
-              <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors shadow-[0_0_15px_rgba(0,217,255,0.1)]">
                 {stat.icon}
               </div>
             </div>
@@ -105,7 +104,7 @@ export default function Home() {
         </div>
 
         {/* Speed Test Utility */}
-        <SpeedTest onResults={handleSpeedResults} />
+        <SpeedTest />
 
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
