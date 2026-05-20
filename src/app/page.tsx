@@ -11,37 +11,39 @@ import { cn } from '@/lib/utils';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
+  const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
 
-  // Internet Latency Check
+  // Internet Status & Latency Check
   useEffect(() => {
-    async function checkLatency() {
+    async function checkInternet() {
       const start = performance.now();
       try {
+        // Checking connectivity via fetch with no-cors
         await fetch('https://8.8.8.8/favicon.ico', { mode: 'no-cors', cache: 'no-cache', priority: 'high' });
         setLatency(Math.round(performance.now() - start));
+        setInternetStatus('ONLINE');
       } catch {
         setLatency(null);
+        setInternetStatus('OFFLINE');
       }
     }
-    checkLatency();
-    const interval = setInterval(checkLatency, 5000);
+    
+    checkInternet();
+    const interval = setInterval(checkInternet, 15000); // 15s sync for internet
     return () => clearInterval(interval);
   }, []);
 
   // Device Accessibility IP Check Logic
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
-      // Construction of URL using IP for direct accessibility check
       const url = `http://${device.ipAddress}`;
       
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); 
 
-        // We use fetch with no-cors to specifically check if the IP is responding.
-        // Even an opaque response or CORS failure indicates the host is reachable.
         await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -51,7 +53,6 @@ export default function Home() {
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
       } catch (error) {
-        // If aborted or network error occurs, mark as OFFLINE
         return { ...device, status: 'OFFLINE' }; 
       }
     }
@@ -68,7 +69,7 @@ export default function Home() {
     }
 
     updateAllStatuses();
-    const interval = setInterval(updateAllStatuses, 15000); // 15s sync interval
+    const interval = setInterval(updateAllStatuses, 15000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -88,10 +89,12 @@ export default function Home() {
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
               <span className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
-                latency ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-400/80" : "bg-rose-500/5 border-rose-500/10 text-rose-400/80"
+                internetStatus === 'ONLINE' ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-400/80" : 
+                internetStatus === 'OFFLINE' ? "bg-rose-500/5 border-rose-500/10 text-rose-400/80" :
+                "bg-amber-500/5 border-amber-500/10 text-amber-400/80"
               )}>
                 <Wifi className="w-3 h-3" />
-                INTERNET: {latency ? 'ONLINE' : 'OFFLINE'}
+                INTERNET: {internetStatus} {latency ? `(${latency}ms)` : ''}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/10 rounded-full text-emerald-400/80">
                 <ShieldCheck className="w-3 h-3" />
