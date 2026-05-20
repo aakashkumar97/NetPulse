@@ -81,7 +81,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowQR(true);
             setShowInfo(false);
           }}
-          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-white/5 border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] text-slate-300 hover:text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-white/5 border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
         >
           <QrCode className="mr-2 h-3.5 w-3.5 text-primary" />
           SHOW WIFI QR
@@ -91,7 +91,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
           href={device.webGuiUrl} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-primary/5 border border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] text-slate-300 hover:text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-primary/5 border border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
         >
           <Terminal className="mr-2 h-3.5 w-3.5" />
           LAUNCH ADMIN
@@ -166,7 +166,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           BACK
         </button>
@@ -199,7 +199,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
         <button 
           onClick={() => setShowQR(false)}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           HIDE QR
         </button>
