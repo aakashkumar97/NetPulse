@@ -28,21 +28,21 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative border-white/5 h-full min-h-[480px]">
-      {/* Info Icon Button */}
+    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 relative border-white/5 h-full min-h-[460px]">
+      {/* Info Icon Button - Clean Style */}
       <button 
         onClick={() => {
           setShowInfo(!showInfo);
           setShowQR(false);
         }}
-        className="absolute top-6 right-6 p-1 z-20 transition-all opacity-40 hover:opacity-100 hover:scale-110"
+        className="absolute top-6 right-6 p-1 z-20 transition-all opacity-40 hover:opacity-100"
         title="Device Information"
       >
         <Info className="w-6 h-6 text-primary" />
       </button>
 
-      {/* Icon Box - Removed animate-pulse-glow */}
-      <div className="w-24 h-24 rounded-[2rem] bg-primary/5 border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+      {/* Icon Box - Removed breathing and scale effects */}
+      <div className="w-24 h-24 rounded-[2rem] bg-primary/5 border border-primary/20 flex items-center justify-center mb-6">
         <div className="drop-shadow-[0_0_15px_rgba(0,217,255,0.8)]">
           {icons[device.type]}
         </div>
@@ -72,7 +72,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </span>
       </div>
 
-      {/* Button Container */}
+      {/* Button Container - Tightened Spacing */}
       <div className="mt-auto w-full space-y-3">
         <Button 
           onClick={() => {
