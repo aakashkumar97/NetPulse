@@ -35,7 +35,6 @@ export default function Home() {
       
       try {
         const controller = new AbortController();
-        // Increased timeout to 5 seconds to handle slow WebGUIs
         const timeoutId = setTimeout(() => controller.abort(), 5000); 
 
         await fetch(url, { 
@@ -65,7 +64,7 @@ export default function Home() {
     updateAllStatuses();
     const interval = setInterval(updateAllStatuses, 15000);
     return () => clearInterval(interval);
-  }, [devices]);
+  }, []); // Only run once on mount for initialization and interval setup
 
   const onlineNodes = devices.filter(d => d.status === 'ONLINE').length;
   const networkHealth = Math.round((onlineNodes / devices.length) * 100);
