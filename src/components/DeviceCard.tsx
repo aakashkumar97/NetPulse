@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Device } from '@/app/lib/network-data';
 import { Info, Wifi, Server, Terminal, Router as RouterIcon, Shield, Cpu, Lock, User, Eye, EyeOff, QrCode } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 
 interface DeviceCardProps {
   device: Device;
@@ -29,7 +28,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
   return (
     <div className="glass-card group p-6 flex flex-col items-center text-center transition-all duration-500 relative border-white/5 h-full min-h-[400px]">
-      {/* Info Icon Button */}
       <button 
         onClick={() => {
           setShowInfo(!showInfo);
@@ -41,7 +39,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Info className="w-5 h-5 text-primary" />
       </button>
 
-      {/* Icon Box */}
       <div className="w-20 h-20 rounded-[1.5rem] bg-primary/5 border border-primary/15 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors duration-500">
         <div className="drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]">
           {icons[device.type]}
@@ -61,7 +58,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </p>
       )}
 
-      {/* Status Indicators */}
       <div className="flex items-center gap-2 mb-6 text-[10px] font-bold tracking-widest uppercase">
         <div className={cn(
           "w-1.5 h-1.5 rounded-full animate-pulse",
@@ -72,14 +68,13 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </span>
       </div>
 
-      {/* Button Container */}
       <div className="mt-auto w-full space-y-2">
         <button 
           onClick={() => {
             setShowQR(true);
             setShowInfo(false);
           }}
-          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-white/5 border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.2)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-white/5 border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
         >
           <QrCode className="mr-2 h-3.5 w-3.5 text-primary" />
           SHOW WIFI QR
@@ -89,14 +84,13 @@ export function DeviceCard({ device }: DeviceCardProps) {
           href={device.webGuiUrl} 
           target="_blank" 
           rel="noopener noreferrer"
-          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-primary/5 border border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-primary/5 border border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
         >
           <Terminal className="mr-2 h-3.5 w-3.5" />
           LAUNCH ADMIN
         </a>
       </div>
 
-      {/* Info Panel Overlay */}
       <div className={cn(
         "absolute inset-0 bg-[#06091a] z-50 p-6 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/30",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
@@ -164,13 +158,12 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           BACK
         </button>
       </div>
 
-      {/* QR Panel Overlay */}
       <div className={cn(
         "absolute inset-0 bg-[#06091a] z-50 p-6 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/30",
         showQR ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
@@ -197,7 +190,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
         <button 
           onClick={() => setShowQR(false)}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           HIDE QR
         </button>

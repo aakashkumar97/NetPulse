@@ -35,7 +35,7 @@ export default function Home() {
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 3000); 
+        const timeoutId = setTimeout(() => controller.abort(), 2000); 
 
         await fetch(url, { 
           mode: 'no-cors', 
@@ -46,17 +46,7 @@ export default function Home() {
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
       } catch (error: any) {
-        return new Promise((resolve) => {
-          const img = new Image();
-          const timer = setTimeout(() => {
-            img.src = "";
-            resolve({ ...device, status: 'OFFLINE' });
-          }, 1500);
-
-          img.onload = () => { clearTimeout(timer); resolve({ ...device, status: 'ONLINE' }); };
-          img.onerror = () => { clearTimeout(timer); resolve({ ...device, status: 'ONLINE' }); };
-          img.src = `${url}/favicon.ico?t=${Date.now()}`;
-        });
+        return { ...device, status: 'OFFLINE' };
       }
     }
 
@@ -124,7 +114,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Network Tools Section */}
         <section className="mt-20">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
