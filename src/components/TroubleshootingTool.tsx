@@ -29,7 +29,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
           ipAddress: d.ipAddress,
           status: d.status,
           manufacturer: d.manufacturer,
-          modelNumber: d.modelNumber,
+          model: d.model,
           firmware: d.firmware,
           ssid: d.ssid
         })),

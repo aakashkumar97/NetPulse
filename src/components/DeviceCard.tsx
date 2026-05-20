@@ -38,7 +38,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
       </div>
 
       <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight">{device.name}</h3>
-      <p className="font-code text-[10px] text-primary/60 mb-1 tracking-[0.2em] uppercase">{device.modelNumber}</p>
+      <p className="font-code text-[10px] text-primary/60 mb-1 tracking-[0.2em] uppercase">{device.model}</p>
       <p className="font-code text-sm text-muted-foreground mb-6 tracking-wider">{device.ipAddress}</p>
 
       {/* Status */}
@@ -74,7 +74,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         
         {[
           { label: 'Manufacturer', value: device.manufacturer },
-          { label: 'Model No.', value: device.modelNumber },
+          { label: 'Model', value: device.model },
           { label: 'Firmware', value: device.firmware },
           { label: 'MAC Address', value: device.mac },
           { label: 'SSID', value: device.ssid || 'N/A' },

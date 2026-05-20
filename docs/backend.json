@@ -11,7 +11,7 @@
         "ipAddress": { "type": "string" },
         "status": { "type": "string", "enum": ["ONLINE", "OFFLINE"] },
         "manufacturer": { "type": "string" },
-        "modelNumber": { "type": "string", "description": "The specific model number of the hardware device." },
+        "model": { "type": "string", "description": "The specific model number of the hardware device." },
         "firmware": { "type": "string" },
         "mac": { "type": "string" },
         "ssid": { "type": "string" },
