@@ -15,7 +15,7 @@ export default function Home() {
   const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
   const [lastVerified, setLastVerified] = useState<string>('');
 
-  // Internet connectivity check
+  // Internet connectivity check - Runs on mount and every 15s
   useEffect(() => {
     async function checkInternet() {
       try {
@@ -40,7 +40,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Direct IP accessibility check for devices
+  // Direct IP accessibility check for devices - Runs on mount and every 15s
   useEffect(() => {
     async function checkDeviceAccessibility(device: Device): Promise<Device> {
       const url = `http://${device.ipAddress}`;
