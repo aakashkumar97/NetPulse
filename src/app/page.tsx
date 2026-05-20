@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
-  const [lastSync, setLastSync] = useState<string>('');
+  const [lastVerified, setLastVerified] = useState<string>('');
 
   // Internet Status Check (Direct IP Hit to Google DNS)
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Home() {
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for slower WebGUIs
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for stability
 
         await fetch(url, { 
           mode: 'no-cors', 
@@ -64,7 +64,7 @@ export default function Home() {
     async function runUpdateCycle() {
       const updatedDevices = await Promise.all(devices.map(d => checkDeviceAccessibility(d)));
       setDevices(updatedDevices);
-      setLastSync(new Date().toLocaleTimeString('en-US', { 
+      setLastVerified(new Date().toLocaleTimeString('en-US', { 
         hour: '2-digit', 
         minute: '2-digit', 
         second: '2-digit', 
@@ -106,7 +106,7 @@ export default function Home() {
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
                 <RefreshCw className="w-3 h-3" />
-                SYNC: {lastSync || '--:--:--'}
+                VERIFIED: {lastVerified || 'CHECKING...'}
               </span>
             </div>
           </div>

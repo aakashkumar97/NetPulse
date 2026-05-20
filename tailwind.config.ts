@@ -48,13 +48,6 @@ export default {
         border: 'rgba(139, 92, 246, 0.15)',
         input: 'rgba(139, 92, 246, 0.1)',
         ring: '#8B5CF6',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
-        },
       },
       borderRadius: {
         lg: '28px',
@@ -70,7 +63,7 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        'scan': {
+        'sweep': {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(100%)' },
         },
@@ -82,7 +75,7 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'scan': 'scan 8s linear infinite',
+        'sweep': 'sweep 8s linear infinite',
         'float': 'float 10s ease-in-out infinite alternate',
       },
     },
