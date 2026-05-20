@@ -12,14 +12,22 @@ import { cn } from '@/lib/utils';
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
-  const [lastScan, setLastScan] = useState<string>('');
+  const [lastSync, setLastSync] = useState<string>('');
 
-  // Internet Status Check (No MS display)
+  // Internet Status Check (Direct IP Hit to Google DNS)
   useEffect(() => {
     async function checkInternet() {
       try {
-        // Checking connectivity via fetch with no-cors to a reliable endpoint
-        await fetch('https://8.8.8.8/favicon.ico', { mode: 'no-cors', cache: 'no-cache', priority: 'high' });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        await fetch('https://8.8.8.8/favicon.ico', { 
+          mode: 'no-cors', 
+          cache: 'no-cache',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
         setInternetStatus('ONLINE');
       } catch {
         setInternetStatus('OFFLINE');
@@ -31,14 +39,14 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // IP Accessibility Check Logic
+  // Individual IP Accessibility Check (Direct Hit to Device WebGUI)
   useEffect(() => {
-    async function checkDeviceStatus(device: Device): Promise<Device> {
+    async function checkDeviceAccessibility(device: Device): Promise<Device> {
       const url = `http://${device.ipAddress}`;
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for slow WebGUI
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for slower WebGUIs
 
         await fetch(url, { 
           mode: 'no-cors', 
@@ -53,10 +61,10 @@ export default function Home() {
       }
     }
 
-    async function updateAllStatuses() {
-      const updatedDevices = await Promise.all(devices.map(d => checkDeviceStatus(d)));
+    async function runUpdateCycle() {
+      const updatedDevices = await Promise.all(devices.map(d => checkDeviceAccessibility(d)));
       setDevices(updatedDevices);
-      setLastScan(new Date().toLocaleTimeString('en-US', { 
+      setLastSync(new Date().toLocaleTimeString('en-US', { 
         hour: '2-digit', 
         minute: '2-digit', 
         second: '2-digit', 
@@ -64,8 +72,8 @@ export default function Home() {
       }));
     }
 
-    updateAllStatuses();
-    const interval = setInterval(updateAllStatuses, 15000); 
+    runUpdateCycle();
+    const interval = setInterval(runUpdateCycle, 15000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -98,7 +106,7 @@ export default function Home() {
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
                 <RefreshCw className="w-3 h-3" />
-                SYNC: {lastScan || '--:--:--'}
+                SYNC: {lastSync || '--:--:--'}
               </span>
             </div>
           </div>
