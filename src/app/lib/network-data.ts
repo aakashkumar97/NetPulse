@@ -49,7 +49,7 @@ export const INITIAL_DEVICES: Device[] = [
   },
   {
     id: 'router-1',
-    name: 'Home Gateway',
+    name: 'Router',
     ipAddress: '192.168.7.1',
     webGuiUrl: 'http://192.168.7.1',
     status: 'ONLINE',
@@ -78,7 +78,7 @@ export const INITIAL_DEVICES: Device[] = [
   },
   {
     id: 'extender-1',
-    name: 'Roaming AP',
+    name: 'Extender',
     ipAddress: '192.168.7.2',
     webGuiUrl: 'http://192.168.7.2',
     status: 'ONLINE',

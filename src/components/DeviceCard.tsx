@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Device } from '@/app/lib/network-data';
-import { Info, Wifi, Server, Terminal, Router, Shield, Cpu, Lock, Eye, EyeOff } from 'lucide-react';
+import { Info, Wifi, Server, Terminal, Router as RouterIcon, Shield, Cpu, Lock, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -15,7 +15,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   const icons = {
-    router: <Router className="w-10 h-10 text-primary" />,
+    router: <RouterIcon className="w-10 h-10 text-primary" />,
     extender: <Wifi className="w-10 h-10 text-primary" />,
     gpon: <Server className="w-10 h-10 text-primary" />,
   };
