@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -28,6 +29,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
           ipAddress: d.ipAddress,
           status: d.status,
           manufacturer: d.manufacturer,
+          modelNumber: d.modelNumber,
           firmware: d.firmware,
           ssid: d.ssid
         })),
