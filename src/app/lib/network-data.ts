@@ -33,7 +33,7 @@ export const INITIAL_DEVICES: Device[] = [
     status: 'ONLINE',
     manufacturer: 'Nokia',
     model: 'G-2425G-A',
-    firmware: 'Stock (ISP Managed)',
+    firmware: '3FE49362IJJK17(1.2203.417)',
     mac: '24:0B:88:44:5B:90',
     type: 'gpon',
     description: 'Main ISP Entry Node',
