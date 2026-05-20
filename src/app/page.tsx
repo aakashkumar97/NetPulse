@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
+import { SpeedTest } from '@/components/SpeedTest';
 import { INITIAL_DEVICES } from '@/app/lib/network-data';
 import { Activity, Globe, Building2, Network, ShieldCheck, Zap } from 'lucide-react';
 
@@ -56,6 +57,7 @@ export default function Home() {
     async function checkLatency() {
       const start = performance.now();
       try {
+        // High availability endpoint for "ping" simulation
         await fetch('https://www.google.com/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -122,7 +124,7 @@ export default function Home() {
               sub: 'Active Gateway' 
             }
           ].map((stat, idx) => (
-            <div key={idx} className="glass-card p-6 flex items-center justify-between group cursor-default">
+            <div key={idx} className="glass-card p-6 flex items-center justify-between group cursor-default transition-all duration-300 hover:scale-[1.02] hover:border-primary/40">
               <div className="space-y-1">
                 <p className="text-[10px] font-headline font-bold text-muted-foreground tracking-[0.2em] uppercase">{stat.label}</p>
                 <p className="text-xl md:text-2xl font-headline font-black tracking-tight truncate max-w-[200px] md:max-w-none">{stat.value}</p>
@@ -134,6 +136,9 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        {/* Speed Test Utility */}
+        <SpeedTest />
 
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">
