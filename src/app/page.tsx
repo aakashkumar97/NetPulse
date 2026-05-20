@@ -7,13 +7,13 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { ShieldCheck, RefreshCw, Wifi } from 'lucide-react';
+import { RefreshCw, Wifi } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
-  const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
+  const [devices] = useState<Device[]>(INITIAL_DEVICES);
   const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
-  const [lastVerified, setLastVerified] = useState<string>('');
+  const [lastSync, setLastSync] = useState<string>('');
 
   // Internet connectivity check - Runs on mount and every 15s
   useEffect(() => {
@@ -33,54 +33,19 @@ export default function Home() {
       } catch {
         setInternetStatus('OFFLINE');
       }
-    }
-    
-    checkInternet();
-    const interval = setInterval(checkInternet, 15000); 
-    return () => clearInterval(interval);
-  }, []);
-
-  // Direct IP accessibility check for devices - Runs on mount and every 15s
-  useEffect(() => {
-    async function checkDeviceAccessibility(device: Device): Promise<Device> {
-      const url = `http://${device.ipAddress}`;
       
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); 
-
-        // Direct hit to the device IP to check accessibility
-        await fetch(url, { 
-          mode: 'no-cors', 
-          cache: 'no-cache',
-          signal: controller.signal 
-        });
-        
-        clearTimeout(timeoutId);
-        return { ...device, status: 'ONLINE' };
-      } catch {
-        return { ...device, status: 'OFFLINE' }; 
-      }
-    }
-
-    async function runUpdateCycle() {
-      const updatedDevices = await Promise.all(devices.map(d => checkDeviceAccessibility(d)));
-      setDevices(updatedDevices);
-      setLastVerified(new Date().toLocaleTimeString('en-US', { 
+      setLastSync(new Date().toLocaleTimeString('en-US', { 
         hour: '2-digit', 
         minute: '2-digit', 
         second: '2-digit', 
         hour12: true 
       }));
     }
-
-    runUpdateCycle();
-    const interval = setInterval(runUpdateCycle, 15000); 
+    
+    checkInternet();
+    const interval = setInterval(checkInternet, 15000); 
     return () => clearInterval(interval);
   }, []);
-
-  const onlineNodes = devices.filter(d => d.status === 'ONLINE').length;
-  const networkHealth = devices.length > 0 ? Math.round((onlineNodes / devices.length) * 100) : 0;
 
   return (
     <main className="min-h-screen relative font-body text-slate-300 selection:bg-primary/30">
@@ -102,13 +67,9 @@ export default function Home() {
                 <Wifi className="w-3 h-3" />
                 INTERNET: {internetStatus}
               </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/10 rounded-full text-emerald-400/80">
-                <ShieldCheck className="w-3 h-3" />
-                NODE HEALTH: {networkHealth}%
-              </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
                 <RefreshCw className="w-3 h-3" />
-                VERIFIED: {lastVerified || 'CHECKING...'}
+                LAST SYNC: {lastSync || 'CHECKING...'}
               </span>
             </div>
           </div>

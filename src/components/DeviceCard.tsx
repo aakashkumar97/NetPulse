@@ -48,32 +48,16 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-300">{device.name}</h3>
       
-      <div className="flex flex-col items-center gap-1 mb-3">
+      <div className="flex flex-col items-center gap-1 mb-6">
         <span className="font-code text-[12px] font-medium tracking-[0.2em] uppercase text-primary/70">{device.manufacturer}</span>
         <span className="font-code text-[12px] font-medium tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
       </div>
       
       {device.description && (
-        <p className="text-[13px] text-muted-foreground font-medium mb-4 font-body leading-relaxed max-w-[220px] line-clamp-2">
+        <p className="text-[13px] text-muted-foreground font-medium mb-8 font-body leading-relaxed max-w-[220px] line-clamp-2">
           {device.description}
         </p>
       )}
-
-      <div className="flex items-center gap-2 mb-6 text-[10px] font-bold tracking-widest uppercase">
-        <div className={cn(
-          "w-1.5 h-1.5 rounded-full",
-          device.status === 'ONLINE' ? "bg-emerald-400/80 shadow-[0_0_5px_rgba(52,211,153,0.4)] animate-pulse" : 
-          device.status === 'OFFLINE' ? "bg-rose-400/80 shadow-[0_0_5px_rgba(251,113,133,0.4)]" :
-          "bg-amber-400/80 shadow-[0_0_5px_rgba(251,191,36,0.4)] animate-pulse"
-        )} />
-        <span className={cn(
-          device.status === 'ONLINE' ? "text-emerald-400/80" : 
-          device.status === 'OFFLINE' ? "text-rose-400/80" :
-          "text-amber-400/80"
-        )}>
-          {device.status}
-        </span>
-      </div>
 
       <div className="mt-auto w-full space-y-2">
         <button 
