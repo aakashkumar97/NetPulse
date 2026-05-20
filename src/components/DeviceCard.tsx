@@ -166,7 +166,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           BACK
         </button>
@@ -199,7 +199,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
         <button 
           onClick={() => setShowQR(false)}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           HIDE QR
         </button>

@@ -22,6 +22,7 @@ export default function Home() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
         
+        // Simple fetch to check internet connectivity
         await fetch('https://www.google.com/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -49,7 +50,7 @@ export default function Home() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); 
 
-        // Direct IP hit - no random network scanning
+        // Direct IP hit - specifically checking if the Web GUI is accessible
         await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -90,7 +91,7 @@ export default function Home() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div className="space-y-6">
             <h1 className="text-5xl md:text-6xl font-headline font-bold tracking-tighter text-slate-200 uppercase">
-              NETPULSE <span className="text-primary neon-text">HOME</span>
+              NETPULSE <span className="text-primary neon-text font-bold">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
               <span className={cn(
