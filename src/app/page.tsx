@@ -6,7 +6,7 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { Globe, ShieldCheck, RefreshCw, Wifi } from 'lucide-react';
+import { ShieldCheck, RefreshCw, Wifi } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
@@ -137,7 +137,7 @@ export default function Home() {
 
         <footer className="mt-20 py-8 border-t border-primary/5 flex flex-col md:flex-row justify-between items-center gap-6 text-muted-foreground">
           <p className="text-[10px] font-code tracking-[0.3em] uppercase">
-            &copy; 2024 NETPULSE SYSTEMS • PRIVATE HOME INFRASTRUCTURE
+            &copy; 2026 NETPULSE SYSTEMS • PRIVATE HOME INFRASTRUCTURE
           </p>
         </footer>
       </div>
