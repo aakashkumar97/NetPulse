@@ -1,3 +1,4 @@
+
 export type WirelessSettings = {
   ssid: string;
   password?: string;

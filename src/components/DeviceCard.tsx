@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -60,10 +61,10 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       <div className="flex items-center gap-2 mb-6 text-[10px] font-bold tracking-widest uppercase">
         <div className={cn(
-          "w-1.5 h-1.5 rounded-full animate-pulse",
-          device.status === 'ONLINE' ? "bg-emerald-400/80 shadow-[0_0_5px_rgba(52,211,153,0.4)]" : 
+          "w-1.5 h-1.5 rounded-full",
+          device.status === 'ONLINE' ? "bg-emerald-400/80 shadow-[0_0_5px_rgba(52,211,153,0.4)] animate-pulse" : 
           device.status === 'OFFLINE' ? "bg-rose-400/80 shadow-[0_0_5px_rgba(251,113,133,0.4)]" :
-          "bg-amber-400/80 shadow-[0_0_5px_rgba(251,191,36,0.4)]"
+          "bg-amber-400/80 shadow-[0_0_5px_rgba(251,191,36,0.4)] animate-pulse"
         )} />
         <span className={cn(
           device.status === 'ONLINE' ? "text-emerald-400/80" : 
