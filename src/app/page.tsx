@@ -5,8 +5,8 @@ import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
-import { TroubleshootingTool } from '@/components/TroubleshootingTool';
-import { Activity, ShieldCheck, Zap, Globe, Cpu, RefreshCw } from 'lucide-react';
+import { SpeedTest } from '@/components/SpeedTest';
+import { Globe, ShieldCheck, Zap, Cpu, RefreshCw } from 'lucide-react';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
@@ -128,7 +128,15 @@ export default function Home() {
           </div>
         </section>
 
-        <TroubleshootingTool devices={devices} />
+        <section className="mb-16">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
+              <span className="w-2 h-10 bg-secondary rounded-full shadow-[0_0_20px_#3B82F6]" />
+              Performance Analyzer
+            </h2>
+          </div>
+          <SpeedTest />
+        </section>
 
         <footer className="mt-20 py-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6 text-muted-foreground">
           <p className="text-[10px] font-code tracking-[0.3em] uppercase">
