@@ -80,7 +80,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       {/* Info Panel Overlay */}
       <div className={cn(
-        "absolute inset-0 bg-card z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
+        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-8 text-center tracking-[0.1em] uppercase">

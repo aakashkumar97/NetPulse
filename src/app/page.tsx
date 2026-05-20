@@ -11,7 +11,7 @@ export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
 
-  // Internet Latency Check (Google)
+  // Internet Latency Check (Simple fetch to 8.8.8.8)
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
@@ -27,14 +27,15 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Dynamic Device Status Check
+  // Dynamic Device Reachability Check (URL Hit Only)
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+        const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout for local hit
 
-        // We use 'no-cors' to allow checking local network devices without CORS issues
+        // Just hitting the URL to see if it responds. No login required.
+        // mode: 'no-cors' allows hitting local IPs without CORS blocking the reachability check.
         await fetch(device.webGuiUrl || `http://${device.ipAddress}`, { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -54,7 +55,7 @@ export default function Home() {
     }
 
     updateAllStatuses();
-    const interval = setInterval(updateAllStatuses, 10000); // Check every 10 seconds
+    const interval = setInterval(updateAllStatuses, 10000); // Poll every 10 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -93,13 +94,6 @@ export default function Home() {
               <span className="w-2 h-10 bg-primary rounded-full shadow-[0_0_20px_#00D9FF]" />
               Network Node Control
             </h2>
-            <div className="hidden md:flex gap-4 font-code text-[10px] text-muted-foreground uppercase tracking-widest bg-white/5 px-6 py-2 border border-white/5 rounded-full">
-              <span>ONU: 192.168.100.1</span>
-              <span className="text-primary opacity-50">•</span>
-              <span>Router: 192.168.7.1</span>
-              <span className="text-primary opacity-50">•</span>
-              <span>Extndr: 192.168.7.2</span>
-            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {devices.map((device) => (
