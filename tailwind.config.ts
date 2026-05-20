@@ -26,28 +26,28 @@ export default {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: '#00D9FF',
-          foreground: '#050816',
+          DEFAULT: '#8B5CF6',
+          foreground: '#020617',
         },
         secondary: {
-          DEFAULT: '#0051FF',
+          DEFAULT: '#3B82F6',
           foreground: '#FFFFFF',
         },
         muted: {
-          DEFAULT: 'rgba(255, 255, 255, 0.05)',
-          foreground: '#91a7bc',
+          DEFAULT: 'rgba(255, 255, 255, 0.03)',
+          foreground: '#94a3b8',
         },
         accent: {
           DEFAULT: '#00D9FF',
-          foreground: '#050816',
+          foreground: '#020617',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
-        border: 'rgba(0, 217, 255, 0.15)',
-        input: 'rgba(0, 217, 255, 0.1)',
-        ring: '#00D9FF',
+        border: 'rgba(139, 92, 246, 0.15)',
+        input: 'rgba(139, 92, 246, 0.1)',
+        ring: '#8B5CF6',
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',
@@ -74,10 +74,6 @@ export default {
           '0%': { transform: 'translateY(-100%)' },
           '100%': { transform: 'translateY(100%)' },
         },
-        'pulse-glow': {
-          '0%, 100%': { boxShadow: '0 0 10px rgba(0, 217, 255, 0.2)' },
-          '50%': { boxShadow: '0 0 30px rgba(0, 217, 255, 0.5)' },
-        },
         'float': {
           '0%, 100%': { transform: 'translate(0, 0)' },
           '50%': { transform: 'translate(10px, -10px)' },
@@ -87,7 +83,6 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'scan': 'scan 8s linear infinite',
-        'pulse-glow': 'pulse-glow 3s infinite',
         'float': 'float 10s ease-in-out infinite alternate',
       },
     },
