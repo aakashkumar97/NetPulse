@@ -2,9 +2,17 @@
 
 import React, { useState } from 'react';
 import { Device } from '@/app/lib/network-data';
-import { Info, Wifi, Server, Terminal, Router as RouterIcon, Shield, Cpu, Lock, Eye, EyeOff } from 'lucide-react';
+import { Info, Wifi, Server, Terminal, Router as RouterIcon, Shield, Cpu, Lock, Eye, EyeOff, QrCode } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Image from 'next/image';
 
 interface DeviceCardProps {
   device: Device;
@@ -22,9 +30,13 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
   const ssid = device.wireless24?.ssid || device.wireless5?.ssid || 'N/A';
   const wifiPass = device.wireless24?.password || device.wireless5?.password || 'N/A';
+  
+  // Standard WiFi QR format: WIFI:S:<SSID>;T:<TYPE>;P:<PASSWORD>;H:<HIDDEN>;;
+  const wifiQrString = `WIFI:S:${ssid};T:WPA;P:${wifiPass};;`;
+  const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative border-white/5 h-full min-h-[480px]">
+    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative border-white/5 h-full min-h-[520px]">
       {/* Top Controls */}
       <button 
         onClick={() => setShowInfo(!showInfo)}
@@ -65,7 +77,40 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </span>
       </div>
 
-      <div className="mt-auto w-full">
+      <div className="mt-auto w-full space-y-3">
+        {/* WiFi QR Dialog */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button 
+              variant="outline" 
+              className="w-full font-headline tracking-widest bg-white/5 border-white/10 hover:bg-white/10 text-white transition-all rounded-2xl h-12 text-xs"
+            >
+              <QrCode className="mr-2 h-4 w-4 text-primary" />
+              SHOW WIFI QR
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-[#050816] border-primary/30 rounded-[2.5rem] max-w-sm">
+            <DialogHeader>
+              <DialogTitle className="text-center font-headline text-primary tracking-widest uppercase">
+                Scan to Connect
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col items-center justify-center p-6 space-y-6">
+              <div className="bg-white p-4 rounded-3xl shadow-[0_0_30px_rgba(0,217,255,0.2)]">
+                <img 
+                  src={qrCodeUrl} 
+                  alt="WiFi QR Code" 
+                  className="w-64 h-64 rounded-xl"
+                />
+              </div>
+              <div className="text-center space-y-2">
+                <p className="text-sm font-headline text-white tracking-wide">{ssid}</p>
+                <p className="text-[10px] font-code text-muted-foreground uppercase tracking-widest">WPA/WPA2 Protocol</p>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         <Button 
           asChild 
           variant="outline" 
