@@ -6,7 +6,7 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { TroubleshootingTool } from '@/components/TroubleshootingTool';
 import { INITIAL_DEVICES } from '@/app/lib/network-data';
-import { Shield, Activity, Globe, Wifi, Settings, ShieldCheck, Zap } from 'lucide-react';
+import { Shield, Activity, Globe, Wifi, Settings, ShieldCheck, Zap, Building2, Network } from 'lucide-react';
 
 export default function Home() {
   const [devices] = useState(INITIAL_DEVICES);
@@ -44,8 +44,8 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
             { label: 'NETWORK STATUS', value: 'ONLINE', icon: <Globe className="text-primary" />, sub: 'Uptime: 99.9%' },
-            { label: 'CONNECTED NODES', value: devices.length.toString(), icon: <Wifi className="text-primary" />, sub: '1 Reserved' },
-            { label: 'THREAT PROTECTION', value: 'VERIFIED', icon: <Shield className="text-primary" />, sub: '24h Scan Clean' }
+            { label: 'PUBLIC IP', value: '49.36.172.105', icon: <Network className="text-primary" />, sub: 'Static IPv4' },
+            { label: 'ISP PROVIDER', value: 'Jio Fiber', icon: <Building2 className="text-primary" />, sub: 'Akanksha Communication' }
           ].map((stat, idx) => (
             <div key={idx} className="glass-card p-6 flex items-center justify-between group cursor-default">
               <div className="space-y-1">
