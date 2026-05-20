@@ -29,7 +29,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
   return (
     <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative border-white/5 h-full min-h-[480px]">
-      {/* Info Icon Button - Clean, no background/border */}
+      {/* Info Icon Button */}
       <button 
         onClick={() => {
           setShowInfo(!showInfo);
@@ -41,8 +41,8 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Info className="w-6 h-6 text-primary" />
       </button>
 
-      {/* Icon Box */}
-      <div className="w-24 h-24 rounded-[2rem] bg-primary/5 border border-primary/20 flex items-center justify-center mb-6 animate-pulse-glow group-hover:scale-110 transition-transform">
+      {/* Icon Box - Removed animate-pulse-glow */}
+      <div className="w-24 h-24 rounded-[2rem] bg-primary/5 border border-primary/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
         <div className="drop-shadow-[0_0_15px_rgba(0,217,255,0.8)]">
           {icons[device.type]}
         </div>
@@ -98,7 +98,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </Button>
       </div>
 
-      {/* Info Panel Overlay (Now shows Login Credentials) */}
+      {/* Info Panel Overlay (Device Info) */}
       <div className={cn(
         "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
@@ -172,7 +172,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </Button>
       </div>
 
-      {/* QR Panel Overlay (Now shows WiFi Key) */}
+      {/* QR Panel Overlay (Scan to Connect) */}
       <div className={cn(
         "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showQR ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
