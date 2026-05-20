@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { useToast } from '@/hooks/use-toast';
 
 interface TroubleshootingToolProps {
   devices: Device[];
@@ -17,6 +18,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
   const [problem, setProblem] = useState('');
   const [loading, setLoading] = useState(false);
   const [diagnosis, setDiagnosis] = useState<SmartTroubleshootingDiagnosisOutput | null>(null);
+  const { toast } = useToast();
 
   const handleDiagnosis = async () => {
     if (loading) return;
@@ -30,14 +32,19 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
           manufacturer: d.manufacturer,
           model: d.model,
           firmware: d.firmware,
-          ssid: d.ssid
+          ssid: d.wireless24?.ssid || d.wireless5?.ssid
         })),
         overallInternetStatus: 'ONLINE',
         userProblemDescription: problem
       });
       setDiagnosis(result);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Diagnosis failed:', error);
+      toast({
+        variant: "destructive",
+        title: "AI Diagnostic Error",
+        description: "Failed to communicate with NetVigil AI. Please ensure your Gemini API Key is valid and configured in the project settings.",
+      });
     } finally {
       setLoading(false);
     }
