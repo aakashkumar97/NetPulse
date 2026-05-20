@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -67,9 +66,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </a>
       </Button>
 
-      {/* Info Panel Overlay */}
+      {/* Info Panel Overlay - Updated for Opaque Background */}
       <div className={cn(
-        "absolute inset-0 bg-background/98 backdrop-blur-2xl z-10 p-8 flex flex-col transition-all duration-300",
+        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-300",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-4 text-center underline decoration-primary/30 underline-offset-8 shrink-0">
@@ -86,7 +85,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               </div>
               <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-left">
                 <p className="text-[8px] text-muted-foreground uppercase font-bold tracking-widest">MAC ADDR</p>
-                <p className="text-[10px] text-primary truncate">{device.mac}</p>
+                <p className="text-[10px] text-primary truncate font-code uppercase">{device.mac}</p>
               </div>
             </div>
             
