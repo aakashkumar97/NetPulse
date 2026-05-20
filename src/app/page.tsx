@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -13,30 +14,44 @@ export default function Home() {
   const [ipData, setIpData] = useState({ ip: 'DETECTING...', isp: 'FETCHING...' });
   const [latency, setLatency] = useState<number | null>(null);
 
-  // Fetch Public IP and ISP with fallback and better error handling
+  // Fetch Public IP and ISP using a more reliable provider (ipwho.is)
   useEffect(() => {
     async function fetchNetworkInfo() {
       try {
-        // Primary provider: ipapi.co
-        const response = await fetch('https://ipapi.co/json/', { cache: 'no-cache' });
+        // ipwho.is is generally more reliable for client-side HTTPS requests
+        const response = await fetch('https://ipwho.is/', { cache: 'no-cache' });
         if (!response.ok) throw new Error('Primary IP fetch failed');
         const data = await response.json();
         
-        setIpData({
-          ip: data.ip || 'UNKNOWN',
-          isp: data.org || 'UNKNOWN ISP'
-        });
-      } catch (error) {
-        // Fallback provider if primary fails (e.g., due to CORS or rate limiting)
-        try {
-          const fallbackResponse = await fetch('https://api.ipify.org?format=json');
-          const fallbackData = await fallbackResponse.json();
+        if (data && data.success) {
           setIpData({
-            ip: fallbackData.ip || 'UNKNOWN',
-            isp: 'EXTERNAL PROVIDER'
+            ip: data.ip || 'UNKNOWN',
+            isp: data.connection?.isp || data.connection?.org || 'UNKNOWN ISP'
           });
-        } catch (innerError) {
-          setIpData({ ip: 'SECURE_TUNNEL', isp: 'PROTECTED_NODE' });
+        } else {
+          throw new Error('API reported failure');
+        }
+      } catch (error) {
+        // Second fallback: ipapi.co (often requires CORS/HTTPS tweaks)
+        try {
+          const fallback1 = await fetch('https://ipapi.co/json/');
+          const data1 = await fallback1.json();
+          setIpData({
+            ip: data1.ip || 'UNKNOWN',
+            isp: data1.org || 'EXTERNAL PROVIDER'
+          });
+        } catch (err1) {
+          // Final fallback: ipify (only IP, no ISP)
+          try {
+            const fallback2 = await fetch('https://api.ipify.org?format=json');
+            const data2 = await fallback2.json();
+            setIpData({
+              ip: data2.ip || 'DYNAMIC_NODE',
+              isp: 'LOCAL GATEWAY'
+            });
+          } catch (err2) {
+            setIpData({ ip: 'SECURE_NODE', isp: 'NETWORK_PROTECTED' });
+          }
         }
       }
     }
@@ -48,9 +63,9 @@ export default function Home() {
     async function checkLatency() {
       const start = performance.now();
       try {
-        // Fetching a tiny resource from a reliable CDN to simulate latency
-        // mode: 'no-cors' allows us to ping domains without CORS headers
-        await fetch('https://www.google.com/favicon.ico', { 
+        // Mode 'no-cors' allows us to ping domains without CORS headers to get a timing
+        // This is as close as we can get to a real ICMP ping in a browser environment
+        await fetch('https://8.8.8.8/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
           priority: 'high'
@@ -58,8 +73,15 @@ export default function Home() {
         const end = performance.now();
         setLatency(Math.round(end - start));
       } catch (error) {
-        // If fetch fails (offline), set latency to null
-        setLatency(null);
+        // If 8.8.8.8 fetch fails (might be blocked), try a standard CDN endpoint
+        try {
+          const start2 = performance.now();
+          await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-cache' });
+          const end2 = performance.now();
+          setLatency(Math.round(end2 - start2));
+        } catch (innerError) {
+          setLatency(null);
+        }
       }
     }
 
