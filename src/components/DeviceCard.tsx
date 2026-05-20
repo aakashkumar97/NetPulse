@@ -3,9 +3,10 @@
 
 import React, { useState } from 'react';
 import { Device } from '@/app/lib/network-data';
-import { MoreVertical, Network, Wifi, Server, ExternalLink, Eye, EyeOff } from 'lucide-react';
+import { MoreVertical, Network, Wifi, Server, ExternalLink, Eye, EyeOff, Lock, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 interface DeviceCardProps {
   device: Device;
@@ -20,6 +21,8 @@ export function DeviceCard({ device }: DeviceCardProps) {
     extender: <Wifi className="w-10 h-10 text-primary" />,
     gpon: <Server className="w-10 h-10 text-primary" />,
   };
+
+  const currentPass = device.wireless24?.password || device.wireless5?.password;
 
   return (
     <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02]">
@@ -58,7 +61,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         variant="outline" 
         className="w-full font-headline tracking-widest bg-white/5 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary transition-all rounded-xl"
       >
-        <a href={`http://${device.ipAddress}`} target="_blank" rel="noopener noreferrer">
+        <a href={device.webGuiUrl || `http://${device.ipAddress}`} target="_blank" rel="noopener noreferrer">
           <ExternalLink className="mr-2 h-4 w-4" />
           LAUNCH ADMIN
         </a>
@@ -66,34 +69,73 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       {/* Info Panel Overlay */}
       <div className={cn(
-        "absolute inset-0 bg-background/95 backdrop-blur-2xl z-10 p-8 flex flex-col justify-center gap-3 transition-all duration-300",
+        "absolute inset-0 bg-background/98 backdrop-blur-2xl z-10 p-8 flex flex-col transition-all duration-300",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
-        <h4 className="text-xl font-headline font-bold text-primary mb-2 text-center underline decoration-primary/30 underline-offset-8">
+        <h4 className="text-xl font-headline font-bold text-primary mb-4 text-center underline decoration-primary/30 underline-offset-8 shrink-0">
           {device.name.toUpperCase()} SYSTEM INFO
         </h4>
         
-        <div className="space-y-2 overflow-y-auto max-h-[60%] py-2 pr-1">
-          {[
-            { label: 'Manufacturer', value: device.manufacturer },
-            { label: 'Model', value: device.model },
-            { label: 'Firmware', value: device.firmware },
-            { label: 'MAC Address', value: device.mac },
-            { label: 'SSID', value: device.ssid || 'N/A' },
-            { label: 'Security', value: 'WPA2/WPA3 (Password)' }
-          ].map((item, idx) => (
-            <div key={idx} className="flex justify-between items-center p-3 bg-white/5 border border-primary/5 rounded-xl text-xs font-medium">
-              <span className="text-muted-foreground">{item.label}</span>
-              <span className="text-primary tracking-wide text-right ml-2 break-all">{item.value}</span>
+        <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-hide">
+          {/* Hardware & Auth */}
+          <div className="space-y-2">
+            <div className="grid grid-cols-2 gap-2">
+              <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-left">
+                <p className="text-[8px] text-muted-foreground uppercase font-bold tracking-widest">Firmware</p>
+                <p className="text-[10px] text-primary truncate">{device.firmware}</p>
+              </div>
+              <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-left">
+                <p className="text-[8px] text-muted-foreground uppercase font-bold tracking-widest">MAC ADDR</p>
+                <p className="text-[10px] text-primary truncate">{device.mac}</p>
+              </div>
             </div>
-          ))}
+            
+            <div className="flex items-center gap-2 p-3 bg-primary/5 border border-primary/10 rounded-xl">
+              <User className="w-3 h-3 text-primary/60" />
+              <span className="text-[10px] text-muted-foreground">Admin:</span>
+              <span className="text-[10px] text-primary font-code">{device.username || 'N/A'}</span>
+              <Separator orientation="vertical" className="h-3 bg-primary/20" />
+              <Lock className="w-3 h-3 text-primary/60" />
+              <span className="text-[10px] text-primary font-code">{device.adminPassword || '••••'}</span>
+            </div>
+          </div>
 
-          {device.password && (
-            <div className="flex justify-between items-center p-3 bg-primary/10 border border-primary/20 rounded-xl text-xs font-medium group/pass">
-              <span className="text-muted-foreground">WIFI PASS</span>
+          {/* 2.4 GHz Band */}
+          {device.wireless24 && (
+            <div className="p-4 bg-white/5 border border-primary/10 rounded-xl text-left space-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 px-2 py-0.5 bg-primary/20 text-[8px] text-primary font-bold rounded-bl-lg">2.4GHz</div>
+              <p className="text-[10px] font-bold text-white truncate pr-10">{device.wireless24.ssid}</p>
+              <div className="grid grid-cols-3 gap-2 text-[9px]">
+                <div><span className="text-muted-foreground">CH:</span> <span className="text-primary">{device.wireless24.channel}</span></div>
+                <div><span className="text-muted-foreground">BW:</span> <span className="text-primary">{device.wireless24.bandwidth}</span></div>
+                <div><span className="text-muted-foreground">PWR:</span> <span className={cn(
+                  device.wireless24.transmitPower === 'High' ? "text-rose-400" : "text-emerald-400"
+                )}>{device.wireless24.transmitPower}</span></div>
+              </div>
+            </div>
+          )}
+
+          {/* 5 GHz Band */}
+          {device.wireless5 ? (
+            <div className="p-4 bg-white/5 border border-secondary/20 rounded-xl text-left space-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 px-2 py-0.5 bg-secondary/20 text-[8px] text-secondary font-bold rounded-bl-lg">5GHz</div>
+              <p className="text-[10px] font-bold text-white pr-10">{device.wireless5.ssid}</p>
+              <div className="grid grid-cols-3 gap-2 text-[9px]">
+                <div><span className="text-muted-foreground">CH:</span> <span className="text-secondary">{device.wireless5.channel}</span></div>
+                <div><span className="text-muted-foreground">BW:</span> <span className="text-secondary">{device.wireless5.bandwidth}</span></div>
+                <div><span className="text-muted-foreground">PWR:</span> <span className="text-secondary">{device.wireless5.transmitPower}</span></div>
+              </div>
+            </div>
+          ) : (
+            device.type !== 'gpon' && <div className="p-2 text-[8px] text-muted-foreground italic text-center">5GHz Interface Disabled</div>
+          )}
+
+          {currentPass && (
+            <div className="flex justify-between items-center p-3 bg-primary/10 border border-primary/20 rounded-xl text-xs font-medium">
+              <span className="text-muted-foreground text-[10px] uppercase font-bold tracking-tighter">WiFi PASS</span>
               <div className="flex items-center gap-2">
-                <span className="text-primary tracking-widest font-code">
-                  {showPassword ? device.password : '••••••••'}
+                <span className="text-primary tracking-widest font-code text-sm">
+                  {showPassword ? currentPass : '••••••••'}
                 </span>
                 <button 
                   onClick={() => setShowPassword(!showPassword)}
@@ -111,7 +153,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 rounded-xl font-headline"
+          className="mt-6 bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 rounded-xl font-headline shrink-0"
         >
           CLOSE PROTOCOL
         </Button>

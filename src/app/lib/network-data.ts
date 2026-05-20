@@ -1,56 +1,105 @@
 
+export type WirelessSettings = {
+  ssid: string;
+  password?: string;
+  channel: string;
+  bandwidth: string;
+  transmitPower: 'Low' | 'Medium' | 'High';
+};
+
 export type Device = {
   id: string;
   name: string;
   ipAddress: string;
+  webGuiUrl?: string;
   status: 'ONLINE' | 'OFFLINE';
   manufacturer: string;
   model: string;
   firmware: string;
   mac: string;
-  ssid?: string;
-  password?: string;
   type: 'router' | 'extender' | 'gpon';
+  username?: string;
+  adminPassword?: string;
+  wireless24?: WirelessSettings;
+  wireless5?: WirelessSettings;
 };
 
 export const INITIAL_DEVICES: Device[] = [
   {
-    id: 'router-1',
-    name: 'Router',
-    ipAddress: '192.168.1.1',
-    status: 'ONLINE',
-    manufacturer: 'Sercomm',
-    model: 'JIDU6401',
-    firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
-    mac: 'F4:EC:22:9A:88:B1',
-    ssid: 'SkyNet',
-    password: '#0m3!nt3rn3t',
-    type: 'router',
-  },
-  {
-    id: 'extender-1',
-    name: 'Extender',
-    ipAddress: '192.168.1.2',
-    status: 'ONLINE',
-    manufacturer: 'Sercomm',
-    model: 'JIDU6401',
-    firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
-    mac: 'A8:42:3F:12:D4:E5',
-    ssid: 'SkyNet',
-    password: '#0m3!nt3rn3t',
-    type: 'extender',
-  },
-  {
     id: 'gpon-1',
-    name: 'GPON',
-    ipAddress: '192.168.100.1',
+    name: 'Nokia ONT',
+    ipAddress: '192.178.100.1',
+    webGuiUrl: 'http://gpon.net',
     status: 'ONLINE',
     manufacturer: 'Nokia',
     model: 'G-2425G-A',
     firmware: '3FE49362IJJK17(1.2203.417)',
     mac: '9C:71:0D:33:F4:A2',
-    ssid: 'Akanksha Communication',
-    password: 'Infinity@123',
     type: 'gpon',
+    username: 'AdminGPON',
+    adminPassword: 'ALC#FGU',
+    wireless24: {
+      ssid: 'Akanksha Communication',
+      password: 'Infinity@123',
+      channel: '1',
+      bandwidth: '20 MHz',
+      transmitPower: 'Low',
+    },
+  },
+  {
+    id: 'router-1',
+    name: 'Router',
+    ipAddress: '192.178.7.1',
+    webGuiUrl: 'http://router.net',
+    status: 'ONLINE',
+    manufacturer: 'Sercomm',
+    model: 'JIDU6401',
+    firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
+    mac: 'F4:EC:22:9A:88:B1',
+    type: 'router',
+    username: 'root',
+    adminPassword: 'Admin@123',
+    wireless24: {
+      ssid: 'SkyNet',
+      password: '#0m3!nt3rn3t',
+      channel: '11',
+      bandwidth: '20 MHz',
+      transmitPower: 'High',
+    },
+    wireless5: {
+      ssid: 'SkyNet',
+      password: '#0m3!nt3rn3t',
+      channel: '149',
+      bandwidth: '80 MHz',
+      transmitPower: 'High',
+    },
+  },
+  {
+    id: 'extender-1',
+    name: 'Extndr',
+    ipAddress: '192.178.7.2',
+    webGuiUrl: 'http://extndr.net',
+    status: 'ONLINE',
+    manufacturer: 'Sercomm',
+    model: 'JIDU6401',
+    firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
+    mac: 'A8:42:3F:12:D4:E5',
+    type: 'extender',
+    username: 'root',
+    adminPassword: 'Admin@123',
+    wireless24: {
+      ssid: 'SkyNet',
+      password: '#0m3!nt3rn3t',
+      channel: '6',
+      bandwidth: '20 MHz',
+      transmitPower: 'Medium',
+    },
+    wireless5: {
+      ssid: 'SkyNet',
+      password: '#0m3!nt3rn3t',
+      channel: '44',
+      bandwidth: '80 MHz',
+      transmitPower: 'Medium',
+    },
   },
 ];
