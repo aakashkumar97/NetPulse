@@ -1,4 +1,3 @@
-
 export type WirelessSettings = {
   ssid: string;
   password?: string;
@@ -34,7 +33,7 @@ export const INITIAL_DEVICES: Device[] = [
     manufacturer: 'Nokia',
     model: 'G-2425G-A',
     firmware: '3FE49362IJJK17(1.2203.417)',
-    mac: '9C:71:0D:33:F4:A2',
+    mac: '24:0B:88:44:5B:90',
     type: 'gpon',
     username: 'AdminGPON',
     adminPassword: 'ALC#FGU',
@@ -55,7 +54,7 @@ export const INITIAL_DEVICES: Device[] = [
     manufacturer: 'Sercomm',
     model: 'JIDU6401',
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
-    mac: 'F4:EC:22:9A:88:B1',
+    mac: '9C:D4:A6:E8:65:FA',
     type: 'router',
     username: 'root',
     adminPassword: 'Admin@123',
@@ -83,7 +82,7 @@ export const INITIAL_DEVICES: Device[] = [
     manufacturer: 'Sercomm',
     model: 'JIDU6401',
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
-    mac: 'A8:42:3F:12:D4:E5',
+    mac: '9C:D4:A6:07:CF:8C',
     type: 'extender',
     username: 'root',
     adminPassword: 'Admin@123',
