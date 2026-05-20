@@ -28,7 +28,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 relative border-white/5 h-full min-h-[460px]">
+    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 relative border-white/5 h-full min-h-[480px]">
       {/* Info Icon Button - Clean Style */}
       <button 
         onClick={() => {
@@ -41,9 +41,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Info className="w-6 h-6 text-primary" />
       </button>
 
-      {/* Icon Box - Removed breathing and scale effects */}
+      {/* Icon Box */}
       <div className="w-24 h-24 rounded-[2rem] bg-primary/5 border border-primary/20 flex items-center justify-center mb-6">
-        <div className="drop-shadow-[0_0_15px_rgba(0,217,255,0.8)]">
+        <div className="drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]">
           {icons[device.type]}
         </div>
       </div>
@@ -62,7 +62,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
       )}
 
       {/* Status Indicators */}
-      <div className="flex items-center gap-2 mb-4 text-xs font-bold tracking-widest uppercase">
+      <div className="flex items-center gap-2 mb-6 text-xs font-bold tracking-widest uppercase">
         <div className={cn(
           "w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px]",
           device.status === 'ONLINE' ? "bg-emerald-400 shadow-emerald-400" : "bg-rose-400 shadow-rose-400"
@@ -72,7 +72,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </span>
       </div>
 
-      {/* Button Container - Tightened Spacing */}
+      {/* Button Container */}
       <div className="mt-auto w-full space-y-3">
         <Button 
           onClick={() => {
@@ -98,9 +98,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </Button>
       </div>
 
-      {/* Info Panel Overlay (Device Info) */}
+      {/* Info Panel Overlay */}
       <div className={cn(
-        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
+        "absolute inset-0 bg-[#050816] z-50 p-10 pb-12 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-8 text-center tracking-[0.1em] uppercase">
@@ -166,15 +166,15 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-6 bg-primary/5 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-14 tracking-widest"
+          className="mt-6 bg-primary/5 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-12 tracking-widest"
         >
           BACK
         </Button>
       </div>
 
-      {/* QR Panel Overlay (Scan to Connect) */}
+      {/* QR Panel Overlay */}
       <div className={cn(
-        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
+        "absolute inset-0 bg-[#050816] z-50 p-10 pb-12 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showQR ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-6 text-center tracking-[0.1em] uppercase">
@@ -182,11 +182,11 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </h4>
         
         <div className="flex-1 flex flex-col items-center justify-center space-y-6">
-          <div className="bg-white p-4 rounded-3xl shadow-[0_0_30px_rgba(0,217,255,0.2)]">
+          <div className="bg-white p-4 rounded-3xl shadow-[0_0_30px_rgba(139,92,246,0.2)]">
             <img 
               src={qrCodeUrl} 
               alt="WiFi QR Code" 
-              className="w-48 h-48 rounded-xl"
+              className="w-40 h-40 rounded-xl"
             />
           </div>
           <div className="text-center space-y-2">
@@ -199,7 +199,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
         <Button 
           onClick={() => setShowQR(false)}
-          className="mt-6 bg-primary/5 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-14 tracking-widest"
+          className="mt-6 bg-primary/5 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-12 tracking-widest"
         >
           CLOSE QR
         </Button>
