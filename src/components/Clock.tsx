@@ -12,7 +12,7 @@ export function Clock() {
       setTime(now.toLocaleTimeString('en-US', { 
         hour: '2-digit', 
         minute: '2-digit', 
-        hour12: false 
+        hour12: true 
       }));
       setDate(now.toLocaleDateString('en-US', {
         weekday: 'short',
