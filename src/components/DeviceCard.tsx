@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState } from 'react';
@@ -66,9 +67,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </a>
       </Button>
 
-      {/* Info Panel Overlay */}
+      {/* Info Panel Overlay - Fully Opaque Background */}
       <div className={cn(
-        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-300 rounded-[inherit]",
+        "absolute inset-0 bg-[#0a0f25] z-50 p-8 flex flex-col transition-all duration-300 rounded-[inherit]",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-4 text-center underline decoration-primary/30 underline-offset-8 shrink-0">
@@ -76,7 +77,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </h4>
         
         <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-hide">
-          {/* Hardware & Auth */}
           <div className="space-y-2">
             <div className="grid grid-cols-2 gap-2">
               <div className="p-3 bg-white/5 border border-white/5 rounded-2xl text-left">
@@ -99,7 +99,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
             </div>
           </div>
 
-          {/* 2.4 GHz Band */}
           {device.wireless24 && (
             <div className="p-4 bg-white/5 border border-primary/10 rounded-2xl text-left space-y-2 relative overflow-hidden">
               <div className="absolute top-0 right-0 px-3 py-1 bg-primary/20 text-[8px] text-primary font-bold rounded-bl-xl">2.4GHz</div>
@@ -114,7 +113,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
             </div>
           )}
 
-          {/* 5 GHz Band */}
           {device.wireless5 ? (
             <div className="p-4 bg-white/5 border border-secondary/20 rounded-2xl text-left space-y-2 relative overflow-hidden">
               <div className="absolute top-0 right-0 px-3 py-1 bg-secondary/20 text-[8px] text-secondary font-bold rounded-bl-xl">5GHz</div>
