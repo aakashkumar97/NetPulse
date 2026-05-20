@@ -18,12 +18,10 @@ export default function Home() {
     async function checkLatency() {
       const start = performance.now();
       try {
-        // Checking against a reliable public endpoint
         await fetch('https://8.8.8.8/favicon.ico', { mode: 'no-cors', cache: 'no-cache', priority: 'high' });
         setLatency(Math.round(performance.now() - start));
       } catch {
-        // If internet is unreachable, fallback to simulated online if needed or stay null
-        setLatency(24); // Mock latency for demo purposes if real check fails
+        setLatency(null);
       }
     }
     checkLatency();
@@ -37,9 +35,9 @@ export default function Home() {
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1000); 
+        const timeoutId = setTimeout(() => controller.abort(), 2000); 
 
-        // Attempting to reach the device
+        // Actual accessibility check using fetch
         await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -48,10 +46,9 @@ export default function Home() {
         
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
-      } catch (error: any) {
-        // For local dashboard prototyping, we prefer showing them as ONLINE
-        // unless they are explicitly known to be down.
-        return { ...device, status: 'ONLINE' }; 
+      } catch (error) {
+        // If fetch fails (timeout, refused, etc.), it's likely offline or inaccessible
+        return { ...device, status: 'OFFLINE' }; 
       }
     }
 
@@ -67,12 +64,12 @@ export default function Home() {
     }
 
     updateAllStatuses();
-    const interval = setInterval(updateAllStatuses, 30000); // Check less frequently
+    const interval = setInterval(updateAllStatuses, 15000); // Check every 15 seconds
     return () => clearInterval(interval);
   }, [devices]);
 
   const onlineNodes = devices.filter(d => d.status === 'ONLINE').length;
-  const networkHealth = onlineNodes === 0 ? 0 : Math.round((onlineNodes / devices.length) * 100);
+  const networkHealth = Math.round((onlineNodes / devices.length) * 100);
 
   return (
     <main className="min-h-screen relative font-body text-slate-300 selection:bg-primary/30">
