@@ -6,13 +6,12 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { Globe, ShieldCheck, Zap, Cpu, RefreshCw } from 'lucide-react';
+import { Globe, ShieldCheck, Zap, RefreshCw } from 'lucide-react';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
-  const [systemLoad, setSystemLoad] = useState<number>(0);
 
   useEffect(() => {
     async function checkLatency() {
@@ -23,7 +22,6 @@ export default function Home() {
       } catch {
         setLatency(null);
       }
-      setSystemLoad(Math.floor(Math.random() * 5) + 1);
     }
     checkLatency();
     const interval = setInterval(checkLatency, 5000);
@@ -64,7 +62,7 @@ export default function Home() {
     async function updateAllStatuses() {
       const updatedDevices = await Promise.all(devices.map(d => checkDeviceStatus(d)));
       setDevices(updatedDevices);
-      setLastScan(new Date().toLocaleTimeString('en-US', { hour12: false }));
+      setLastScan(new Date().toLocaleTimeString('en-US', { hour12: true }));
     }
 
     updateAllStatuses();
@@ -98,10 +96,6 @@ export default function Home() {
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary">
                 <Zap className="w-3 h-3" />
                 PING: {latency ? `${latency}ms` : '---'}
-              </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/60">
-                <Cpu className="w-3 h-3" />
-                LOAD: {systemLoad}%
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/40">
                 <RefreshCw className="w-3 h-3" />
