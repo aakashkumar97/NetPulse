@@ -48,7 +48,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </div>
       </div>
 
-      <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-200">{device.name}</h3>
+      <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-300">{device.name}</h3>
       
       <div className="flex flex-col items-center gap-1 mb-3">
         <span className="font-code text-[12px] font-medium tracking-[0.2em] uppercase text-primary/70">{device.manufacturer}</span>
@@ -166,7 +166,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 bg-primary/5 border border-primary/20 text-slate-300 hover:bg-primary/5 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 bg-primary/5 border border-primary/20 text-slate-300 hover:bg-primary/5 hover:!text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           BACK
         </Button>
@@ -199,7 +199,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
         <Button 
           onClick={() => setShowQR(false)}
-          className="mt-4 bg-primary/5 border border-primary/20 text-slate-300 hover:bg-primary/5 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 bg-primary/5 border border-primary/20 text-slate-300 hover:bg-primary/5 hover:!text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           HIDE QR
         </Button>
