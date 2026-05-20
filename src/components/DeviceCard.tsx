@@ -28,7 +28,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 relative border-white/5 h-full min-h-[480px]">
+    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 relative border-white/5 h-full min-h-[500px]">
       {/* Info Icon Button - Clean Style */}
       <button 
         onClick={() => {
@@ -48,15 +48,15 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </div>
       </div>
 
-      <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight">{device.name}</h3>
+      <h3 className="text-3xl font-headline font-bold mb-2 tracking-tight">{device.name}</h3>
       
-      <div className="flex flex-col items-center gap-1 mb-2">
-        <span className="font-code text-[11px] tracking-[0.2em] uppercase text-primary/80">{device.manufacturer}</span>
-        <span className="font-code text-[10px] tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
+      <div className="flex flex-col items-center gap-1.5 mb-3">
+        <span className="font-code text-xs tracking-[0.2em] uppercase text-primary/80">{device.manufacturer}</span>
+        <span className="font-code text-[11px] tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
       </div>
       
       {device.description && (
-        <p className="text-[10px] text-muted-foreground/80 mb-4 font-body leading-relaxed max-w-[200px]">
+        <p className="text-xs text-muted-foreground/80 mb-4 font-body leading-relaxed max-w-[240px]">
           {device.description}
         </p>
       )}
