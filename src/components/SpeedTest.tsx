@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Gauge, Zap, ExternalLink } from 'lucide-react';
+import { Gauge, Zap, ExternalLink, ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export function SpeedTest() {
@@ -16,25 +16,35 @@ export function SpeedTest() {
         <div className="p-8 pb-0">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
             <div className="space-y-2">
-              <h2 className="text-2xl font-headline font-bold flex items-center gap-3">
+              <h2 className="text-2xl font-headline font-bold flex items-center gap-3 uppercase tracking-tight">
                 <Zap className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(0,217,255,0.6)]" />
-                HIGH-PRECISION BANDWIDTH ANALYZER
+                High-Precision Bandwidth Analyzer
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
-                Integrated multi-stream diagnostic engine for saturating high-speed fiber connections. 
-                Optimized for 300 Mbps+ throughput verification.
+                Integrated diagnostic engine for saturating high-speed fiber connections. 
+                Optimized for <span className="text-primary font-bold">300 Mbps+</span> throughput verification.
+              </p>
+              <div className="flex items-center gap-2 text-[10px] font-code text-emerald-400/80 bg-emerald-500/5 border border-emerald-500/10 w-fit px-3 py-1 rounded-full">
+                <ShieldCheck className="w-3 h-3" />
+                SECURE MULTI-STREAM MEASUREMENT ACTIVE
+              </div>
+            </div>
+            
+            <div className="flex flex-col gap-2">
+              <Button 
+                asChild 
+                variant="outline" 
+                className="bg-primary/10 border-primary/30 hover:bg-primary/20 hover:border-primary text-primary rounded-2xl h-12 px-6 text-xs font-bold tracking-widest transition-all shadow-[0_0_15px_rgba(0,217,255,0.1)]"
+              >
+                <a href="https://www.speedtest.net/" target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  LAUNCH OOKLA CERTIFIED
+                </a>
+              </Button>
+              <p className="text-[9px] text-center text-muted-foreground font-code opacity-60">
+                *Ookla requires external verification
               </p>
             </div>
-            <Button 
-              asChild 
-              variant="outline" 
-              className="bg-primary/5 border-primary/20 hover:bg-primary/10 text-primary rounded-xl h-10 px-4 text-xs font-bold tracking-widest whitespace-nowrap"
-            >
-              <a href="https://www.speedtest.net/" target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="mr-2 h-3 w-3" />
-                OPEN OOKLA SPEEDTEST
-              </a>
-            </Button>
           </div>
         </div>
 
@@ -46,7 +56,6 @@ export function SpeedTest() {
             title="Precision Speedometer"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           />
-          {/* Overlay to blend the bottom slightly if needed, but the widget is quite clean */}
           <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>
       </div>
