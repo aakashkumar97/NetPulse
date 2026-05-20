@@ -104,7 +104,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-8 text-center tracking-[0.1em] uppercase">
-          Device Parameters
+          Device Info
         </h4>
         
         <div className="flex-1 space-y-5 text-left overflow-y-auto pr-2 scrollbar-hide">
@@ -168,7 +168,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
           }}
           className="mt-6 bg-primary/5 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-14 tracking-widest"
         >
-          CLOSE PROTOCOL
+          BACK
         </Button>
       </div>
 
