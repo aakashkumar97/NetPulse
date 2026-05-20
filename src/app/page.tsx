@@ -14,6 +14,7 @@ export default function Home() {
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
 
+  // Internet Latency Check
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
@@ -29,6 +30,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // Device Accessibility Scan
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       const url = device.webGuiUrl || `http://${device.ipAddress}`;
@@ -62,9 +64,9 @@ export default function Home() {
     }
 
     updateAllStatuses();
-    const interval = setInterval(updateAllStatuses, 15000);
+    const interval = setInterval(updateAllStatuses, 15000); // 15s sync interval
     return () => clearInterval(interval);
-  }, []); // Only run once on mount for initialization and interval setup
+  }, []);
 
   const onlineNodes = devices.filter(d => d.status === 'ONLINE').length;
   const networkHealth = Math.round((onlineNodes / devices.length) * 100);
