@@ -12,37 +12,33 @@ import { cn } from '@/lib/utils';
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
-  const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
 
-  // Internet Status & Latency Check
+  // Internet Status Check (No MS display)
   useEffect(() => {
     async function checkInternet() {
-      const start = performance.now();
       try {
-        // Checking connectivity via fetch with no-cors
+        // Checking connectivity via fetch with no-cors to a reliable endpoint
         await fetch('https://8.8.8.8/favicon.ico', { mode: 'no-cors', cache: 'no-cache', priority: 'high' });
-        setLatency(Math.round(performance.now() - start));
         setInternetStatus('ONLINE');
       } catch {
-        setLatency(null);
         setInternetStatus('OFFLINE');
       }
     }
     
     checkInternet();
-    const interval = setInterval(checkInternet, 15000); // 15s sync for internet
+    const interval = setInterval(checkInternet, 15000); 
     return () => clearInterval(interval);
   }, []);
 
-  // Device Accessibility IP Check Logic
+  // IP Accessibility Check Logic
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       const url = `http://${device.ipAddress}`;
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); 
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for slow WebGUI
 
         await fetch(url, { 
           mode: 'no-cors', 
@@ -94,7 +90,7 @@ export default function Home() {
                 "bg-amber-500/5 border-amber-500/10 text-amber-400/80"
               )}>
                 <Wifi className="w-3 h-3" />
-                INTERNET: {internetStatus} {latency ? `(${latency}ms)` : ''}
+                INTERNET: {internetStatus}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/5 border border-emerald-500/10 rounded-full text-emerald-400/80">
                 <ShieldCheck className="w-3 h-3" />
