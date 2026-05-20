@@ -129,7 +129,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Terminal className="w-2.5 h-2.5 text-primary/40" />
               Firmware
             </div>
-            <p className="text-xs text-white font-medium pl-4 break-all">{device.firmware}</p>
+            <p className="text-xs text-white font-normal pl-4 break-all">{device.firmware}</p>
           </div>
 
           <div className="pt-3 border-t border-primary/10 space-y-4">
@@ -138,7 +138,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                 <User className="w-2.5 h-2.5 text-primary/40" />
                 Username
               </div>
-              <p className="text-xs text-white font-medium pl-4">{device.username || 'admin'}</p>
+              <p className="text-xs text-white font-normal pl-4">{device.username || 'admin'}</p>
             </div>
 
             <div className="space-y-0.5">
@@ -154,7 +154,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                   {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                 </button>
               </div>
-              <p className="text-xs text-primary font-code pl-4 tracking-widest">
+              <p className="text-xs text-white font-code pl-4 tracking-widest">
                 {showPassword ? (device.adminPassword || 'N/A') : '••••••••'}
               </p>
             </div>
