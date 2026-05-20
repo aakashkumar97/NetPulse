@@ -43,10 +43,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight">{device.name}</h3>
       
-      <div className="flex items-center gap-2 mb-2 font-code text-[10px] tracking-[0.2em] uppercase">
-        <span className="text-white/80">{device.manufacturer}</span>
-        <span className="text-primary/30">•</span>
-        <span className="text-primary/60">{device.ipAddress}</span>
+      <div className="flex flex-col items-center gap-1 mb-2">
+        <span className="font-code text-[11px] tracking-[0.2em] uppercase text-primary/80">{device.manufacturer}</span>
+        <span className="font-code text-[10px] tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
       </div>
       
       {device.description && (
@@ -81,7 +80,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       {/* Info Panel Overlay */}
       <div className={cn(
-        "absolute inset-0 bg-background z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
+        "absolute inset-0 bg-card z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-8 text-center tracking-[0.1em] uppercase">
@@ -104,7 +103,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Cpu className="w-3 h-3 text-primary/40" />
               Hardware Model
             </div>
-            <p className="text-sm text-primary font-code pl-5">{device.model}</p>
+            <p className="text-sm text-white font-medium pl-5">{device.model}</p>
           </div>
 
           {/* Firmware */}
