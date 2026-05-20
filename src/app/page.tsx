@@ -80,7 +80,6 @@ export default function Home() {
 
   const onlineNodes = devices.filter(d => d.status === 'ONLINE').length;
   const networkHealth = onlineNodes === 0 ? 0 : Math.round((onlineNodes / devices.length) * 100);
-  const isGPONOnline = devices.find(d => d.type === 'gpon')?.status === 'ONLINE';
 
   return (
     <main className="min-h-screen relative font-body text-white selection:bg-primary/30">
@@ -93,13 +92,6 @@ export default function Home() {
               NETPULSE <span className="text-primary neon-text">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
-              <span className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
-                isGPONOnline ? "bg-primary/10 border-primary/20 text-primary" : "bg-rose-500/10 border-rose-500/20 text-rose-400"
-              )}>
-                <Globe className="w-3 h-3" />
-                ISP GATEWAY: {isGPONOnline ? 'UP' : 'DOWN'}
-              </span>
               <span className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
                 latency ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-rose-500/10 border-rose-500/20 text-rose-400"
