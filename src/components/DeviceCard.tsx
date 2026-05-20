@@ -24,7 +24,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const currentPass = device.wireless24?.password || device.wireless5?.password;
 
   return (
-    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02]">
+    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative">
       {/* Top Controls */}
       <button 
         onClick={() => setShowInfo(!showInfo)}
@@ -66,13 +66,13 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </a>
       </Button>
 
-      {/* Info Panel Overlay - Fully Opaque Background */}
+      {/* Info Panel Overlay - Solid opaque background */}
       <div className={cn(
-        "absolute inset-0 bg-[#0a0f25] z-50 p-8 flex flex-col transition-all duration-300 rounded-[inherit]",
+        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-300 rounded-[2.5rem] border border-primary/30",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-4 text-center underline decoration-primary/30 underline-offset-8 shrink-0">
-          {device.name.toUpperCase()} SYSTEM INFO
+          SYSTEM INFO
         </h4>
         
         <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-hide">
@@ -90,7 +90,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             
             <div className="flex items-center gap-2 p-3 bg-primary/5 border border-primary/10 rounded-2xl">
               <User className="w-3 h-3 text-primary/60" />
-              <span className="text-[10px] text-muted-foreground">Admin:</span>
+              <span className="text-[10px] text-muted-foreground">User:</span>
               <span className="text-[10px] text-primary font-code">{device.username || 'N/A'}</span>
               <Separator orientation="vertical" className="h-3 bg-primary/20" />
               <Lock className="w-3 h-3 text-primary/60" />
@@ -105,14 +105,12 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <div className="grid grid-cols-3 gap-2 text-[9px]">
                 <div><span className="text-muted-foreground">CH:</span> <span className="text-primary">{device.wireless24.channel}</span></div>
                 <div><span className="text-muted-foreground">BW:</span> <span className="text-primary">{device.wireless24.bandwidth}</span></div>
-                <div><span className="text-muted-foreground">PWR:</span> <span className={cn(
-                  device.wireless24.transmitPower === 'High' ? "text-rose-400" : "text-emerald-400"
-                )}>{device.wireless24.transmitPower}</span></div>
+                <div><span className="text-muted-foreground">PWR:</span> <span className="text-emerald-400">{device.wireless24.transmitPower}</span></div>
               </div>
             </div>
           )}
 
-          {device.wireless5 ? (
+          {device.wireless5 && (
             <div className="p-4 bg-white/5 border border-secondary/20 rounded-2xl text-left space-y-2 relative overflow-hidden">
               <div className="absolute top-0 right-0 px-3 py-1 bg-secondary/20 text-[8px] text-secondary font-bold rounded-bl-xl">5GHz</div>
               <p className="text-[10px] font-bold text-white pr-10">{device.wireless5.ssid}</p>
@@ -122,8 +120,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
                 <div><span className="text-muted-foreground">PWR:</span> <span className="text-secondary">{device.wireless5.transmitPower}</span></div>
               </div>
             </div>
-          ) : (
-            device.type !== 'gpon' && <div className="p-2 text-[8px] text-muted-foreground italic text-center">5GHz Interface Disabled</div>
           )}
 
           {currentPass && (

@@ -6,69 +6,58 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { TroubleshootingTool } from '@/components/TroubleshootingTool';
 import { INITIAL_DEVICES } from '@/app/lib/network-data';
-import { Shield, Activity, Globe, Wifi, Settings, ShieldCheck, Zap, Building2, Network } from 'lucide-react';
+import { Activity, Globe, Building2, Network, ShieldCheck, Zap } from 'lucide-react';
 
 export default function Home() {
   const [devices] = useState(INITIAL_DEVICES);
   const [ipData, setIpData] = useState({ ip: 'DETECTING...', isp: 'FETCHING...' });
   const [latency, setLatency] = useState<number | null>(null);
 
-  // Fetch Public IP and ISP with multiple fallbacks and robust error handling
   useEffect(() => {
     async function fetchNetworkInfo() {
-      // Priority 1: freeipapi.com (Excellent CORS support and data)
-      try {
-        const response = await fetch('https://freeipapi.com/api/json', { cache: 'no-cache' });
-        const data = await response.json();
-        if (data && data.ipAddress) {
-          setIpData({
-            ip: data.ipAddress,
-            isp: data.asName || 'ISP DETECTED'
-          });
-          return;
+      // Try multiple providers sequentially for better reliability
+      const providers = [
+        async () => {
+          const res = await fetch('https://freeipapi.com/api/json', { cache: 'no-cache' });
+          const data = await res.json();
+          return { ip: data.ipAddress, isp: data.asName || 'ISP DETECTED' };
+        },
+        async () => {
+          const res = await fetch('https://ipwho.is/', { cache: 'no-cache' });
+          const data = await res.json();
+          if (!data.success) throw new Error();
+          return { ip: data.ip, isp: data.connection?.isp || data.connection?.org };
+        },
+        async () => {
+          const res = await fetch('https://api.ipify.org?format=json');
+          const data = await res.json();
+          return { ip: data.ip, isp: 'ISP_ACTIVE' };
         }
-      } catch (e) {}
+      ];
 
-      // Priority 2: ipwho.is
-      try {
-        const response = await fetch('https://ipwho.is/', { cache: 'no-cache' });
-        const data = await response.json();
-        if (data && data.success) {
-          setIpData({
-            ip: data.ip || 'UNKNOWN',
-            isp: data.connection?.isp || data.connection?.org || 'UNKNOWN ISP'
-          });
-          return;
+      for (const provider of providers) {
+        try {
+          const result = await provider();
+          if (result.ip) {
+            setIpData(result);
+            return;
+          }
+        } catch (e) {
+          continue;
         }
-      } catch (e) {}
+      }
 
-      // Priority 3: ipapi.co (Fallback)
-      try {
-        const response = await fetch('https://ipapi.co/json/');
-        const data = await response.json();
-        if (data && data.ip) {
-          setIpData({
-            ip: data.ip,
-            isp: data.org || 'EXTERNAL PROVIDER'
-          });
-          return;
-        }
-      } catch (e) {}
-
-      // Final fallback if all APIs fail (likely due to adblock or firewall)
       setIpData({ ip: 'NETWORK_NODE', isp: 'PROTECTED_ACCESS' });
     }
     
     fetchNetworkInfo();
   }, []);
 
-  // Simulate Ping for Latency
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
       try {
-        // Use a high-availability image to minimize request overhead
-        await fetch('https://8.8.8.8/favicon.ico', { 
+        await fetch('https://www.google.com/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
           priority: 'high'
@@ -76,15 +65,7 @@ export default function Home() {
         const end = performance.now();
         setLatency(Math.round(end - start));
       } catch (error) {
-        // Backup latency check
-        try {
-          const start2 = performance.now();
-          await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-cache' });
-          const end2 = performance.now();
-          setLatency(Math.round(end2 - start2));
-        } catch (innerError) {
-          setLatency(null);
-        }
+        setLatency(null);
       }
     }
 
@@ -161,9 +142,6 @@ export default function Home() {
               <span className="w-2 h-8 bg-primary rounded-full shadow-[0_0_15px_#00D9FF]" />
               Infrastructure Map
             </h2>
-            <button className="text-[10px] font-headline font-bold text-primary tracking-widest hover:underline decoration-primary/30 underline-offset-4">
-              POLL ALL NODES
-            </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {devices.map((device) => (
@@ -178,11 +156,6 @@ export default function Home() {
           <p className="text-[10px] font-code tracking-[0.3em] uppercase">
             &copy; 2024 NETVIGIL SYSTEMS • SECURE ARCHITECTURE
           </p>
-          <div className="flex gap-8 text-[10px] font-headline font-bold tracking-widest">
-            <a href="#" className="hover:text-primary transition-colors">ACCESS LOGS</a>
-            <a href="#" className="hover:text-primary transition-colors">CONFIG REPO</a>
-            <a href="#" className="hover:text-primary transition-colors">SUPPORT</a>
-          </div>
         </footer>
       </div>
     </main>
