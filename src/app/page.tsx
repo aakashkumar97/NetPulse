@@ -6,45 +6,19 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { Globe, ShieldCheck, RefreshCw, Wifi, MapPin, Building2 } from 'lucide-react';
+import { Globe, ShieldCheck, RefreshCw, Wifi } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
-  const [publicData, setPublicData] = useState<{ ip: string; org: string } | null>(null);
-
-  // Fetch Public IP and ISP info with robust error handling
-  useEffect(() => {
-    async function fetchPublicData() {
-      try {
-        const res = await fetch('https://ipapi.co/json/', { cache: 'no-cache' });
-        if (!res.ok) throw new Error('Network response was not ok');
-        const data = await res.json();
-        if (data && data.ip) {
-          setPublicData({
-            ip: data.ip,
-            org: data.org || 'Unknown ISP'
-          });
-        }
-      } catch (error) {
-        // Silent failure - common due to adblockers or rate limits
-        setPublicData({
-          ip: 'PROTECTED',
-          org: 'N/A'
-        });
-      }
-    }
-    fetchPublicData();
-  }, []);
 
   // Latency check (Internet Status)
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
       try {
-        // Using a reliable external resource for ping check
         await fetch('https://8.8.8.8/favicon.ico', { mode: 'no-cors', cache: 'no-cache', priority: 'high' });
         setLatency(Math.round(performance.now() - start));
       } catch {
@@ -74,7 +48,6 @@ export default function Home() {
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
       } catch (error: any) {
-        // Fallback: try to load an image from the local network device
         return new Promise((resolve) => {
           const img = new Image();
           const timer = setTimeout(() => {
@@ -133,14 +106,6 @@ export default function Home() {
               )}>
                 <Wifi className="w-3 h-3" />
                 INTERNET: {latency ? 'ONLINE' : 'OFFLINE'}
-              </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400">
-                <MapPin className="w-3 h-3" />
-                WAN IP: {publicData?.ip || 'DETECTING...'}
-              </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-400 max-w-[200px] truncate">
-                <Building2 className="w-3 h-3" />
-                ISP: {publicData?.org || 'DETECTING...'}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
