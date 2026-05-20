@@ -21,12 +21,15 @@ export default function Home() {
       try {
         const res = await fetch('https://ipapi.co/json/');
         const data = await res.json();
-        setPublicData({
-          ip: data.ip || '---.---.---.---',
-          org: data.org || 'Unknown ISP'
-        });
+        if (data && data.ip) {
+          setPublicData({
+            ip: data.ip,
+            org: data.org || 'Unknown ISP'
+          });
+        }
       } catch (error) {
         console.error("Public data fetch failed", error);
+        // Fallback or retry logic could go here
       }
     }
     fetchPublicData();
@@ -37,6 +40,7 @@ export default function Home() {
     async function checkLatency() {
       const start = performance.now();
       try {
+        // Using a reliable external resource for ping check
         await fetch('https://8.8.8.8/favicon.ico', { mode: 'no-cors', cache: 'no-cache', priority: 'high' });
         setLatency(Math.round(performance.now() - start));
       } catch {
@@ -48,7 +52,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Device status polling
+  // Device status polling (Simulation for demo, in real life it would hit actual IPs)
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       const url = device.webGuiUrl || `http://${device.ipAddress}`;
@@ -66,6 +70,7 @@ export default function Home() {
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
       } catch (error: any) {
+        // Fallback for browsers: try to load an image from the local network device
         return new Promise((resolve) => {
           const img = new Image();
           const timer = setTimeout(() => {
