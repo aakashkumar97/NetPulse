@@ -67,14 +67,18 @@ export default function Home() {
       setDevices(updatedDevices);
       setLastScan(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }));
       
-      // Simulate active client count based on online nodes
+      // Stabilized client simulation
       const isOnline = updatedDevices.some(d => d.status === 'ONLINE');
-      if (isOnline) {
-        // Randomly simulate between 4 to 12 clients if network is up
-        setClientCount(Math.floor(Math.random() * 9) + 4);
-      } else {
-        setClientCount(0);
-      }
+      setClientCount(prev => {
+        if (!isOnline) return 0;
+        if (prev === 0) return 8; // Default baseline when network comes online
+        
+        // Only 20% chance to drift by +/- 1, otherwise stays same
+        const drift = Math.random();
+        if (drift > 0.9) return Math.min(prev + 1, 15);
+        if (drift < 0.1) return Math.max(prev - 1, 4);
+        return prev;
+      });
     }
 
     updateAllStatuses();
