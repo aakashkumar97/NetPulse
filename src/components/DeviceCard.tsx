@@ -182,11 +182,11 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </h4>
         
         <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-          <div className="bg-white/90 p-3 rounded-2xl">
+          <div className="bg-white p-3 rounded-2xl">
             <img 
               src={qrCodeUrl} 
               alt="WiFi QR Code" 
-              className="w-32 h-32 rounded-none opacity-90"
+              className="w-32 h-32 rounded-none"
             />
           </div>
           <div className="text-center space-y-1">
