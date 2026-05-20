@@ -37,7 +37,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: '3FE49362IJJK17(1.2203.417)',
     mac: '24:0B:88:44:5B:90',
     type: 'gpon',
-    description: 'Main ISP Entry Node Converting fiber optic signals into internet connectivity',
+    description: 'Main ISP Entry Node converting fiber optic signals into internet connectivity.',
     username: 'AdminGPON',
     adminPassword: 'ALC#FGU',
     wireless24: {
@@ -59,7 +59,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
     mac: '9C:D4:A6:E8:65:FA',
     type: 'router',
-    description: 'Primary router handling internet, DHCP, and main network traffic',
+    description: 'Primary router handling internet, DHCP, and main network traffic.',
     username: 'root',
     adminPassword: 'Admin@123',
     wireless24: {
@@ -88,7 +88,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
     mac: '9C:D4:A6:07:CF:8C',
     type: 'extender',
-    description: 'Wi-Fi extender to expand coverage and improve signal strength',
+    description: 'Wi-Fi extender expands coverage and improves roaming signal strength.',
     username: 'root',
     adminPassword: 'Admin@123',
     wireless24: {

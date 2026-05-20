@@ -15,7 +15,7 @@ export default function Home() {
   const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
   const [lastVerified, setLastVerified] = useState<string>('');
 
-  // Initial Internet check
+  // Internet connectivity check
   useEffect(() => {
     async function checkInternet() {
       try {
@@ -40,7 +40,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Direct IP accessibility check
+  // Direct IP accessibility check for devices
   useEffect(() => {
     async function checkDeviceAccessibility(device: Device): Promise<Device> {
       const url = `http://${device.ipAddress}`;
@@ -49,7 +49,7 @@ export default function Home() {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); 
 
-        // Direct IP accessibility hit
+        // Direct hit to the device IP to check accessibility
         await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
