@@ -42,7 +42,12 @@ export function DeviceCard({ device }: DeviceCardProps) {
       </div>
 
       <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight">{device.name}</h3>
-      <p className="font-code text-[10px] text-primary/60 mb-2 tracking-[0.2em] uppercase">{device.ipAddress}</p>
+      
+      <div className="flex items-center gap-2 mb-2 font-code text-[10px] tracking-[0.2em] uppercase">
+        <span className="text-white/80">{device.manufacturer}</span>
+        <span className="text-primary/30">•</span>
+        <span className="text-primary/60">{device.ipAddress}</span>
+      </div>
       
       {device.description && (
         <p className="text-[10px] text-muted-foreground/80 mb-6 font-body leading-relaxed max-w-[200px]">
@@ -65,7 +70,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Button 
           asChild 
           variant="outline" 
-          className="w-full font-headline tracking-widest bg-primary/10 border-primary/30 hover:bg-primary hover:text-black hover:border-primary transition-all rounded-2xl h-14"
+          className="w-full font-headline tracking-widest bg-primary/10 border-primary/30 hover:bg-primary hover:text-background hover:border-primary transition-all rounded-2xl h-14"
         >
           <a href={device.webGuiUrl} target="_blank" rel="noopener noreferrer">
             <Terminal className="mr-2 h-4 w-4" />
@@ -76,7 +81,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       {/* Info Panel Overlay */}
       <div className={cn(
-        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
+        "absolute inset-0 bg-background z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-8 text-center tracking-[0.1em] uppercase">

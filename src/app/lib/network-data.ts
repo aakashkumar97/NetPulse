@@ -27,7 +27,7 @@ export type Device = {
 export const INITIAL_DEVICES: Device[] = [
   {
     id: 'gpon-1',
-    name: 'Nokia ONU (Main)',
+    name: 'GPON Home Gateway',
     ipAddress: '192.168.100.1',
     webGuiUrl: 'http://192.168.100.1',
     status: 'ONLINE',
@@ -49,11 +49,11 @@ export const INITIAL_DEVICES: Device[] = [
   },
   {
     id: 'router-1',
-    name: 'OpenWRT Home Router',
+    name: 'Home Gateway',
     ipAddress: '192.168.7.1',
     webGuiUrl: 'http://192.168.7.1',
     status: 'ONLINE',
-    manufacturer: 'Sercomm/Custom',
+    manufacturer: 'Sercomm',
     model: 'JIDU6401',
     firmware: 'OpenWrt 23.05.x',
     mac: '9C:D4:A6:E8:65:FA',
@@ -78,11 +78,11 @@ export const INITIAL_DEVICES: Device[] = [
   },
   {
     id: 'extender-1',
-    name: 'OpenWRT Extender',
+    name: 'Roaming AP',
     ipAddress: '192.168.7.2',
     webGuiUrl: 'http://192.168.7.2',
     status: 'ONLINE',
-    manufacturer: 'Sercomm/Custom',
+    manufacturer: 'Sercomm',
     model: 'JIDU6401',
     firmware: 'OpenWrt (AP Mode)',
     mac: '9C:D4:A6:07:CF:8C',
