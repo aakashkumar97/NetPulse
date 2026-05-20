@@ -35,9 +35,9 @@ export default function Home() {
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000); 
+        // Increased timeout to 5 seconds to handle slow WebGUIs
+        const timeoutId = setTimeout(() => controller.abort(), 5000); 
 
-        // Actual accessibility check using fetch
         await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -47,7 +47,6 @@ export default function Home() {
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
       } catch (error) {
-        // If fetch fails (timeout, refused, etc.), it's likely offline or inaccessible
         return { ...device, status: 'OFFLINE' }; 
       }
     }
@@ -64,7 +63,7 @@ export default function Home() {
     }
 
     updateAllStatuses();
-    const interval = setInterval(updateAllStatuses, 15000); // Check every 15 seconds
+    const interval = setInterval(updateAllStatuses, 15000);
     return () => clearInterval(interval);
   }, [devices]);
 
