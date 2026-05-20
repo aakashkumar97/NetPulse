@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -14,23 +13,10 @@ export default function Home() {
   const [ipData, setIpData] = useState({ ip: 'DETECTING...', isp: 'FETCHING...' });
   const [latency, setLatency] = useState<number | null>(null);
 
-  // Fetch Public IP and ISP with multiple fallbacks
+  // Fetch Public IP and ISP with multiple fallbacks and robust error handling
   useEffect(() => {
     async function fetchNetworkInfo() {
-      // Priority 1: ipwho.is (Reliable, good CORS support)
-      try {
-        const response = await fetch('https://ipwho.is/', { cache: 'no-cache' });
-        const data = await response.json();
-        if (data && data.success) {
-          setIpData({
-            ip: data.ip || 'UNKNOWN',
-            isp: data.connection?.isp || data.connection?.org || 'UNKNOWN ISP'
-          });
-          return;
-        }
-      } catch (e) {}
-
-      // Priority 2: freeipapi.com (Great CORS support)
+      // Priority 1: freeipapi.com (Excellent CORS support and data)
       try {
         const response = await fetch('https://freeipapi.com/api/json', { cache: 'no-cache' });
         const data = await response.json();
@@ -38,6 +24,19 @@ export default function Home() {
           setIpData({
             ip: data.ipAddress,
             isp: data.asName || 'ISP DETECTED'
+          });
+          return;
+        }
+      } catch (e) {}
+
+      // Priority 2: ipwho.is
+      try {
+        const response = await fetch('https://ipwho.is/', { cache: 'no-cache' });
+        const data = await response.json();
+        if (data && data.success) {
+          setIpData({
+            ip: data.ip || 'UNKNOWN',
+            isp: data.connection?.isp || data.connection?.org || 'UNKNOWN ISP'
           });
           return;
         }
@@ -56,8 +55,8 @@ export default function Home() {
         }
       } catch (e) {}
 
-      // Final fallback if all APIs fail
-      setIpData({ ip: 'EXTERNAL_NODE', isp: 'NETWORK_PROTECTED' });
+      // Final fallback if all APIs fail (likely due to adblock or firewall)
+      setIpData({ ip: 'NETWORK_NODE', isp: 'PROTECTED_ACCESS' });
     }
     
     fetchNetworkInfo();
@@ -68,6 +67,7 @@ export default function Home() {
     async function checkLatency() {
       const start = performance.now();
       try {
+        // Use a high-availability image to minimize request overhead
         await fetch('https://8.8.8.8/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -76,6 +76,7 @@ export default function Home() {
         const end = performance.now();
         setLatency(Math.round(end - start));
       } catch (error) {
+        // Backup latency check
         try {
           const start2 = performance.now();
           await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-cache' });
@@ -132,13 +133,13 @@ export default function Home() {
               label: 'PUBLIC IP', 
               value: ipData.ip, 
               icon: <Network className="text-primary" />, 
-              sub: 'Dynamic detection' 
+              sub: 'Detected Node' 
             },
             { 
               label: 'ISP PROVIDER', 
               value: ipData.isp, 
               icon: <Building2 className="text-primary" />, 
-              sub: 'Primary Gateway' 
+              sub: 'Active Gateway' 
             }
           ].map((stat, idx) => (
             <div key={idx} className="glass-card p-6 flex items-center justify-between group cursor-default">
