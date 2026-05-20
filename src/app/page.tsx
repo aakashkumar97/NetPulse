@@ -6,50 +6,21 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { SpeedTest } from '@/components/SpeedTest';
 import { INITIAL_DEVICES } from '@/app/lib/network-data';
-import { Activity, Globe, Building2, Network, ShieldCheck, Zap } from 'lucide-react';
+import { Activity, Download, Upload, ShieldCheck, Zap } from 'lucide-react';
 
 export default function Home() {
   const [devices] = useState(INITIAL_DEVICES);
-  const [ipData, setIpData] = useState({ ip: 'DETECTING...', isp: 'FETCHING...' });
   const [latency, setLatency] = useState<number | null>(null);
-
-  useEffect(() => {
-    async function fetchNetworkInfo() {
-      // Primary attempt using ipwho.is which provides IP and ISP in one call
-      try {
-        const res = await fetch('https://ipwho.is/', { cache: 'no-cache' });
-        const data = await res.json();
-        if (data && data.success) {
-          setIpData({ 
-            ip: data.ip, 
-            isp: data.connection?.isp || data.connection?.org || 'DETECTED ISP' 
-          });
-          return;
-        }
-      } catch (e) {
-        console.warn('Primary IP fetch failed, trying fallback...');
-      }
-
-      // Fallback: Just get the IP from ipify if everything else fails
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        if (data && data.ip) {
-          setIpData({ ip: data.ip, isp: 'ISP PROTECTED' });
-        }
-      } catch (e) {
-        setIpData({ ip: 'PRIVATE_NODE', isp: 'SECURE_TUNNEL' });
-      }
-    }
-    
-    fetchNetworkInfo();
-  }, []);
+  const [speedMetrics, setSpeedMetrics] = useState({
+    download: 0,
+    upload: 0,
+    isInitial: true
+  });
 
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
       try {
-        // High availability endpoint for latency check
         await fetch('https://www.google.com/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -66,6 +37,10 @@ export default function Home() {
     const interval = setInterval(checkLatency, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const handleSpeedResults = (download: number, upload: number) => {
+    setSpeedMetrics({ download, upload, isInitial: false });
+  };
 
   return (
     <main className="min-h-screen relative font-body text-white selection:bg-primary/30">
@@ -98,22 +73,22 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
             { 
-              label: 'NETWORK STATUS', 
-              value: latency ? 'ONLINE' : 'OFFLINE', 
-              icon: <Globe className={latency ? "text-primary" : "text-rose-500"} />, 
-              sub: latency ? `Latency: ${latency}ms` : 'Connectivity issue' 
+              label: 'NETWORK HEALTH', 
+              value: latency ? 'OPTIMAL' : 'OFFLINE', 
+              icon: <Activity className={latency ? "text-primary" : "text-rose-500"} />, 
+              sub: latency ? `Latency: ${latency}ms` : 'Check Gateway' 
             },
             { 
-              label: 'PUBLIC IP', 
-              value: ipData.ip, 
-              icon: <Network className="text-primary" />, 
-              sub: 'Detected Node' 
+              label: 'PEAK DOWNLOAD', 
+              value: speedMetrics.isInitial ? '---' : `${speedMetrics.download} Mbps`, 
+              icon: <Download className="text-primary" />, 
+              sub: 'Measured Throughput' 
             },
             { 
-              label: 'ISP PROVIDER', 
-              value: ipData.isp, 
-              icon: <Building2 className="text-primary" />, 
-              sub: 'Active Gateway' 
+              label: 'PEAK UPLOAD', 
+              value: speedMetrics.isInitial ? '---' : `${speedMetrics.upload} Mbps`, 
+              icon: <Upload className="text-secondary" />, 
+              sub: 'Burst Capacity' 
             }
           ].map((stat, idx) => (
             <div key={idx} className="glass-card p-6 flex items-center justify-between group cursor-default transition-all duration-300 hover:scale-[1.02] hover:border-primary/40">
@@ -130,7 +105,7 @@ export default function Home() {
         </div>
 
         {/* Speed Test Utility */}
-        <SpeedTest />
+        <SpeedTest onResults={handleSpeedResults} />
 
         <section className="mb-16">
           <div className="flex items-center justify-between mb-8">

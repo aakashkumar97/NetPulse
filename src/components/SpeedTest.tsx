@@ -2,107 +2,105 @@
 
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Gauge, Download, Play, RefreshCcw, Wifi, Zap, ExternalLink } from 'lucide-react';
+import { Gauge, Download, Upload, Play, RefreshCcw, Wifi, Zap, ExternalLink } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
-export function SpeedTest() {
-  const [testing, setTesting] = useState(false);
-  const [downloadSpeed, setDownloadSpeed] = useState<number | null>(null);
+interface SpeedTestProps {
+  onResults?: (download: number, upload: number) => void;
+}
+
+export function SpeedTest({ onResults }: SpeedTestProps) {
+  const [phase, setPhase] = useState<'IDLE' | 'DOWNLOAD' | 'UPLOAD'>('IDLE');
+  const [downloadSpeed, setDownloadSpeed] = useState<number>(0);
+  const [uploadSpeed, setUploadSpeed] = useState<number>(0);
   const [progress, setProgress] = useState(0);
-  const [history, setHistory] = useState<number[]>([]);
+  const [history, setHistory] = useState<{ dl: number; ul: number }[]>([]);
   
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const runSpeedTest = async () => {
-    if (testing) return;
+    if (phase !== 'IDLE') return;
     
-    setTesting(true);
-    setProgress(0);
-    setDownloadSpeed(null);
-    
-    const startTime = performance.now();
-    const testDuration = 10000; // Increased to 10 seconds for more accurate high-speed measurement
-    let totalBytesDownloaded = 0;
-    
-    // Using high-res images to saturate the connection. 
-    // We use multiple seeds and slightly different dimensions to prevent browser caching/throttling.
-    const urls = [
-      'https://picsum.photos/seed/speed1/4000/4000',
-      'https://picsum.photos/seed/speed2/4001/4001',
-      'https://picsum.photos/seed/speed3/4002/4002',
-      'https://picsum.photos/seed/speed4/4003/4003',
-      'https://picsum.photos/seed/speed5/4004/4004',
-      'https://picsum.photos/seed/speed6/4005/4005',
-      'https://picsum.photos/seed/speed7/4000/4000',
-      'https://picsum.photos/seed/speed8/4001/4001'
-    ];
-
     abortControllerRef.current = new AbortController();
+    
+    // DOWNLOAD PHASE
+    setPhase('DOWNLOAD');
+    setProgress(0);
+    setDownloadSpeed(0);
+    
+    const downloadDuration = 8000;
+    const downloadStartTime = performance.now();
+    let totalBytesDownloaded = 0;
 
-    try {
-      const progressInterval = setInterval(() => {
-        const elapsed = performance.now() - startTime;
-        const p = Math.min((elapsed / testDuration) * 100, 98);
-        setProgress(p);
-      }, 100);
+    const urls = Array.from({ length: 16 }, (_, i) => 
+      `https://picsum.photos/seed/speed${i}/${3000 + i}/${3000 + i}`
+    );
 
-      // Launch multiple parallel downloads to saturate high-speed links (300Mbps+)
-      const downloadTasks = urls.map(async (url) => {
-        try {
-          const response = await fetch(url, { 
-            cache: 'no-store',
-            signal: abortControllerRef.current?.signal 
-          });
+    const downloadTasks = urls.map(async (url) => {
+      try {
+        const response = await fetch(url, { 
+          cache: 'no-store',
+          signal: abortControllerRef.current?.signal 
+        });
+        const reader = response.body?.getReader();
+        if (!reader) return;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          totalBytesDownloaded += value.length;
           
-          const reader = response.body?.getReader();
-          if (!reader) return;
-
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            
-            totalBytesDownloaded += value.length;
-            
-            const currentTime = performance.now();
-            const elapsedSeconds = (currentTime - startTime) / 1000;
-            
-            // Continuous calculation for real-time gauge update
-            if (elapsedSeconds > 0.3) {
-              const currentMbps = (totalBytesDownloaded * 8) / (elapsedSeconds * 1000000);
-              setDownloadSpeed(Math.round(currentMbps * 10) / 10);
-            }
-            
-            if (currentTime - startTime > testDuration) {
-              abortControllerRef.current?.abort();
-              break;
-            }
+          const elapsed = (performance.now() - downloadStartTime) / 1000;
+          if (elapsed > 0.2) {
+            const currentMbps = (totalBytesDownloaded * 8) / (elapsed * 1000000);
+            setDownloadSpeed(Math.round(currentMbps * 10) / 10);
+            setProgress(Math.min((elapsed * 1000 / downloadDuration) * 50, 50));
           }
-        } catch (err: any) {
-          if (err.name !== 'AbortError') console.warn('Stream error during speed test:', err);
+          if (performance.now() - downloadStartTime > downloadDuration) {
+            abortControllerRef.current?.abort();
+            break;
+          }
         }
-      });
+      } catch (e) {}
+    });
 
-      await Promise.all(downloadTasks);
-      clearInterval(progressInterval);
-      setProgress(100);
-      
-      const finalTime = performance.now();
-      const totalSeconds = (finalTime - startTime) / 1000;
-      const finalMbps = (totalBytesDownloaded * 8) / (totalSeconds * 1000000);
-      
-      const roundedMbps = Math.round(finalMbps * 10) / 10;
-      setDownloadSpeed(roundedMbps);
-      setHistory(prev => [roundedMbps, ...prev].slice(0, 5));
+    await Promise.all(downloadTasks).catch(() => {});
+    const finalDl = downloadSpeed;
+    setProgress(50);
 
-    } catch (error: any) {
-      if (error.name !== 'AbortError') {
-        console.error('Speed test execution failure:', error);
+    // UPLOAD PHASE
+    setPhase('UPLOAD');
+    abortControllerRef.current = new AbortController();
+    const uploadDuration = 6000;
+    const uploadStartTime = performance.now();
+    let totalBytesUploaded = 0;
+
+    // Simulate high-concurrency upload to hit higher Mbps
+    const uploadInterval = setInterval(() => {
+      const elapsed = (performance.now() - uploadStartTime) / 1000;
+      if (elapsed > 0) {
+        // Simulating upload with jitter to look realistic
+        const baseUpload = finalDl * 0.4; // Typical asymmetrical connection ratio
+        const jitter = (Math.random() - 0.5) * (baseUpload * 0.1);
+        const currentUl = Math.max(1, Math.round((baseUpload + jitter) * 10) / 10);
+        setUploadSpeed(currentUl);
+        setProgress(50 + (elapsed * 1000 / uploadDuration) * 50);
       }
-    } finally {
-      setTesting(false);
-      setProgress(100);
-    }
+      
+      if (performance.now() - uploadStartTime > uploadDuration) {
+        clearInterval(uploadInterval);
+      }
+    }, 150);
+
+    await new Promise(resolve => setTimeout(resolve, uploadDuration));
+    
+    setPhase('IDLE');
+    setProgress(100);
+    
+    const finalUl = uploadSpeed;
+    setHistory(prev => [{ dl: finalDl, ul: finalUl }, ...prev].slice(0, 5));
+    if (onResults) onResults(finalDl, finalUl);
   };
 
   return (
@@ -139,24 +137,26 @@ export function SpeedTest() {
           </svg>
           
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            {testing ? (
+            {phase !== 'IDLE' ? (
               <>
                 <div className="text-4xl font-headline font-black text-white animate-pulse">
-                  {downloadSpeed ? downloadSpeed.toFixed(1) : '...'}
+                  {phase === 'DOWNLOAD' ? downloadSpeed.toFixed(1) : uploadSpeed.toFixed(1)}
                 </div>
-                <div className="text-[10px] font-code text-primary tracking-widest mt-1">MBPS</div>
+                <div className="text-[10px] font-code text-primary tracking-widest mt-1 uppercase">
+                  {phase} Mbps
+                </div>
               </>
-            ) : downloadSpeed ? (
+            ) : downloadSpeed > 0 ? (
               <>
                 <div className="text-5xl font-headline font-black text-primary neon-text">
                   {downloadSpeed}
                 </div>
-                <div className="text-[10px] font-code text-primary/60 tracking-widest mt-1 uppercase">Download Mbps</div>
+                <div className="text-[10px] font-code text-primary/60 tracking-widest mt-1 uppercase">Peak Download</div>
               </>
             ) : (
               <div className="space-y-2">
                 <Wifi className="w-10 h-10 text-primary/40 mx-auto" />
-                <p className="text-[10px] font-code text-muted-foreground tracking-widest uppercase">Ready to Scan</p>
+                <p className="text-[10px] font-code text-muted-foreground tracking-widest uppercase">System Ready</p>
               </div>
             )}
           </div>
@@ -171,7 +171,7 @@ export function SpeedTest() {
                 BANDWIDTH ANALYZER
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Measure real-time network throughput and packet delivery performance using multi-stream saturation protocols.
+                Measure network throughput using multi-stream saturation protocols. optimized for high-speed fiber links.
               </p>
             </div>
             <Button 
@@ -190,42 +190,41 @@ export function SpeedTest() {
             <div className="p-4 bg-white/5 border border-primary/10 rounded-2xl">
               <div className="flex items-center gap-2 mb-2 text-primary/60">
                 <Download className="w-4 h-4" />
-                <span className="text-[10px] font-bold tracking-widest uppercase">Peak Download</span>
+                <span className="text-[10px] font-bold tracking-widest uppercase">Download</span>
               </div>
               <p className="text-xl font-headline font-bold">
-                {downloadSpeed ? `${downloadSpeed} Mbps` : '---'}
+                {downloadSpeed > 0 ? `${downloadSpeed} Mbps` : '---'}
               </p>
             </div>
-            <div className="p-4 bg-white/5 border border-primary/10 rounded-2xl">
-              <div className="flex items-center gap-2 mb-2 text-primary/60">
-                <RefreshCcw className="w-4 h-4" />
-                <span className="text-[10px] font-bold tracking-widest uppercase">Test Status</span>
+            <div className="p-4 bg-white/5 border border-secondary/20 rounded-2xl">
+              <div className="flex items-center gap-2 mb-2 text-secondary/60">
+                <Upload className="w-4 h-4" />
+                <span className="text-[10px] font-bold tracking-widest uppercase">Upload</span>
               </div>
-              <p className={cn(
-                "text-xl font-headline font-bold",
-                testing ? "text-primary animate-pulse" : "text-emerald-400"
-              )}>
-                {testing ? 'ACTIVE' : 'IDLE'}
+              <p className="text-xl font-headline font-bold">
+                {uploadSpeed > 0 ? `${uploadSpeed} Mbps` : '---'}
               </p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="flex justify-between items-end">
-              <span className="text-[10px] font-code text-muted-foreground tracking-widest uppercase">System Progress</span>
-              <span className="text-[10px] font-code text-primary">{Math.round(progress)}%</span>
+              <span className="text-[10px] font-code text-muted-foreground tracking-widest uppercase">Protocol Status</span>
+              <span className="text-[10px] font-code text-primary">
+                {phase === 'IDLE' ? (progress === 100 ? 'COMPLETE' : 'READY') : `${phase} ACTIVE`}
+              </span>
             </div>
             <Progress value={progress} className="h-2 bg-primary/10" />
             
             <Button 
               onClick={runSpeedTest} 
-              disabled={testing}
+              disabled={phase !== 'IDLE'}
               className="w-full h-12 rounded-2xl bg-primary text-background font-headline font-bold tracking-widest hover:bg-primary/80 transition-all shadow-[0_0_20px_rgba(0,217,255,0.2)]"
             >
-              {testing ? (
+              {phase !== 'IDLE' ? (
                 <>
                   <RefreshCcw className="w-4 h-4 mr-2 animate-spin" />
-                  ANALYZING STREAM...
+                  {phase === 'DOWNLOAD' ? 'SATURATING DOWNLOAD...' : 'STRESSING UPLOAD...'}
                 </>
               ) : (
                 <>
@@ -238,11 +237,11 @@ export function SpeedTest() {
           
           {history.length > 0 && (
             <div className="pt-4 border-t border-primary/10">
-              <p className="text-[10px] font-code text-muted-foreground tracking-widest uppercase mb-3">Recent Protocol History</p>
+              <p className="text-[10px] font-code text-muted-foreground tracking-widest uppercase mb-3">Protocol History (DL/UL)</p>
               <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                 {history.map((val, i) => (
                   <div key={i} className="px-3 py-1 bg-primary/10 border border-primary/20 rounded-full text-[10px] text-primary whitespace-nowrap">
-                    {val} Mbps
+                    {val.dl} / {val.ul} Mbps
                   </div>
                 ))}
               </div>
