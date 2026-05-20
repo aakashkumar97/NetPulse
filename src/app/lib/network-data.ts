@@ -36,7 +36,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'Stock (ISP Managed)',
     mac: '24:0B:88:44:5B:90',
     type: 'gpon',
-    description: 'Main ISP Entry Node • Guest Network & Shop Access',
+    description: 'Main ISP Entry Node',
     username: 'AdminGPON',
     adminPassword: 'ALC#FGU',
     wireless24: {
@@ -58,7 +58,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt 23.05.x',
     mac: '9C:D4:A6:E8:65:FA',
     type: 'router',
-    description: 'Home Core Gateway • Connected to ONU LAN 1',
+    description: 'Home Core Gateway',
     username: 'root',
     adminPassword: 'Admin@123',
     wireless24: {
@@ -87,7 +87,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt (AP Mode)',
     mac: '9C:D4:A6:07:CF:8C',
     type: 'extender',
-    description: 'Roaming AP • LAN-to-LAN via Main Router',
+    description: 'Roaming AP',
     username: 'root',
     adminPassword: 'Admin@123',
     wireless24: {
