@@ -14,13 +14,14 @@ export default function Home() {
   const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
   const [lastVerified, setLastVerified] = useState<string>('');
 
-  // Internet Status Check (Direct IP Hit to Google DNS)
+  // Direct IP/URL Accessibility Check for Internet
   useEffect(() => {
     async function checkInternet() {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
         
+        // Using a reliable public asset to check global connectivity
         await fetch('https://8.8.8.8/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -39,15 +40,16 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Individual IP Accessibility Check (Direct Hit to Device WebGUI)
+  // Direct IP Hit Logic for Internal Devices (No "Scan", just specific IP access check)
   useEffect(() => {
     async function checkDeviceAccessibility(device: Device): Promise<Device> {
       const url = `http://${device.ipAddress}`;
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout for stability
+        const timeoutId = setTimeout(() => controller.abort(), 5000); 
 
+        // Attempt direct access to the device's Web GUI IP
         await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
