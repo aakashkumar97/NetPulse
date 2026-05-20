@@ -113,7 +113,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Shield className="w-2.5 h-2.5 text-primary/30" />
               Manufacturer
             </div>
-            <p className="text-xs text-slate-300 font-bold pl-4">{device.manufacturer}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4">{device.manufacturer}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -121,7 +121,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Cpu className="w-2.5 h-2.5 text-primary/30" />
               Hardware Model
             </div>
-            <p className="text-xs text-slate-300 font-bold pl-4">{device.model}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4">{device.model}</p>
           </div>
 
           <div className="space-y-0.5">
