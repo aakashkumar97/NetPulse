@@ -5,23 +5,23 @@
 @layer base {
   :root {
     --background: 222 47% 3%;
-    --foreground: 210 20% 90%;
+    --foreground: 210 20% 85%;
     --card: 222 47% 5%;
-    --card-foreground: 210 20% 90%;
+    --card-foreground: 210 20% 85%;
     --popover: 222 47% 3%;
-    --popover-foreground: 210 20% 90%;
+    --popover-foreground: 210 20% 85%;
     --primary: 263 90% 65%;
     --primary-foreground: 222 47% 3%;
     --secondary: 217 91% 60%;
-    --secondary-foreground: 210 20% 90%;
+    --secondary-foreground: 210 20% 85%;
     --muted: 215 25% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted-foreground: 215 20% 60%;
     --accent: 190 90% 50%;
     --accent-foreground: 222 47% 3%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 263 90% 65% / 0.15;
-    --input: 263 90% 65% / 0.1;
+    --border: 263 90% 65% / 0.12;
+    --input: 263 90% 65% / 0.08;
     --ring: 263 90% 65%;
     --radius: 1.5rem;
   }
@@ -39,21 +39,21 @@
 
 .grid-background {
   background-image: 
-    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(139, 92, 246, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.02) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
 .glass-card {
-  @apply bg-card/65 border border-primary/20 backdrop-blur-2xl relative overflow-hidden rounded-[2.5rem];
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  @apply bg-card/60 border border-primary/15 backdrop-blur-xl relative overflow-hidden rounded-[2.5rem];
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
 }
 
 .glass-card::before {
   content: "";
   @apply absolute inset-0 pointer-events-none rounded-[inherit];
   padding: 1px;
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.2));
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.1));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
@@ -61,14 +61,14 @@
 }
 
 .neon-text {
-  text-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+  text-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
 }
 
 .scanline {
   @apply absolute inset-0 pointer-events-none z-[1];
   background: linear-gradient(
     transparent 0%,
-    rgba(255, 255, 255, 0.01) 50%,
+    rgba(255, 255, 255, 0.005) 50%,
     transparent 100%
   );
 }
@@ -80,5 +80,5 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
+  @apply bg-primary/10 rounded-full hover:bg-primary/30 transition-colors;
 }
