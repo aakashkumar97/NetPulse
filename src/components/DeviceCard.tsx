@@ -29,7 +29,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
       <button 
         onClick={() => setShowInfo(!showInfo)}
         className="absolute top-6 right-6 p-2 rounded-2xl bg-white/5 border border-primary/10 hover:bg-primary/20 transition-colors z-20"
-        title="Protocol Details"
+        title="Device Information"
       >
         <Info className="w-5 h-5 text-primary" />
       </button>
@@ -112,7 +112,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Terminal className="w-3 h-3 text-primary/40" />
               Firmware Version
             </div>
-            <p className="text-sm text-white font-medium pl-5 truncate" title={device.firmware}>{device.firmware}</p>
+            <p className="text-sm text-white font-medium pl-5 break-all" title={device.firmware}>{device.firmware}</p>
           </div>
 
           {/* Wireless Section */}
