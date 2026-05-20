@@ -5,7 +5,7 @@ import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
-import { SpeedTest } from '@/components/SpeedTest';
+import { NetworkTools } from '@/components/NetworkTools';
 import { Globe, ShieldCheck, Zap, Cpu, RefreshCw } from 'lucide-react';
 
 export default function Home() {
@@ -14,7 +14,6 @@ export default function Home() {
   const [lastScan, setLastScan] = useState<string>('');
   const [systemLoad, setSystemLoad] = useState<number>(0);
 
-  // Internet Latency Check
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
@@ -24,14 +23,13 @@ export default function Home() {
       } catch {
         setLatency(null);
       }
-      setSystemLoad(Math.floor(Math.random() * 5) + 1); // Simulate 1-5% system load
+      setSystemLoad(Math.floor(Math.random() * 5) + 1);
     }
     checkLatency();
     const interval = setInterval(checkLatency, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  // Dynamic Device Reachability Check
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       const url = device.webGuiUrl || `http://${device.ipAddress}`;
@@ -75,7 +73,7 @@ export default function Home() {
   }, [devices]);
 
   const onlineNodes = devices.filter(d => d.status === 'ONLINE').length;
-  const networkHealth = Math.round((onlineNodes / devices.length) * 100);
+  const networkHealth = onlineNodes === 0 ? 0 : Math.round((onlineNodes / devices.length) * 100);
   const isGPONOnline = devices.find(d => d.type === 'gpon')?.status === 'ONLINE';
 
   return (
@@ -114,7 +112,7 @@ export default function Home() {
           <Clock />
         </header>
 
-        <section className="mb-16">
+        <section className="mb-20">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
               <span className="w-2 h-10 bg-primary rounded-full shadow-[0_0_20px_#8B5CF6]" />
@@ -128,14 +126,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mb-16">
+        <section className="mb-20">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
-              <span className="w-2 h-10 bg-secondary rounded-full shadow-[0_0_20px_#3B82F6]" />
-              Performance Analyzer
+              <span className="w-2 h-10 bg-accent rounded-full shadow-[0_0_20px_#00D9FF]" />
+              Diagnostic Utilities
             </h2>
           </div>
-          <SpeedTest />
+          <NetworkTools />
         </section>
 
         <footer className="mt-20 py-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6 text-muted-foreground">
