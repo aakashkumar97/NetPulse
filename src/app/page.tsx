@@ -88,7 +88,10 @@ export default function Home() {
               NETPULSE <span className="text-primary neon-text">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary">
+              <span className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
+                isGPONOnline ? "bg-primary/10 border-primary/20 text-primary" : "bg-rose-500/10 border-rose-500/20 text-rose-400"
+              )}>
                 <Globe className="w-3 h-3" />
                 ISP GATEWAY: {isGPONOnline ? 'UP' : 'DOWN'}
               </span>
@@ -101,7 +104,7 @@ export default function Home() {
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
-                HEALTH: {networkHealth}%
+                NODE HEALTH: {networkHealth}%
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary">
                 <Zap className="w-3 h-3" />
