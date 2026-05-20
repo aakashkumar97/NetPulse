@@ -201,7 +201,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
           onClick={() => setShowQR(false)}
           className="mt-4 bg-primary/5 border border-primary/20 text-slate-300 hover:bg-primary hover:text-background rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-500 shrink-0"
         >
-          CLOSE QR
+          HIDE QR
         </Button>
       </div>
     </div>
