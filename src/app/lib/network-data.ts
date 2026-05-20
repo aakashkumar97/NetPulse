@@ -87,7 +87,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
     mac: '9C:D4:A6:07:CF:8C',
     type: 'extender',
-    description: 'Roaming AP',
+    description: 'Wi-Fi extender to expand coverage and improve signal strength',
     username: 'root',
     adminPassword: 'Admin@123',
     wireless24: {
