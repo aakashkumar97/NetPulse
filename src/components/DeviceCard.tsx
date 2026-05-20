@@ -74,28 +74,26 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
       {/* Button Container */}
       <div className="mt-auto w-full space-y-2">
-        <Button 
+        <button 
           onClick={() => {
             setShowQR(true);
             setShowInfo(false);
           }}
-          variant="outline" 
-          className="w-full font-headline font-medium tracking-widest bg-white/5 border-white/10 hover:bg-white/5 hover:text-slate-300 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.2)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-white/5 border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.2)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
         >
           <QrCode className="mr-2 h-3.5 w-3.5 text-primary" />
           SHOW WIFI QR
-        </Button>
+        </button>
 
-        <Button 
-          asChild 
-          variant="outline" 
-          className="w-full font-headline font-medium tracking-widest bg-primary/5 border-primary/20 hover:bg-primary/5 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+        <a 
+          href={device.webGuiUrl} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-primary/5 border border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
         >
-          <a href={device.webGuiUrl} target="_blank" rel="noopener noreferrer">
-            <Terminal className="mr-2 h-3.5 w-3.5" />
-            LAUNCH ADMIN
-          </a>
-        </Button>
+          <Terminal className="mr-2 h-3.5 w-3.5" />
+          LAUNCH ADMIN
+        </a>
       </div>
 
       {/* Info Panel Overlay */}
@@ -161,15 +159,15 @@ export function DeviceCard({ device }: DeviceCardProps) {
           </div>
         </div>
 
-        <Button 
+        <button 
           onClick={() => {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 bg-primary/5 border border-primary/20 text-slate-300 hover:bg-primary/5 hover:!text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           BACK
-        </Button>
+        </button>
       </div>
 
       {/* QR Panel Overlay */}
@@ -197,12 +195,12 @@ export function DeviceCard({ device }: DeviceCardProps) {
           </div>
         </div>
 
-        <Button 
+        <button 
           onClick={() => setShowQR(false)}
-          className="mt-4 bg-primary/5 border border-primary/20 text-slate-300 hover:bg-primary/5 hover:!text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           HIDE QR
-        </Button>
+        </button>
       </div>
     </div>
   );

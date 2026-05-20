@@ -88,7 +88,7 @@ export default function Home() {
       <div className="container mx-auto px-6 py-12 relative z-10 max-w-7xl">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-6xl font-headline font-black tracking-tighter text-slate-200">
+            <h1 className="text-5xl md:text-6xl font-headline font-bold tracking-tighter text-slate-200">
               NETPULSE <span className="text-primary neon-text">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
@@ -124,16 +124,6 @@ export default function Home() {
               <DeviceCard key={device.id} device={device} />
             ))}
           </div>
-        </section>
-
-        <section className="mb-20">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
-              <span className="w-2 h-10 bg-accent/80 rounded-full shadow-[0_0_15px_#00D9FF66]" />
-              Useful Utilities
-            </h2>
-          </div>
-          <NetworkTools />
         </section>
 
         <footer className="mt-20 py-8 border-t border-primary/5 flex flex-col md:flex-row justify-between items-center gap-6 text-muted-foreground">
