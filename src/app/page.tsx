@@ -15,11 +15,12 @@ export default function Home() {
   const [lastScan, setLastScan] = useState<string>('');
   const [publicData, setPublicData] = useState<{ ip: string; org: string } | null>(null);
 
-  // Fetch Public IP and ISP info
+  // Fetch Public IP and ISP info with robust error handling
   useEffect(() => {
     async function fetchPublicData() {
       try {
-        const res = await fetch('https://ipapi.co/json/');
+        const res = await fetch('https://ipapi.co/json/', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('Network response was not ok');
         const data = await res.json();
         if (data && data.ip) {
           setPublicData({
@@ -28,8 +29,11 @@ export default function Home() {
           });
         }
       } catch (error) {
-        console.error("Public data fetch failed", error);
-        // Fallback or retry logic could go here
+        // Silent failure - common due to adblockers or rate limits
+        setPublicData({
+          ip: 'PROTECTED',
+          org: 'N/A'
+        });
       }
     }
     fetchPublicData();
@@ -52,14 +56,14 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Device status polling (Simulation for demo, in real life it would hit actual IPs)
+  // Device status polling
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       const url = device.webGuiUrl || `http://${device.ipAddress}`;
       
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 4000); 
+        const timeoutId = setTimeout(() => controller.abort(), 3000); 
 
         await fetch(url, { 
           mode: 'no-cors', 
@@ -70,13 +74,13 @@ export default function Home() {
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
       } catch (error: any) {
-        // Fallback for browsers: try to load an image from the local network device
+        // Fallback: try to load an image from the local network device
         return new Promise((resolve) => {
           const img = new Image();
           const timer = setTimeout(() => {
             img.src = "";
             resolve({ ...device, status: 'OFFLINE' });
-          }, 2000);
+          }, 1500);
 
           img.onload = () => { clearTimeout(timer); resolve({ ...device, status: 'ONLINE' }); };
           img.onerror = () => { clearTimeout(timer); resolve({ ...device, status: 'ONLINE' }); };
@@ -88,11 +92,16 @@ export default function Home() {
     async function updateAllStatuses() {
       const updatedDevices = await Promise.all(devices.map(d => checkDeviceStatus(d)));
       setDevices(updatedDevices);
-      setLastScan(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }));
+      setLastScan(new Date().toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit', 
+        hour12: true 
+      }));
     }
 
     updateAllStatuses();
-    const interval = setInterval(updateAllStatuses, 10000);
+    const interval = setInterval(updateAllStatuses, 15000);
     return () => clearInterval(interval);
   }, [devices]);
 
