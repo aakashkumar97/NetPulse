@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
@@ -10,6 +10,45 @@ import { Shield, Activity, Globe, Wifi, Settings, ShieldCheck, Zap, Building2, N
 
 export default function Home() {
   const [devices] = useState(INITIAL_DEVICES);
+  const [ipData, setIpData] = useState({ ip: 'DETECTING...', isp: 'FETCHING...' });
+  const [latency, setLatency] = useState<number | null>(null);
+
+  // Fetch Public IP and ISP
+  useEffect(() => {
+    async function fetchNetworkInfo() {
+      try {
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        setIpData({
+          ip: data.ip || 'UNKNOWN',
+          isp: data.org || 'UNKNOWN ISP'
+        });
+      } catch (error) {
+        console.error('Failed to fetch IP info:', error);
+        setIpData({ ip: 'ERROR', isp: 'OFFLINE' });
+      }
+    }
+    fetchNetworkInfo();
+  }, []);
+
+  // Simulate Ping for Latency (Round-trip time to a fast endpoint)
+  useEffect(() => {
+    async function checkLatency() {
+      const start = performance.now();
+      try {
+        // Fetching a tiny resource from a reliable CDN to simulate "Google latency"
+        await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-cache' });
+        const end = performance.now();
+        setLatency(Math.round(end - start));
+      } catch (error) {
+        setLatency(null);
+      }
+    }
+
+    checkLatency();
+    const interval = setInterval(checkLatency, 5000); // Update every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <main className="min-h-screen relative font-body text-white selection:bg-primary/30">
@@ -33,7 +72,7 @@ export default function Home() {
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary">
                 <Zap className="w-3 h-3" />
-                LATENCY: 12ms
+                LATENCY: {latency ? `${latency}ms` : '---'}
               </span>
             </div>
           </div>
@@ -43,14 +82,29 @@ export default function Home() {
         {/* Top Level Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {[
-            { label: 'NETWORK STATUS', value: 'ONLINE', icon: <Globe className="text-primary" />, sub: 'Uptime: 99.9%' },
-            { label: 'PUBLIC IP', value: '49.36.172.105', icon: <Network className="text-primary" />, sub: 'Static IPv4' },
-            { label: 'ISP PROVIDER', value: 'Jio Fiber', icon: <Building2 className="text-primary" />, sub: 'Akanksha Communication' }
+            { 
+              label: 'NETWORK STATUS', 
+              value: latency ? 'ONLINE' : 'OFFLINE', 
+              icon: <Globe className={latency ? "text-primary" : "text-rose-500"} />, 
+              sub: latency ? `Latency: ${latency}ms` : 'Connectivity issue' 
+            },
+            { 
+              label: 'PUBLIC IP', 
+              value: ipData.ip, 
+              icon: <Network className="text-primary" />, 
+              sub: 'Dynamic detection' 
+            },
+            { 
+              label: 'ISP PROVIDER', 
+              value: ipData.isp, 
+              icon: <Building2 className="text-primary" />, 
+              sub: 'Primary Gateway' 
+            }
           ].map((stat, idx) => (
             <div key={idx} className="glass-card p-6 flex items-center justify-between group cursor-default">
               <div className="space-y-1">
                 <p className="text-[10px] font-headline font-bold text-muted-foreground tracking-[0.2em] uppercase">{stat.label}</p>
-                <p className="text-3xl font-headline font-black tracking-tight">{stat.value}</p>
+                <p className="text-xl md:text-2xl font-headline font-black tracking-tight truncate max-w-[200px] md:max-w-none">{stat.value}</p>
                 <p className="text-[10px] font-code text-primary/60">{stat.sub}</p>
               </div>
               <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
