@@ -6,13 +6,12 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { Globe, ShieldCheck, Zap, RefreshCw, Users } from 'lucide-react';
+import { Globe, ShieldCheck, Zap, RefreshCw } from 'lucide-react';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
-  const [clientCount, setClientCount] = useState<number>(0);
 
   // Latency check
   useEffect(() => {
@@ -30,7 +29,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Device status polling & Client simulation
+  // Device status polling
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       const url = device.webGuiUrl || `http://${device.ipAddress}`;
@@ -66,19 +65,6 @@ export default function Home() {
       const updatedDevices = await Promise.all(devices.map(d => checkDeviceStatus(d)));
       setDevices(updatedDevices);
       setLastScan(new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }));
-      
-      // Stabilized client simulation
-      const isOnline = updatedDevices.some(d => d.status === 'ONLINE');
-      setClientCount(prev => {
-        if (!isOnline) return 0;
-        if (prev === 0) return 8; // Default baseline when network comes online
-        
-        // Only 10% chance to drift by +/- 1, otherwise stays same for stability
-        const drift = Math.random();
-        if (drift > 0.95) return Math.min(prev + 1, 15);
-        if (drift < 0.05) return Math.max(prev - 1, 4);
-        return prev;
-      });
     }
 
     updateAllStatuses();
@@ -108,10 +94,6 @@ export default function Home() {
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
                 HEALTH: {networkHealth}%
-              </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-accent/10 border border-accent/20 rounded-full text-accent">
-                <Users className="w-3 h-3" />
-                CLIENTS: {clientCount} ACTIVE
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary">
                 <Zap className="w-3 h-3" />
