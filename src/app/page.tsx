@@ -6,7 +6,7 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { Globe, ShieldCheck, Zap, RefreshCw, Wifi } from 'lucide-react';
+import { Globe, ShieldCheck, RefreshCw, Wifi } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
@@ -105,10 +105,6 @@ export default function Home() {
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
                 NODE HEALTH: {networkHealth}%
-              </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary/10 border border-secondary/20 rounded-full text-secondary">
-                <Zap className="w-3 h-3" />
-                PING: {latency ? `${latency}ms` : '---'}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/40">
                 <RefreshCw className="w-3 h-3" />
