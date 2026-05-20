@@ -191,7 +191,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
           </div>
           <div className="text-center space-y-1">
             <p className="text-xs font-headline text-white tracking-wide">{ssid}</p>
-            <p className="text-[10px] font-code text-primary font-bold tracking-widest uppercase">
+            <p className="text-[10px] font-code text-white font-bold tracking-widest">
               KEY: {wifiPass}
             </p>
           </div>
