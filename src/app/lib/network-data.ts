@@ -58,7 +58,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
     mac: '9C:D4:A6:E8:65:FA',
     type: 'router',
-    description: 'Home Gateway',
+    description: 'Primary router handling internet, DHCP, and main network traffic',
     username: 'root',
     adminPassword: 'Admin@123',
     wireless24: {
