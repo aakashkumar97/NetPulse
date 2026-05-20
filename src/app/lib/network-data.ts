@@ -36,7 +36,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: '3FE49362IJJK17(1.2203.417)',
     mac: '24:0B:88:44:5B:90',
     type: 'gpon',
-    description: 'ONT converts fiber optic signals into internet connectivity for Shop and Home Network',
+    description: 'Main ISP Entry Node Converting fiber optic signals into internet connectivity',
     username: 'AdminGPON',
     adminPassword: 'ALC#FGU',
     wireless24: {
