@@ -1,12 +1,11 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'NetVigil | Smart Home Network Management',
-  description: 'AI-powered home network diagnosis and management control panel.',
+  title: 'NetPulse Home | Private Network Control',
+  description: 'Manage and monitor your home network infrastructure with ease.',
 };
 
 export default function RootLayout({

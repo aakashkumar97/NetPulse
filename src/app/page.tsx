@@ -5,6 +5,7 @@ import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
+import { TroubleshootingTool } from '@/components/TroubleshootingTool';
 import { Activity, ShieldCheck, Zap, Globe, Cpu, RefreshCw } from 'lucide-react';
 
 export default function Home() {
@@ -85,7 +86,7 @@ export default function Home() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div className="space-y-6">
             <h1 className="text-5xl md:text-6xl font-headline font-black tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-              NETVIGIL <span className="text-primary neon-text">AI</span>
+              NETPULSE <span className="text-primary neon-text">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary">
@@ -127,9 +128,11 @@ export default function Home() {
           </div>
         </section>
 
+        <TroubleshootingTool devices={devices} />
+
         <footer className="mt-20 py-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6 text-muted-foreground">
           <p className="text-[10px] font-code tracking-[0.3em] uppercase">
-            &copy; 2024 NETVIGIL SYSTEMS • MULTI-GATEWAY INFRASTRUCTURE
+            &copy; 2024 NETPULSE SYSTEMS • PRIVATE HOME INFRASTRUCTURE
           </p>
         </footer>
       </div>
