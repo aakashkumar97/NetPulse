@@ -11,7 +11,7 @@ export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
 
-  // Internet Latency Check (Simple fetch to 8.8.8.8)
+  // Internet Latency Check
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
@@ -27,16 +27,18 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Dynamic Device Reachability Check (URL Hit Only)
+  // Dynamic Device Reachability Check
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
+      const url = device.webGuiUrl || `http://${device.ipAddress}`;
+      
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout for local hit
+        const timeoutId = setTimeout(() => controller.abort(), 4000); // 4 second timeout
 
-        // Just hitting the URL to see if it responds. No login required.
-        // mode: 'no-cors' allows hitting local IPs without CORS blocking the reachability check.
-        await fetch(device.webGuiUrl || `http://${device.ipAddress}`, { 
+        // We use mode: 'no-cors'. Even if the response is "opaque" or 404, 
+        // reaching the host means it is ONLINE.
+        await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
           signal: controller.signal 
@@ -44,8 +46,19 @@ export default function Home() {
         
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
-      } catch (error) {
-        return { ...device, status: 'OFFLINE' };
+      } catch (error: any) {
+        // If fetch fails, we try one more time with an Image probe (common local network trick)
+        return new Promise((resolve) => {
+          const img = new Image();
+          const timer = setTimeout(() => {
+            img.src = "";
+            resolve({ ...device, status: 'OFFLINE' });
+          }, 2000);
+
+          img.onload = () => { clearTimeout(timer); resolve({ ...device, status: 'ONLINE' }); };
+          img.onerror = () => { clearTimeout(timer); resolve({ ...device, status: 'ONLINE' }); }; // Any response means host is alive
+          img.src = `${url}/favicon.ico?t=${Date.now()}`;
+        });
       }
     }
 
@@ -57,7 +70,7 @@ export default function Home() {
     updateAllStatuses();
     const interval = setInterval(updateAllStatuses, 10000); // Poll every 10 seconds
     return () => clearInterval(interval);
-  }, []);
+  }, [devices]);
 
   return (
     <main className="min-h-screen relative font-body text-white selection:bg-primary/30">
@@ -87,7 +100,6 @@ export default function Home() {
           <Clock />
         </header>
 
-        {/* Device Infrastructure Grid */}
         <section className="mb-16">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
