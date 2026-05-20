@@ -6,13 +6,31 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { Globe, ShieldCheck, RefreshCw, Wifi } from 'lucide-react';
+import { Globe, ShieldCheck, RefreshCw, Wifi, MapPin, Building2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
+  const [publicData, setPublicData] = useState<{ ip: string; org: string } | null>(null);
+
+  // Fetch Public IP and ISP info
+  useEffect(() => {
+    async function fetchPublicData() {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        setPublicData({
+          ip: data.ip || '---.---.---.---',
+          org: data.org || 'Unknown ISP'
+        });
+      } catch (error) {
+        console.error("Public data fetch failed", error);
+      }
+    }
+    fetchPublicData();
+  }, []);
 
   // Latency check (Internet Status)
   useEffect(() => {
@@ -101,6 +119,14 @@ export default function Home() {
               )}>
                 <Wifi className="w-3 h-3" />
                 INTERNET: {latency ? 'ONLINE' : 'OFFLINE'}
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-blue-400">
+                <MapPin className="w-3 h-3" />
+                WAN IP: {publicData?.ip || 'DETECTING...'}
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-400 max-w-[200px] truncate">
+                <Building2 className="w-3 h-3" />
+                ISP: {publicData?.org || 'DETECTING...'}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
