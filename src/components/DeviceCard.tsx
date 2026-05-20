@@ -30,16 +30,16 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
   return (
     <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative border-white/5 h-full min-h-[520px]">
-      {/* Top Controls */}
+      {/* Top Controls - Updated to remove border and background */}
       <button 
         onClick={() => {
           setShowInfo(!showInfo);
           setShowQR(false);
         }}
-        className="absolute top-6 right-6 p-2 rounded-2xl bg-white/5 border border-primary/10 hover:bg-primary/20 transition-colors z-20"
+        className="absolute top-6 right-6 p-2 z-20 transition-all opacity-40 hover:opacity-100"
         title="Device Information"
       >
-        <Info className="w-5 h-5 text-primary" />
+        <Info className="w-6 h-6 text-primary" />
       </button>
 
       {/* Icon Box */}
