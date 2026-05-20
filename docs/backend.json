@@ -15,6 +15,7 @@
         "firmware": { "type": "string" },
         "mac": { "type": "string" },
         "ssid": { "type": "string" },
+        "password": { "type": "string", "description": "The Wi-Fi password for the SSID broadcast by this device." },
         "type": { "type": "string", "enum": ["router", "extender", "gpon"] }
       },
       "required": ["name", "ipAddress", "status", "type"]

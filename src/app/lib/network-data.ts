@@ -9,6 +9,7 @@ export type Device = {
   firmware: string;
   mac: string;
   ssid?: string;
+  password?: string;
   type: 'router' | 'extender' | 'gpon';
 };
 
@@ -23,6 +24,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
     mac: 'F4:EC:22:9A:88:B1',
     ssid: 'SkyNet',
+    password: '#0m3!nt3rn3t',
     type: 'router',
   },
   {
@@ -35,6 +37,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
     mac: 'A8:42:3F:12:D4:E5',
     ssid: 'SkyNet',
+    password: '#0m3!nt3rn3t',
     type: 'extender',
   },
   {
@@ -47,6 +50,7 @@ export const INITIAL_DEVICES: Device[] = [
     firmware: '3FE49362IJJK17(1.2203.417)',
     mac: '9C:71:0D:33:F4:A2',
     ssid: 'Akanksha Communication',
+    password: 'Infinity@123',
     type: 'gpon',
   },
 ];

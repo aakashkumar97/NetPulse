@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { Device } from '@/app/lib/network-data';
-import { MoreVertical, Network, Wifi, Server, CheckCircle2, AlertCircle, ExternalLink, ShieldCheck } from 'lucide-react';
+import { MoreVertical, Network, Wifi, Server, ExternalLink, Eye, EyeOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -13,6 +13,7 @@ interface DeviceCardProps {
 
 export function DeviceCard({ device }: DeviceCardProps) {
   const [showInfo, setShowInfo] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const icons = {
     router: <Network className="w-10 h-10 text-primary" />,
@@ -72,22 +73,44 @@ export function DeviceCard({ device }: DeviceCardProps) {
           {device.name.toUpperCase()} SYSTEM INFO
         </h4>
         
-        {[
-          { label: 'Manufacturer', value: device.manufacturer },
-          { label: 'Model', value: device.model },
-          { label: 'Firmware', value: device.firmware },
-          { label: 'MAC Address', value: device.mac },
-          { label: 'SSID', value: device.ssid || 'N/A' },
-          { label: 'Security', value: 'WPA3/WPA2' }
-        ].map((item, idx) => (
-          <div key={idx} className="flex justify-between items-center p-3 bg-white/5 border border-primary/5 rounded-xl text-xs font-medium">
-            <span className="text-muted-foreground">{item.label}</span>
-            <span className="text-primary tracking-wide">{item.value}</span>
-          </div>
-        ))}
+        <div className="space-y-2 overflow-y-auto max-h-[60%] py-2 pr-1">
+          {[
+            { label: 'Manufacturer', value: device.manufacturer },
+            { label: 'Model', value: device.model },
+            { label: 'Firmware', value: device.firmware },
+            { label: 'MAC Address', value: device.mac },
+            { label: 'SSID', value: device.ssid || 'N/A' },
+            { label: 'Security', value: 'WPA2/WPA3 (Password)' }
+          ].map((item, idx) => (
+            <div key={idx} className="flex justify-between items-center p-3 bg-white/5 border border-primary/5 rounded-xl text-xs font-medium">
+              <span className="text-muted-foreground">{item.label}</span>
+              <span className="text-primary tracking-wide text-right ml-2 break-all">{item.value}</span>
+            </div>
+          ))}
+
+          {device.password && (
+            <div className="flex justify-between items-center p-3 bg-primary/10 border border-primary/20 rounded-xl text-xs font-medium group/pass">
+              <span className="text-muted-foreground">WIFI PASS</span>
+              <div className="flex items-center gap-2">
+                <span className="text-primary tracking-widest font-code">
+                  {showPassword ? device.password : '••••••••'}
+                </span>
+                <button 
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="p-1 hover:text-white transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         <Button 
-          onClick={() => setShowInfo(false)}
+          onClick={() => {
+            setShowInfo(false);
+            setShowPassword(false);
+          }}
           className="mt-4 bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 rounded-xl font-headline"
         >
           CLOSE PROTOCOL
