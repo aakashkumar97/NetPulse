@@ -40,8 +40,8 @@ export const INITIAL_DEVICES: Device[] = [
     username: 'AdminGPON',
     adminPassword: 'ALC#FGU',
     wireless24: {
-      ssid: 'SkyNet',
-      password: '#0m3!nt3rn3t',
+      ssid: 'Akanksha Communication',
+      password: 'Infinity@123',
       channel: '1',
       bandwidth: '20 MHz',
       transmitPower: 'High',
