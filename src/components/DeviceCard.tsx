@@ -80,7 +80,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
           }}
           variant="outline" 
-          className="w-full font-headline tracking-widest bg-white/5 border-white/10 hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-300 rounded-2xl h-11 text-xs"
+          className="w-full font-headline tracking-widest bg-white/5 border-white/10 hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-500 rounded-2xl h-11 text-xs"
         >
           <QrCode className="mr-2 h-4 w-4 text-primary group-hover:animate-pulse" />
           SHOW WIFI QR
@@ -89,7 +89,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Button 
           asChild 
           variant="outline" 
-          className="w-full font-headline tracking-widest bg-primary/10 border-primary/30 hover:bg-primary hover:text-background hover:border-primary transition-all rounded-2xl h-12"
+          className="w-full font-headline tracking-widest bg-primary/10 border-primary/30 hover:bg-primary hover:text-background hover:border-primary transition-all duration-500 rounded-2xl h-12 hover:shadow-[0_0_25px_rgba(139,92,246,0.4)]"
         >
           <a href={device.webGuiUrl} target="_blank" rel="noopener noreferrer">
             <Terminal className="mr-2 h-4 w-4" />
