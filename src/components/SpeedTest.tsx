@@ -22,29 +22,32 @@ export function SpeedTest() {
     setDownloadSpeed(null);
     
     const startTime = performance.now();
-    const testDuration = 8000; // 8 seconds test
+    const testDuration = 10000; // Increased to 10 seconds for more accurate high-speed measurement
     let totalBytesDownloaded = 0;
     
-    // Using multiple high-res sources to saturate high-bandwidth connections (like 300Mbps+)
+    // Using high-res images to saturate the connection. 
+    // We use multiple seeds and slightly different dimensions to prevent browser caching/throttling.
     const urls = [
       'https://picsum.photos/seed/speed1/4000/4000',
-      'https://picsum.photos/seed/speed2/4000/4000',
-      'https://picsum.photos/seed/speed3/4000/4000',
-      'https://picsum.photos/seed/speed4/4000/4000',
-      'https://picsum.photos/seed/speed5/4000/4000',
-      'https://picsum.photos/seed/speed6/4000/4000'
+      'https://picsum.photos/seed/speed2/4001/4001',
+      'https://picsum.photos/seed/speed3/4002/4002',
+      'https://picsum.photos/seed/speed4/4003/4003',
+      'https://picsum.photos/seed/speed5/4004/4004',
+      'https://picsum.photos/seed/speed6/4005/4005',
+      'https://picsum.photos/seed/speed7/4000/4000',
+      'https://picsum.photos/seed/speed8/4001/4001'
     ];
 
     abortControllerRef.current = new AbortController();
 
     try {
-      const interval = setInterval(() => {
+      const progressInterval = setInterval(() => {
         const elapsed = performance.now() - startTime;
-        const p = Math.min((elapsed / testDuration) * 100, 95);
+        const p = Math.min((elapsed / testDuration) * 100, 98);
         setProgress(p);
       }, 100);
 
-      // Launch multiple parallel downloads to saturate the link
+      // Launch multiple parallel downloads to saturate high-speed links (300Mbps+)
       const downloadTasks = urls.map(async (url) => {
         try {
           const response = await fetch(url, { 
@@ -64,9 +67,9 @@ export function SpeedTest() {
             const currentTime = performance.now();
             const elapsedSeconds = (currentTime - startTime) / 1000;
             
-            if (elapsedSeconds > 0.5) {
+            // Continuous calculation for real-time gauge update
+            if (elapsedSeconds > 0.3) {
               const currentMbps = (totalBytesDownloaded * 8) / (elapsedSeconds * 1000000);
-              // Update display with a slight smoothing factor
               setDownloadSpeed(Math.round(currentMbps * 10) / 10);
             }
             
@@ -76,12 +79,12 @@ export function SpeedTest() {
             }
           }
         } catch (err: any) {
-          if (err.name !== 'AbortError') console.error('Stream error:', err);
+          if (err.name !== 'AbortError') console.warn('Stream error during speed test:', err);
         }
       });
 
       await Promise.all(downloadTasks);
-      clearInterval(interval);
+      clearInterval(progressInterval);
       setProgress(100);
       
       const finalTime = performance.now();
@@ -94,7 +97,7 @@ export function SpeedTest() {
 
     } catch (error: any) {
       if (error.name !== 'AbortError') {
-        console.error('Speed test failed:', error);
+        console.error('Speed test execution failure:', error);
       }
     } finally {
       setTesting(false);
@@ -168,7 +171,7 @@ export function SpeedTest() {
                 BANDWIDTH ANALYZER
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Measure real-time network throughput and packet delivery performance across the local gateway.
+                Measure real-time network throughput and packet delivery performance using multi-stream saturation protocols.
               </p>
             </div>
             <Button 

@@ -15,39 +15,31 @@ export default function Home() {
 
   useEffect(() => {
     async function fetchNetworkInfo() {
-      // Try multiple providers sequentially for better reliability
-      const providers = [
-        async () => {
-          const res = await fetch('https://freeipapi.com/api/json', { cache: 'no-cache' });
-          const data = await res.json();
-          return { ip: data.ipAddress, isp: data.asName || 'ISP DETECTED' };
-        },
-        async () => {
-          const res = await fetch('https://ipwho.is/', { cache: 'no-cache' });
-          const data = await res.json();
-          if (!data.success) throw new Error();
-          return { ip: data.ip, isp: data.connection?.isp || data.connection?.org };
-        },
-        async () => {
-          const res = await fetch('https://api.ipify.org?format=json');
-          const data = await res.json();
-          return { ip: data.ip, isp: 'ISP_ACTIVE' };
+      // Primary attempt using ipwho.is which provides IP and ISP in one call
+      try {
+        const res = await fetch('https://ipwho.is/', { cache: 'no-cache' });
+        const data = await res.json();
+        if (data && data.success) {
+          setIpData({ 
+            ip: data.ip, 
+            isp: data.connection?.isp || data.connection?.org || 'DETECTED ISP' 
+          });
+          return;
         }
-      ];
-
-      for (const provider of providers) {
-        try {
-          const result = await provider();
-          if (result.ip) {
-            setIpData(result);
-            return;
-          }
-        } catch (e) {
-          continue;
-        }
+      } catch (e) {
+        console.warn('Primary IP fetch failed, trying fallback...');
       }
 
-      setIpData({ ip: 'NETWORK_NODE', isp: 'PROTECTED_ACCESS' });
+      // Fallback: Just get the IP from ipify if everything else fails
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        if (data && data.ip) {
+          setIpData({ ip: data.ip, isp: 'ISP PROTECTED' });
+        }
+      } catch (e) {
+        setIpData({ ip: 'PRIVATE_NODE', isp: 'SECURE_TUNNEL' });
+      }
     }
     
     fetchNetworkInfo();
@@ -57,7 +49,7 @@ export default function Home() {
     async function checkLatency() {
       const start = performance.now();
       try {
-        // High availability endpoint for "ping" simulation
+        // High availability endpoint for latency check
         await fetch('https://www.google.com/favicon.ico', { 
           mode: 'no-cors', 
           cache: 'no-cache',
