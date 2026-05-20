@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Gauge, Download, Play, RefreshCcw, Wifi, Zap } from 'lucide-react';
+import { Gauge, Download, Play, RefreshCcw, Wifi, Zap, ExternalLink } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
@@ -154,14 +154,26 @@ export function SpeedTest() {
 
         {/* Info & Controls */}
         <div className="flex-1 space-y-6 w-full">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-headline font-bold flex items-center gap-3">
-              <Zap className="w-6 h-6 text-primary" />
-              BANDWIDTH ANALYZER
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-              Measure real-time network throughput and packet delivery performance across the local gateway.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-headline font-bold flex items-center gap-3">
+                <Zap className="w-6 h-6 text-primary" />
+                BANDWIDTH ANALYZER
+              </h2>
+              <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
+                Measure real-time network throughput and packet delivery performance across the local gateway.
+              </p>
+            </div>
+            <Button 
+              asChild 
+              variant="outline" 
+              className="bg-white/5 border-primary/20 hover:bg-primary/10 text-primary rounded-xl h-10 px-4 text-xs font-bold tracking-widest"
+            >
+              <a href="https://www.speedtest.net/" target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="mr-2 h-3 w-3" />
+                OOKLA SPEEDTEST
+              </a>
+            </Button>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
