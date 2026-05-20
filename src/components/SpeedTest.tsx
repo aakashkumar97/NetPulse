@@ -8,7 +8,7 @@ export function SpeedTest() {
   return (
     <div className="glass-card mb-12 relative overflow-hidden group border-primary/20">
       {/* Background Decorative Icon */}
-      <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+      <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity duration-700 pointer-events-none">
         <Gauge className="w-48 h-48 text-primary" />
       </div>
 
@@ -17,7 +17,7 @@ export function SpeedTest() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
             <div className="space-y-2">
               <h2 className="text-2xl font-headline font-bold flex items-center gap-3 uppercase tracking-tight">
-                <Zap className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(0,217,255,0.6)]" />
+                <Zap className="w-6 h-6 text-primary drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]" />
                 High-Precision Bandwidth Analyzer
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-2xl">
@@ -34,7 +34,7 @@ export function SpeedTest() {
               <Button 
                 asChild 
                 variant="outline" 
-                className="bg-primary/10 border-primary/30 hover:bg-primary/20 hover:border-primary text-primary rounded-2xl h-12 px-6 text-xs font-bold tracking-widest transition-all shadow-[0_0_15px_rgba(0,217,255,0.1)]"
+                className="bg-primary/10 border-primary/30 hover:bg-primary hover:text-background hover:border-primary rounded-2xl h-12 px-6 text-[11px] font-headline font-bold tracking-widest transition-all duration-500 shadow-[0_0_15px_rgba(139,92,246,0.2)] hover:shadow-[0_0_25px_rgba(139,92,246,0.4)]"
               >
                 <a href="https://www.speedtest.net/" target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="mr-2 h-4 w-4" />

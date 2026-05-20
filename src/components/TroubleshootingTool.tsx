@@ -68,7 +68,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
               </label>
               <Textarea
                 placeholder="e.g., WiFi signal is dropping or certain devices are slow..."
-                className="bg-background/50 border-primary/20 focus:border-primary focus:ring-primary/20 min-h-[140px] rounded-2xl text-lg font-body p-4"
+                className="bg-background/50 border-primary/20 focus:border-primary focus:ring-primary/20 min-h-[140px] rounded-2xl text-lg font-body p-4 transition-all duration-300"
                 value={problem}
                 onChange={(e) => setProblem(e.target.value)}
               />
@@ -76,7 +76,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
             <Button 
               onClick={handleDiagnosis}
               disabled={loading}
-              className="w-full py-7 text-lg font-headline tracking-widest bg-primary hover:bg-primary/80 text-background rounded-2xl transition-all shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+              className="w-full py-7 text-lg font-headline tracking-widest bg-primary hover:bg-primary/90 text-background rounded-2xl transition-all duration-500 shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]"
             >
               {loading ? (
                 <>
@@ -137,7 +137,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
                   <p className="text-xs font-headline tracking-widest text-muted-foreground uppercase">Recommended Steps</p>
                   <div className="space-y-2">
                     {diagnosis.troubleshootingSteps.map((step) => (
-                      <div key={step.stepNumber} className="flex gap-4 items-start p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-primary/20 transition-colors group">
+                      <div key={step.stepNumber} className="flex gap-4 items-start p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-primary/20 transition-all duration-300 group">
                         <div className="w-7 h-7 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 text-primary text-[10px] font-bold">
                           {step.stepNumber}
                         </div>

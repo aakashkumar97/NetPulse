@@ -28,21 +28,21 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 relative border-white/5 h-full min-h-[500px]">
+    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-500 relative border-white/5 h-full min-h-[500px]">
       {/* Info Icon Button - Clean Style */}
       <button 
         onClick={() => {
           setShowInfo(!showInfo);
           setShowQR(false);
         }}
-        className="absolute top-6 right-6 p-1 z-20 transition-all opacity-40 hover:opacity-100"
+        className="absolute top-6 right-6 p-1 z-20 transition-all duration-300 opacity-40 hover:opacity-100 hover:scale-110"
         title="Device Information"
       >
         <Info className="w-6 h-6 text-primary" />
       </button>
 
       {/* Icon Box */}
-      <div className="w-24 h-24 rounded-[2rem] bg-primary/5 border border-primary/20 flex items-center justify-center mb-6">
+      <div className="w-24 h-24 rounded-[2rem] bg-primary/5 border border-primary/20 flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors duration-500">
         <div className="drop-shadow-[0_0_15px_rgba(139,92,246,0.6)]">
           {icons[device.type]}
         </div>
@@ -80,7 +80,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
           }}
           variant="outline" 
-          className="w-full font-headline tracking-widest bg-white/5 border-white/10 hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-500 rounded-2xl h-11 text-xs"
+          className="w-full font-headline tracking-widest bg-white/5 border-white/10 hover:bg-primary/10 hover:border-primary/50 hover:text-primary hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] transition-all duration-500 rounded-2xl h-12 text-xs"
         >
           <QrCode className="mr-2 h-4 w-4 text-primary group-hover:animate-pulse" />
           SHOW WIFI QR
@@ -149,7 +149,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                 </div>
                 <button 
                   onClick={() => setShowPassword(!showPassword)}
-                  className="p-1 hover:text-primary transition-colors"
+                  className="p-1 hover:text-primary transition-colors duration-300"
                 >
                   {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                 </button>
@@ -166,7 +166,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-6 bg-primary/5 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-12 tracking-widest"
+          className="mt-6 bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-background rounded-2xl font-headline h-12 tracking-widest transition-all duration-500 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] shrink-0"
         >
           BACK
         </Button>
@@ -199,7 +199,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
         <Button 
           onClick={() => setShowQR(false)}
-          className="mt-6 bg-primary/5 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-12 tracking-widest"
+          className="mt-6 bg-primary/10 border border-primary/30 text-primary hover:bg-primary hover:text-background rounded-2xl font-headline h-12 tracking-widest transition-all duration-500 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] shrink-0"
         >
           CLOSE QR
         </Button>
