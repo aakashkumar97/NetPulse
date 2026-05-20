@@ -51,8 +51,8 @@ export function DeviceCard({ device }: DeviceCardProps) {
       <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-200">{device.name}</h3>
       
       <div className="flex flex-col items-center gap-1 mb-3">
-        <span className="font-code text-[11px] font-bold tracking-[0.2em] uppercase text-primary/70">{device.manufacturer}</span>
-        <span className="font-code text-[10px] tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
+        <span className="font-code text-[12px] font-bold tracking-[0.2em] uppercase text-primary/70">{device.manufacturer}</span>
+        <span className="font-code text-[12px] font-bold tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
       </div>
       
       {device.description && (
