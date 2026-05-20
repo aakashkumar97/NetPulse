@@ -113,7 +113,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Shield className="w-2.5 h-2.5 text-primary/30" />
               Manufacturer
             </div>
-            <p className="text-xs text-slate-300 font-medium pl-4">{device.manufacturer}</p>
+            <p className="text-xs text-slate-300 font-bold pl-4">{device.manufacturer}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -121,7 +121,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Cpu className="w-2.5 h-2.5 text-primary/30" />
               Hardware Model
             </div>
-            <p className="text-xs text-slate-300 font-medium pl-4">{device.model}</p>
+            <p className="text-xs text-slate-300 font-bold pl-4">{device.model}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -129,7 +129,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Terminal className="w-2.5 h-2.5 text-primary/30" />
               Firmware
             </div>
-            <p className="text-xs text-slate-300 font-bold pl-4 break-all">{device.firmware}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4 break-all">{device.firmware}</p>
           </div>
 
           <div className="pt-3 border-t border-primary/5 space-y-4">
@@ -138,7 +138,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                 <User className="w-2.5 h-2.5 text-primary/30" />
                 Username
               </div>
-              <p className="text-xs text-slate-300 font-bold pl-4">{device.username || 'admin'}</p>
+              <p className="text-xs text-slate-300 font-medium pl-4">{device.username || 'admin'}</p>
             </div>
 
             <div className="space-y-0.5">
@@ -154,7 +154,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                   {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                 </button>
               </div>
-              <p className="text-xs text-slate-300 font-bold pl-4 tracking-widest">
+              <p className="text-xs text-slate-300 font-medium pl-4 tracking-widest">
                 {showPassword ? (device.adminPassword || 'N/A') : '••••••••'}
               </p>
             </div>
@@ -186,7 +186,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             <img 
               src={qrCodeUrl} 
               alt="WiFi QR Code" 
-              className="w-32 h-32 rounded-lg opacity-90"
+              className="w-32 h-32 rounded-none opacity-90"
             />
           </div>
           <div className="text-center space-y-1">
