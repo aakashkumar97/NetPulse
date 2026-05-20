@@ -6,14 +6,15 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { Globe, ShieldCheck, Zap, RefreshCw } from 'lucide-react';
+import { Globe, ShieldCheck, Zap, RefreshCw, Wifi } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
 
-  // Latency check
+  // Latency check (Internet Status)
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
@@ -89,7 +90,14 @@ export default function Home() {
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full text-primary">
                 <Globe className="w-3 h-3" />
-                ISP: {isGPONOnline ? 'GATEWAY UP' : 'GATEWAY DOWN'}
+                ISP GATEWAY: {isGPONOnline ? 'UP' : 'DOWN'}
+              </span>
+              <span className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
+                latency ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400" : "bg-rose-500/10 border-rose-500/20 text-rose-400"
+              )}>
+                <Wifi className="w-3 h-3" />
+                INTERNET: {latency ? 'ONLINE' : 'OFFLINE'}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
@@ -126,7 +134,7 @@ export default function Home() {
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
               <span className="w-2 h-10 bg-accent rounded-full shadow-[0_0_20px_#00D9FF]" />
-              Diagnostic Utilities
+              Useful Utilities
             </h2>
           </div>
           <NetworkTools />
