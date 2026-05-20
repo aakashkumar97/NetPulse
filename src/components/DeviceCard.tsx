@@ -56,7 +56,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
       </div>
       
       {device.description && (
-        <p className="text-[11px] text-muted-foreground/70 mb-4 font-body leading-relaxed max-w-[200px] line-clamp-2">
+        <p className="text-[12px] text-muted-foreground font-medium mb-4 font-body leading-relaxed max-w-[220px] line-clamp-2">
           {device.description}
         </p>
       )}
