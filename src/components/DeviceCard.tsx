@@ -24,19 +24,18 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const ssid = device.wireless24?.ssid || device.wireless5?.ssid || 'N/A';
   const wifiPass = device.wireless24?.password || device.wireless5?.password || 'N/A';
   
-  // Standard WiFi QR format: WIFI:S:<SSID>;T:<TYPE>;P:<PASSWORD>;H:<HIDDEN>;;
   const wifiQrString = `WIFI:S:${ssid};T:WPA;P:${wifiPass};;`;
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative border-white/5 h-full min-h-[520px]">
-      {/* Top Controls - Updated to remove border and background */}
+    <div className="glass-card group p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-[1.02] relative border-white/5 h-full min-h-[480px]">
+      {/* Info Icon Button - Clean, no background/border */}
       <button 
         onClick={() => {
           setShowInfo(!showInfo);
           setShowQR(false);
         }}
-        className="absolute top-6 right-6 p-2 z-20 transition-all opacity-40 hover:opacity-100"
+        className="absolute top-6 right-6 p-1 z-20 transition-all opacity-40 hover:opacity-100 hover:scale-110"
         title="Device Information"
       >
         <Info className="w-6 h-6 text-primary" />
@@ -57,13 +56,13 @@ export function DeviceCard({ device }: DeviceCardProps) {
       </div>
       
       {device.description && (
-        <p className="text-[10px] text-muted-foreground/80 mb-6 font-body leading-relaxed max-w-[200px]">
+        <p className="text-[10px] text-muted-foreground/80 mb-4 font-body leading-relaxed max-w-[200px]">
           {device.description}
         </p>
       )}
 
-      {/* Status Indicators */}
-      <div className="flex items-center gap-2 mb-8 text-xs font-bold tracking-widest uppercase">
+      {/* Status Indicators - Reduced margin */}
+      <div className="flex items-center gap-2 mb-4 text-xs font-bold tracking-widest uppercase">
         <div className={cn(
           "w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px]",
           device.status === 'ONLINE' ? "bg-emerald-400 shadow-emerald-400" : "bg-rose-400 shadow-rose-400"
@@ -73,6 +72,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </span>
       </div>
 
+      {/* Button Container - mt-auto pushes to bottom */}
       <div className="mt-auto w-full space-y-3">
         <Button 
           onClick={() => {
@@ -80,7 +80,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
           }}
           variant="outline" 
-          className="w-full font-headline tracking-widest bg-white/5 border-white/10 hover:bg-white/10 text-white transition-all rounded-2xl h-12 text-xs"
+          className="w-full font-headline tracking-widest bg-white/5 border-white/10 hover:bg-white/10 text-white transition-all rounded-2xl h-11 text-xs"
         >
           <QrCode className="mr-2 h-4 w-4 text-primary" />
           SHOW WIFI QR
@@ -89,7 +89,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Button 
           asChild 
           variant="outline" 
-          className="w-full font-headline tracking-widest bg-primary/10 border-primary/30 hover:bg-primary hover:text-background hover:border-primary transition-all rounded-2xl h-14"
+          className="w-full font-headline tracking-widest bg-primary/10 border-primary/30 hover:bg-primary hover:text-background hover:border-primary transition-all rounded-2xl h-12"
         >
           <a href={device.webGuiUrl} target="_blank" rel="noopener noreferrer">
             <Terminal className="mr-2 h-4 w-4" />
