@@ -6,7 +6,6 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { TroubleshootingTool } from '@/components/TroubleshootingTool';
 import { Globe, ShieldCheck, RefreshCw, Wifi } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -15,7 +14,6 @@ export default function Home() {
   const [latency, setLatency] = useState<number | null>(null);
   const [lastScan, setLastScan] = useState<string>('');
 
-  // Latency check (Internet Status)
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
@@ -31,7 +29,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Device status polling
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
       const url = device.webGuiUrl || `http://${device.ipAddress}`;
@@ -126,9 +123,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-
-        {/* Diagnostic Section */}
-        <TroubleshootingTool devices={devices} />
 
         {/* Network Tools Section */}
         <section className="mt-20">
