@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
-import { INITIAL_DEVICES } from '@/app/lib/network-data';
+import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { Activity, ShieldCheck, Zap } from 'lucide-react';
 
 export default function Home() {
-  const [devices] = useState(INITIAL_DEVICES);
+  const [devices, setDevices] = useState<Device[]>(INITIAL_DEVICES);
   const [latency, setLatency] = useState<number | null>(null);
 
+  // Internet Latency Check (Google)
   useEffect(() => {
     async function checkLatency() {
       const start = performance.now();
@@ -23,6 +24,37 @@ export default function Home() {
     }
     checkLatency();
     const interval = setInterval(checkLatency, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Dynamic Device Status Check
+  useEffect(() => {
+    async function checkDeviceStatus(device: Device): Promise<Device> {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+
+        // We use 'no-cors' to allow checking local network devices without CORS issues
+        await fetch(device.webGuiUrl || `http://${device.ipAddress}`, { 
+          mode: 'no-cors', 
+          cache: 'no-cache',
+          signal: controller.signal 
+        });
+        
+        clearTimeout(timeoutId);
+        return { ...device, status: 'ONLINE' };
+      } catch (error) {
+        return { ...device, status: 'OFFLINE' };
+      }
+    }
+
+    async function updateAllStatuses() {
+      const updatedDevices = await Promise.all(devices.map(d => checkDeviceStatus(d)));
+      setDevices(updatedDevices);
+    }
+
+    updateAllStatuses();
+    const interval = setInterval(updateAllStatuses, 10000); // Check every 10 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -43,7 +75,7 @@ export default function Home() {
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-emerald-400">
                 <ShieldCheck className="w-3 h-3" />
-                NODES: 03
+                NODES: {devices.filter(d => d.status === 'ONLINE').length.toString().padStart(2, '0')}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1 bg-secondary/10 border border-secondary/20 rounded-full text-secondary">
                 <Zap className="w-3 h-3" />
