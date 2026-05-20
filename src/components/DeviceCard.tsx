@@ -91,6 +91,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </a>
       </div>
 
+      {/* Info Slide-over */}
       <div className={cn(
         "absolute inset-0 bg-[#06091a] z-50 p-6 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/30",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
@@ -164,6 +165,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </button>
       </div>
 
+      {/* QR Slide-over */}
       <div className={cn(
         "absolute inset-0 bg-[#06091a] z-50 p-6 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/30",
         showQR ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
