@@ -30,15 +30,18 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Device Accessibility Scan
+  // Device Accessibility IP Check Logic
   useEffect(() => {
     async function checkDeviceStatus(device: Device): Promise<Device> {
-      const url = device.webGuiUrl || `http://${device.ipAddress}`;
+      // Construction of URL using IP for direct accessibility check
+      const url = `http://${device.ipAddress}`;
       
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000); 
 
+        // We use fetch with no-cors to specifically check if the IP is responding.
+        // Even an opaque response or CORS failure indicates the host is reachable.
         await fetch(url, { 
           mode: 'no-cors', 
           cache: 'no-cache',
@@ -48,6 +51,7 @@ export default function Home() {
         clearTimeout(timeoutId);
         return { ...device, status: 'ONLINE' };
       } catch (error) {
+        // If aborted or network error occurs, mark as OFFLINE
         return { ...device, status: 'OFFLINE' }; 
       }
     }
