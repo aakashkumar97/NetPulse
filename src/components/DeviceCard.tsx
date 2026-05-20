@@ -29,7 +29,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
   return (
     <div className="glass-card group p-6 flex flex-col items-center text-center transition-all duration-500 relative border-white/5 h-full min-h-[400px]">
-      {/* Info Icon Button - Clean Style */}
+      {/* Info Icon Button */}
       <button 
         onClick={() => {
           setShowInfo(!showInfo);
@@ -125,7 +125,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
           </div>
 
           <div className="space-y-0.5">
-            <div className="flex items-center gap-2 text-[8px] text-muted-foreground uppercase font-bold tracking-widest">
+            <div className="flex items-center gap-2 text-[8px] text-muted-foreground uppercase font-normal tracking-widest">
               <Terminal className="w-2.5 h-2.5 text-primary/40" />
               Firmware
             </div>
@@ -134,7 +134,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
           <div className="pt-3 border-t border-primary/10 space-y-4">
             <div className="space-y-0.5">
-              <div className="flex items-center gap-2 text-[8px] text-muted-foreground uppercase font-bold tracking-widest">
+              <div className="flex items-center gap-2 text-[8px] text-muted-foreground uppercase font-normal tracking-widest">
                 <User className="w-2.5 h-2.5 text-primary/40" />
                 Username
               </div>
@@ -143,7 +143,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
             <div className="space-y-0.5">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-[8px] text-muted-foreground uppercase font-bold tracking-widest">
+                <div className="flex items-center gap-2 text-[8px] text-muted-foreground uppercase font-normal tracking-widest">
                   <Lock className="w-2.5 h-2.5 text-primary/40" />
                   Password
                 </div>
@@ -154,7 +154,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                   {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                 </button>
               </div>
-              <p className="text-xs text-white font-code pl-4 tracking-widest">
+              <p className="text-xs text-white font-normal pl-4 tracking-widest">
                 {showPassword ? (device.adminPassword || 'N/A') : '••••••••'}
               </p>
             </div>
@@ -192,7 +192,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
           <div className="text-center space-y-1">
             <p className="text-xs font-headline text-white tracking-wide">{ssid}</p>
             <p className="text-xs font-headline text-white tracking-wide">
-              KEY: {wifiPass}
+              {wifiPass}
             </p>
           </div>
         </div>
