@@ -73,10 +73,10 @@ export default function Home() {
         if (!isOnline) return 0;
         if (prev === 0) return 8; // Default baseline when network comes online
         
-        // Only 20% chance to drift by +/- 1, otherwise stays same
+        // Only 10% chance to drift by +/- 1, otherwise stays same for stability
         const drift = Math.random();
-        if (drift > 0.9) return Math.min(prev + 1, 15);
-        if (drift < 0.1) return Math.max(prev - 1, 4);
+        if (drift > 0.95) return Math.min(prev + 1, 15);
+        if (drift < 0.05) return Math.max(prev - 1, 4);
         return prev;
       });
     }
