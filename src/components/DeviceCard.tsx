@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Device } from '@/app/lib/network-data';
-import { Info, Wifi, Server, Terminal, Router as RouterIcon, Shield, Cpu, Lock, Eye, EyeOff, QrCode } from 'lucide-react';
+import { Info, Wifi, Server, Terminal, Router as RouterIcon, Shield, Cpu, Lock, User, Eye, EyeOff, QrCode } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
@@ -61,7 +61,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </p>
       )}
 
-      {/* Status Indicators - Reduced margin */}
+      {/* Status Indicators */}
       <div className="flex items-center gap-2 mb-4 text-xs font-bold tracking-widest uppercase">
         <div className={cn(
           "w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px]",
@@ -72,7 +72,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </span>
       </div>
 
-      {/* Button Container - mt-auto pushes to bottom */}
+      {/* Button Container */}
       <div className="mt-auto w-full space-y-3">
         <Button 
           onClick={() => {
@@ -98,7 +98,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </Button>
       </div>
 
-      {/* Info Panel Overlay */}
+      {/* Info Panel Overlay (Now shows Login Credentials) */}
       <div className={cn(
         "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
@@ -135,17 +135,17 @@ export function DeviceCard({ device }: DeviceCardProps) {
           <div className="pt-4 border-t border-primary/10 space-y-5">
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-[9px] text-muted-foreground uppercase font-bold tracking-widest">
-                <Wifi className="w-3 h-3 text-primary/40" />
-                Network SSID
+                <User className="w-3 h-3 text-primary/40" />
+                Admin Username
               </div>
-              <p className="text-sm text-white font-medium pl-5">{ssid}</p>
+              <p className="text-sm text-white font-medium pl-5">{device.username || 'admin'}</p>
             </div>
 
             <div className="space-y-1">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-[9px] text-muted-foreground uppercase font-bold tracking-widest">
                   <Lock className="w-3 h-3 text-primary/40" />
-                  Access Password
+                  Admin Password
                 </div>
                 <button 
                   onClick={() => setShowPassword(!showPassword)}
@@ -155,7 +155,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                 </button>
               </div>
               <p className="text-sm text-primary font-code pl-5 tracking-widest">
-                {showPassword ? wifiPass : '••••••••'}
+                {showPassword ? (device.adminPassword || 'N/A') : '••••••••'}
               </p>
             </div>
           </div>
@@ -172,7 +172,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </Button>
       </div>
 
-      {/* QR Panel Overlay */}
+      {/* QR Panel Overlay (Now shows WiFi Key) */}
       <div className={cn(
         "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showQR ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
@@ -191,7 +191,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
           </div>
           <div className="text-center space-y-2">
             <p className="text-sm font-headline text-white tracking-wide">{ssid}</p>
-            <p className="text-[10px] font-code text-muted-foreground uppercase tracking-widest">WPA/WPA2 Protocol</p>
+            <p className="text-[12px] font-code text-primary font-bold tracking-widest uppercase">
+              KEY: {wifiPass}
+            </p>
           </div>
         </div>
 
