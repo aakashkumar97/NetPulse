@@ -27,7 +27,7 @@ export type Device = {
 export const INITIAL_DEVICES: Device[] = [
   {
     id: 'gpon-1',
-    name: 'GPON Home Gateway',
+    name: 'Home Gateway',
     ipAddress: '192.168.100.1',
     webGuiUrl: 'http://192.168.100.1',
     status: 'OFFLINE',
