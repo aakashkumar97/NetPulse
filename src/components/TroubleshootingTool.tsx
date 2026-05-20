@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -45,8 +44,8 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
   };
 
   return (
-    <Card className="glass-card mt-12 mb-8 border-primary/10">
-      <CardHeader className="border-b border-primary/10 bg-primary/5">
+    <Card className="glass-card mt-12 mb-8 border-primary/10 !rounded-[2.5rem]">
+      <CardHeader className="border-b border-primary/10 bg-primary/5 p-8">
         <CardTitle className="flex items-center gap-3 font-headline text-2xl text-primary tracking-tight">
           <Sparkles className="w-6 h-6 animate-pulse" />
           NETVIGIL AI DIAGNOSTIC TERMINAL
@@ -62,7 +61,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
               </label>
               <Textarea
                 placeholder="e.g., Wifi signal is dropping in the bedroom or Extender seems slow..."
-                className="bg-background/50 border-primary/20 focus:border-primary focus:ring-primary/20 min-h-[120px] rounded-xl text-lg font-body"
+                className="bg-background/50 border-primary/20 focus:border-primary focus:ring-primary/20 min-h-[140px] rounded-2xl text-lg font-body p-4"
                 value={problem}
                 onChange={(e) => setProblem(e.target.value)}
               />
@@ -70,7 +69,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
             <Button 
               onClick={handleDiagnosis}
               disabled={loading}
-              className="w-full py-6 text-lg font-headline tracking-widest bg-primary hover:bg-primary/80 text-background rounded-xl transition-all shadow-[0_0_20px_rgba(0,217,255,0.3)]"
+              className="w-full py-7 text-lg font-headline tracking-widest bg-primary hover:bg-primary/80 text-background rounded-2xl transition-all shadow-[0_0_20px_rgba(0,217,255,0.3)]"
             >
               {loading ? (
                 <>
@@ -87,7 +86,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
           </div>
 
           {/* Result Section */}
-          <div className="relative min-h-[300px] border border-primary/10 rounded-2xl bg-black/40 p-6 overflow-hidden">
+          <div className="relative min-h-[350px] border border-primary/10 rounded-2xl bg-black/40 p-6 overflow-hidden">
             {!diagnosis && !loading && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground gap-4 opacity-40">
                 <Terminal className="w-16 h-16" />
@@ -114,7 +113,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
                   </div>
                 </div>
 
-                <Alert className="bg-primary/5 border-primary/20 rounded-xl">
+                <Alert className="bg-primary/5 border-primary/20 rounded-2xl">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
                   <AlertTitle className="text-primary font-headline tracking-wide">Summary</AlertTitle>
                   <AlertDescription className="text-sm opacity-90">{diagnosis.summary}</AlertDescription>
@@ -122,7 +121,7 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
 
                 <div className="space-y-3">
                   <p className="text-xs font-headline tracking-widest text-muted-foreground uppercase">Root Cause Identified</p>
-                  <div className="p-4 bg-rose-500/5 border border-rose-500/20 rounded-xl text-rose-300 text-sm font-medium">
+                  <div className="p-4 bg-rose-500/5 border border-rose-500/20 rounded-2xl text-rose-300 text-sm font-medium">
                     {diagnosis.rootCause}
                   </div>
                 </div>
@@ -131,8 +130,8 @@ export function TroubleshootingTool({ devices }: TroubleshootingToolProps) {
                   <p className="text-xs font-headline tracking-widest text-muted-foreground uppercase">Optimization Protocol</p>
                   <div className="space-y-2">
                     {diagnosis.troubleshootingSteps.map((step) => (
-                      <div key={step.stepNumber} className="flex gap-3 items-start p-3 bg-white/5 rounded-xl border border-white/5 hover:border-primary/20 transition-colors group">
-                        <div className="w-6 h-6 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 text-primary text-[10px] font-bold">
+                      <div key={step.stepNumber} className="flex gap-4 items-start p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-primary/20 transition-colors group">
+                        <div className="w-7 h-7 rounded-xl bg-primary/20 border border-primary/30 flex items-center justify-center shrink-0 text-primary text-[10px] font-bold">
                           {step.stepNumber}
                         </div>
                         <p className="text-sm text-slate-300 leading-relaxed">{step.description}</p>

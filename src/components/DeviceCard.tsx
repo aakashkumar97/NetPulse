@@ -28,13 +28,13 @@ export function DeviceCard({ device }: DeviceCardProps) {
       {/* Top Controls */}
       <button 
         onClick={() => setShowInfo(!showInfo)}
-        className="absolute top-4 right-4 p-2 rounded-xl bg-white/5 border border-primary/10 hover:bg-primary/20 transition-colors z-20"
+        className="absolute top-6 right-6 p-2 rounded-2xl bg-white/5 border border-primary/10 hover:bg-primary/20 transition-colors z-20"
       >
         <MoreVertical className="w-5 h-5 text-primary" />
       </button>
 
       {/* Icon Box */}
-      <div className="w-24 h-24 rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 animate-pulse-glow group-hover:scale-110 transition-transform">
+      <div className="w-24 h-24 rounded-[2rem] bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 animate-pulse-glow group-hover:scale-110 transition-transform">
         <div className="drop-shadow-[0_0_15px_rgba(0,217,255,0.8)]">
           {icons[device.type]}
         </div>
@@ -58,7 +58,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
       <Button 
         asChild 
         variant="outline" 
-        className="w-full font-headline tracking-widest bg-white/5 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary transition-all rounded-xl"
+        className="w-full font-headline tracking-widest bg-white/5 border-primary/30 hover:bg-primary/10 hover:border-primary text-primary transition-all rounded-2xl h-12"
       >
         <a href={device.webGuiUrl || `http://${device.ipAddress}`} target="_blank" rel="noopener noreferrer">
           <ExternalLink className="mr-2 h-4 w-4" />
@@ -66,9 +66,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </a>
       </Button>
 
-      {/* Info Panel Overlay - Updated for Opaque Background */}
+      {/* Info Panel Overlay */}
       <div className={cn(
-        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-300",
+        "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-300 rounded-[inherit]",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
       )}>
         <h4 className="text-xl font-headline font-bold text-primary mb-4 text-center underline decoration-primary/30 underline-offset-8 shrink-0">
@@ -79,17 +79,17 @@ export function DeviceCard({ device }: DeviceCardProps) {
           {/* Hardware & Auth */}
           <div className="space-y-2">
             <div className="grid grid-cols-2 gap-2">
-              <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-left">
+              <div className="p-3 bg-white/5 border border-white/5 rounded-2xl text-left">
                 <p className="text-[8px] text-muted-foreground uppercase font-bold tracking-widest">Firmware</p>
                 <p className="text-[10px] text-primary truncate">{device.firmware}</p>
               </div>
-              <div className="p-3 bg-white/5 border border-white/5 rounded-xl text-left">
+              <div className="p-3 bg-white/5 border border-white/5 rounded-2xl text-left">
                 <p className="text-[8px] text-muted-foreground uppercase font-bold tracking-widest">MAC ADDR</p>
                 <p className="text-[10px] text-primary truncate font-code uppercase">{device.mac}</p>
               </div>
             </div>
             
-            <div className="flex items-center gap-2 p-3 bg-primary/5 border border-primary/10 rounded-xl">
+            <div className="flex items-center gap-2 p-3 bg-primary/5 border border-primary/10 rounded-2xl">
               <User className="w-3 h-3 text-primary/60" />
               <span className="text-[10px] text-muted-foreground">Admin:</span>
               <span className="text-[10px] text-primary font-code">{device.username || 'N/A'}</span>
@@ -101,8 +101,8 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
           {/* 2.4 GHz Band */}
           {device.wireless24 && (
-            <div className="p-4 bg-white/5 border border-primary/10 rounded-xl text-left space-y-2 relative overflow-hidden">
-              <div className="absolute top-0 right-0 px-2 py-0.5 bg-primary/20 text-[8px] text-primary font-bold rounded-bl-lg">2.4GHz</div>
+            <div className="p-4 bg-white/5 border border-primary/10 rounded-2xl text-left space-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 px-3 py-1 bg-primary/20 text-[8px] text-primary font-bold rounded-bl-xl">2.4GHz</div>
               <p className="text-[10px] font-bold text-white truncate pr-10">{device.wireless24.ssid}</p>
               <div className="grid grid-cols-3 gap-2 text-[9px]">
                 <div><span className="text-muted-foreground">CH:</span> <span className="text-primary">{device.wireless24.channel}</span></div>
@@ -116,8 +116,8 @@ export function DeviceCard({ device }: DeviceCardProps) {
 
           {/* 5 GHz Band */}
           {device.wireless5 ? (
-            <div className="p-4 bg-white/5 border border-secondary/20 rounded-xl text-left space-y-2 relative overflow-hidden">
-              <div className="absolute top-0 right-0 px-2 py-0.5 bg-secondary/20 text-[8px] text-secondary font-bold rounded-bl-lg">5GHz</div>
+            <div className="p-4 bg-white/5 border border-secondary/20 rounded-2xl text-left space-y-2 relative overflow-hidden">
+              <div className="absolute top-0 right-0 px-3 py-1 bg-secondary/20 text-[8px] text-secondary font-bold rounded-bl-xl">5GHz</div>
               <p className="text-[10px] font-bold text-white pr-10">{device.wireless5.ssid}</p>
               <div className="grid grid-cols-3 gap-2 text-[9px]">
                 <div><span className="text-muted-foreground">CH:</span> <span className="text-secondary">{device.wireless5.channel}</span></div>
@@ -130,7 +130,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
           )}
 
           {currentPass && (
-            <div className="flex justify-between items-center p-3 bg-primary/10 border border-primary/20 rounded-xl text-xs font-medium">
+            <div className="flex justify-between items-center p-3 bg-primary/10 border border-primary/20 rounded-2xl text-xs font-medium">
               <span className="text-muted-foreground text-[10px] uppercase font-bold tracking-tighter">WiFi PASS</span>
               <div className="flex items-center gap-2">
                 <span className="text-primary tracking-widest font-code text-sm">
@@ -152,7 +152,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-6 bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 rounded-xl font-headline shrink-0"
+          className="mt-6 bg-primary/10 border border-primary/30 text-primary hover:bg-primary/20 rounded-2xl font-headline shrink-0 h-12"
         >
           CLOSE PROTOCOL
         </Button>

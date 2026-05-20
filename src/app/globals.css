@@ -45,14 +45,15 @@
 }
 
 .glass-card {
-  @apply bg-card/65 border border-primary/20 backdrop-blur-xl relative overflow-hidden;
+  @apply bg-card/65 border border-primary/25 backdrop-blur-xl relative overflow-hidden rounded-[2.5rem];
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
 .glass-card::before {
   content: "";
-  @apply absolute inset-0 pointer-events-none;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(0, 217, 255, 0.5), rgba(0, 81, 255, 0.5));
+  @apply absolute inset-0 pointer-events-none rounded-[inherit];
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(0, 217, 255, 0.3), rgba(0, 81, 255, 0.3));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
