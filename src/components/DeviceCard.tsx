@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Device } from '@/app/lib/network-data';
-import { Info, Network, Wifi, Server, ExternalLink, Eye, EyeOff, Lock, User, Terminal } from 'lucide-react';
+import { Info, Network, Wifi, Server, ExternalLink, Eye, EyeOff, Lock, User, Terminal, Router } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -76,7 +76,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
         </a>
       </Button>
 
-      {/* Info Panel Overlay - Fully Opaque */}
+      {/* Info Panel Overlay - Opaque and sharp-corner fix applied via glass-card parent class rounding */}
       <div className={cn(
         "absolute inset-0 bg-[#050816] z-50 p-8 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/50",
         showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
