@@ -51,12 +51,12 @@ export function DeviceCard({ device }: DeviceCardProps) {
       <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-200">{device.name}</h3>
       
       <div className="flex flex-col items-center gap-1 mb-3">
-        <span className="font-code text-[12px] font-bold tracking-[0.2em] uppercase text-primary/70">{device.manufacturer}</span>
-        <span className="font-code text-[12px] font-bold tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
+        <span className="font-code text-[12px] font-medium tracking-[0.2em] uppercase text-primary/70">{device.manufacturer}</span>
+        <span className="font-code text-[12px] font-medium tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
       </div>
       
       {device.description && (
-        <p className="text-[12px] text-muted-foreground font-medium mb-4 font-body leading-relaxed max-w-[220px] line-clamp-2">
+        <p className="text-[13px] text-muted-foreground font-medium mb-4 font-body leading-relaxed max-w-[220px] line-clamp-2">
           {device.description}
         </p>
       )}
@@ -113,7 +113,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Shield className="w-2.5 h-2.5 text-primary/30" />
               Manufacturer
             </div>
-            <p className="text-xs text-slate-300 font-bold pl-4">{device.manufacturer}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4">{device.manufacturer}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -121,7 +121,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Cpu className="w-2.5 h-2.5 text-primary/30" />
               Hardware Model
             </div>
-            <p className="text-xs text-slate-300 font-bold pl-4">{device.model}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4">{device.model}</p>
           </div>
 
           <div className="space-y-0.5">
@@ -129,7 +129,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Terminal className="w-2.5 h-2.5 text-primary/30" />
               Firmware
             </div>
-            <p className="text-xs text-slate-300 font-medium pl-4 break-all">{device.firmware}</p>
+            <p className="text-xs text-slate-300 font-bold pl-4 break-all">{device.firmware}</p>
           </div>
 
           <div className="pt-3 border-t border-primary/5 space-y-4">
@@ -138,7 +138,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                 <User className="w-2.5 h-2.5 text-primary/30" />
                 Username
               </div>
-              <p className="text-xs text-slate-300 font-medium pl-4">{device.username || 'admin'}</p>
+              <p className="text-xs text-slate-300 font-bold pl-4">{device.username || 'admin'}</p>
             </div>
 
             <div className="space-y-0.5">
@@ -154,7 +154,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
                   {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
                 </button>
               </div>
-              <p className="text-xs text-slate-300 font-medium pl-4 tracking-widest">
+              <p className="text-xs text-slate-300 font-bold pl-4 tracking-widest">
                 {showPassword ? (device.adminPassword || 'N/A') : '••••••••'}
               </p>
             </div>
