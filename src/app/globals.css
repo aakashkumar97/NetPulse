@@ -5,15 +5,15 @@
 @layer base {
   :root {
     --background: 222 47% 3%;
-    --foreground: 0 0% 100%;
+    --foreground: 210 20% 90%;
     --card: 222 47% 5%;
-    --card-foreground: 0 0% 100%;
+    --card-foreground: 210 20% 90%;
     --popover: 222 47% 3%;
-    --popover-foreground: 0 0% 100%;
+    --popover-foreground: 210 20% 90%;
     --primary: 263 90% 65%;
     --primary-foreground: 222 47% 3%;
     --secondary: 217 91% 60%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary-foreground: 210 20% 90%;
     --muted: 215 25% 15%;
     --muted-foreground: 215 20% 65%;
     --accent: 190 90% 50%;

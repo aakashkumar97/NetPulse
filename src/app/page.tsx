@@ -82,13 +82,13 @@ export default function Home() {
   const networkHealth = onlineNodes === 0 ? 0 : Math.round((onlineNodes / devices.length) * 100);
 
   return (
-    <main className="min-h-screen relative font-body text-white selection:bg-primary/30">
+    <main className="min-h-screen relative font-body text-slate-200 selection:bg-primary/30">
       <BackgroundEffects />
 
       <div className="container mx-auto px-6 py-12 relative z-10 max-w-7xl">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-6xl font-headline font-black tracking-tighter text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+            <h1 className="text-5xl md:text-6xl font-headline font-black tracking-tighter text-slate-100 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
               NETPULSE <span className="text-primary neon-text">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
