@@ -23,14 +23,16 @@ export function SpeedTest() {
     
     const startTime = performance.now();
     const testDuration = 8000; // 8 seconds test
-    let bytesDownloaded = 0;
+    let totalBytesDownloaded = 0;
     
-    // We'll fetch multiple times to get a steady reading
-    // Using high-res images from Picsum as sample data
+    // Using multiple high-res sources to saturate high-bandwidth connections (like 300Mbps+)
     const urls = [
-      'https://picsum.photos/seed/speed1/3000/3000',
-      'https://picsum.photos/seed/speed2/3500/3500',
-      'https://picsum.photos/seed/speed3/4000/4000'
+      'https://picsum.photos/seed/speed1/4000/4000',
+      'https://picsum.photos/seed/speed2/4000/4000',
+      'https://picsum.photos/seed/speed3/4000/4000',
+      'https://picsum.photos/seed/speed4/4000/4000',
+      'https://picsum.photos/seed/speed5/4000/4000',
+      'https://picsum.photos/seed/speed6/4000/4000'
     ];
 
     abortControllerRef.current = new AbortController();
@@ -42,44 +44,49 @@ export function SpeedTest() {
         setProgress(p);
       }, 100);
 
-      for (const url of urls) {
-        if (performance.now() - startTime > testDuration) break;
+      // Launch multiple parallel downloads to saturate the link
+      const downloadTasks = urls.map(async (url) => {
+        try {
+          const response = await fetch(url, { 
+            cache: 'no-store',
+            signal: abortControllerRef.current?.signal 
+          });
+          
+          const reader = response.body?.getReader();
+          if (!reader) return;
 
-        const response = await fetch(url, { 
-          cache: 'no-store',
-          signal: abortControllerRef.current.signal 
-        });
-        
-        const reader = response.body?.getReader();
-        if (!reader) continue;
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          bytesDownloaded += value.length;
-          
-          const currentTime = performance.now();
-          const elapsedSeconds = (currentTime - startTime) / 1000;
-          const currentMbps = (bytesDownloaded * 8) / (elapsedSeconds * 1000000);
-          
-          // Smoothed real-time update
-          if (elapsedSeconds > 1) {
-            setDownloadSpeed(currentMbps);
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            totalBytesDownloaded += value.length;
+            
+            const currentTime = performance.now();
+            const elapsedSeconds = (currentTime - startTime) / 1000;
+            
+            if (elapsedSeconds > 0.5) {
+              const currentMbps = (totalBytesDownloaded * 8) / (elapsedSeconds * 1000000);
+              // Update display with a slight smoothing factor
+              setDownloadSpeed(Math.round(currentMbps * 10) / 10);
+            }
+            
+            if (currentTime - startTime > testDuration) {
+              abortControllerRef.current?.abort();
+              break;
+            }
           }
-          
-          if (currentTime - startTime > testDuration) {
-            abortControllerRef.current.abort();
-            break;
-          }
+        } catch (err: any) {
+          if (err.name !== 'AbortError') console.error('Stream error:', err);
         }
-      }
+      });
 
+      await Promise.all(downloadTasks);
       clearInterval(interval);
       setProgress(100);
       
       const finalTime = performance.now();
       const totalSeconds = (finalTime - startTime) / 1000;
-      const finalMbps = (bytesDownloaded * 8) / (totalSeconds * 1000000);
+      const finalMbps = (totalBytesDownloaded * 8) / (totalSeconds * 1000000);
       
       const roundedMbps = Math.round(finalMbps * 10) / 10;
       setDownloadSpeed(roundedMbps);
