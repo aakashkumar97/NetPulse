@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { BackgroundEffects } from '@/components/BackgroundEffects';
 import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
-import { TroubleshootingTool } from '@/components/TroubleshootingTool';
 import { INITIAL_DEVICES } from '@/app/lib/network-data';
 import { Activity, Globe, Building2, Network, ShieldCheck, Zap } from 'lucide-react';
 
@@ -149,8 +148,6 @@ export default function Home() {
             ))}
           </div>
         </section>
-
-        <TroubleshootingTool devices={devices} />
 
         <footer className="mt-20 py-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6 text-muted-foreground">
           <p className="text-[10px] font-code tracking-[0.3em] uppercase">
