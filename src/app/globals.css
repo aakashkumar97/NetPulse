@@ -4,40 +4,41 @@
 
 @layer base {
   :root {
-    /* Neutral dark palette */
-    --background: 222 20% 8%;
-    --foreground: 220 15% 88%;
+    /* Neutral dark theme */
+    --background: 222 18% 8%;
+    --foreground: 220 14% 88%;
 
-    --card: 222 18% 11%;
-    --card-foreground: 220 15% 88%;
+    --card: 222 18% 10%;
+    --card-foreground: 220 14% 88%;
 
-    --popover: 222 18% 10%;
-    --popover-foreground: 220 15% 88%;
+    --popover: 222 18% 8%;
+    --popover-foreground: 220 14% 88%;
 
-    /* Softer primary */
-    --primary: 220 14% 70%;
-    --primary-foreground: 222 20% 8%;
+    /* Soft gray primary instead of purple */
+    --primary: 220 10% 72%;
+    --primary-foreground: 222 18% 8%;
 
     /* Muted secondary */
-    --secondary: 222 16% 18%;
-    --secondary-foreground: 220 15% 85%;
+    --secondary: 222 14% 18%;
+    --secondary-foreground: 220 14% 88%;
 
-    --muted: 222 14% 16%;
-    --muted-foreground: 220 10% 60%;
+    --muted: 222 12% 16%;
+    --muted-foreground: 220 10% 62%;
 
     /* subtle accent */
-    --accent: 222 16% 20%;
-    --accent-foreground: 220 15% 88%;
+    --accent: 222 14% 22%;
+    --accent-foreground: 220 14% 88%;
 
-    --destructive: 0 70% 55%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
     /* Softer borders */
-    --border: 220 12% 22%;
-    --input: 220 12% 18%;
-    --ring: 220 12% 45%;
+    --border: 220 12% 24% / 0.35;
+    --input: 220 12% 24% / 0.18;
+    --ring: 220 10% 60%;
 
-    --radius: 1.25rem;
+    /* unchanged */
+    --radius: 1.5rem;
   }
 }
 
@@ -47,12 +48,11 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary;
     overflow-x: hidden;
   }
 }
 
-/* More subtle grid */
 .grid-background {
   background-image:
     linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
@@ -61,37 +61,47 @@
   background-size: 40px 40px;
 }
 
-/* Cleaner glass */
 .glass-card {
-  @apply bg-card/80 border backdrop-blur-xl relative overflow-hidden rounded-[2rem];
+  @apply bg-card/60 border border-primary/15 backdrop-blur-xl relative overflow-hidden rounded-[2.5rem];
 
-  border-color: hsl(var(--border));
-
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
 }
 
-/* Remove neon glow */
 .glass-card::before {
   content: "";
+
   @apply absolute inset-0 pointer-events-none rounded-[inherit];
 
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 1px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.02)
+  );
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
 }
 
-/* Much softer text glow */
 .neon-text {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.04);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
 }
 
-/* subtle sweep */
 .sweep-line {
   @apply absolute inset-0 pointer-events-none z-[1];
 
   background: linear-gradient(
     transparent 0%,
-    rgba(255, 255, 255, 0.015) 50%,
+    rgba(255, 255, 255, 0.005) 50%,
     transparent 100%
   );
 }
@@ -105,10 +115,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.16);
+  @apply bg-primary/10 rounded-full hover:bg-primary/30 transition-colors;
 }
