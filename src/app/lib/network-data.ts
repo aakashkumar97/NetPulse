@@ -11,7 +11,6 @@ export type Device = {
   name: string;
   ipAddress: string;
   webGuiUrl?: string;
-  status: 'ONLINE' | 'OFFLINE' | 'CHECKING';
   manufacturer: string;
   model: string;
   firmware: string;
@@ -30,7 +29,6 @@ export const INITIAL_DEVICES: Device[] = [
     name: 'Home Gateway',
     ipAddress: '192.168.100.1',
     webGuiUrl: 'http://192.168.100.1',
-    status: 'CHECKING',
     manufacturer: 'Nokia',
     model: 'G-2425G-A',
     firmware: '3FE49362IJJK17(1.2203.417)',
@@ -52,7 +50,6 @@ export const INITIAL_DEVICES: Device[] = [
     name: 'Router',
     ipAddress: '192.168.10.1',
     webGuiUrl: 'http://192.168.10.1',
-    status: 'CHECKING',
     manufacturer: 'Sercomm',
     model: 'JioRouter AX6000',
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
@@ -81,7 +78,6 @@ export const INITIAL_DEVICES: Device[] = [
     name: 'Extender',
     ipAddress: '192.168.10.2',
     webGuiUrl: 'http://192.168.10.2',
-    status: 'CHECKING',
     manufacturer: 'Sercomm',
     model: 'JioRouter AX6000',
     firmware: 'OpenWrt SNAPSHOT r33234+1-d2f0542c51',
