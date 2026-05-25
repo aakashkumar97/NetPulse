@@ -6,11 +6,32 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, Globe } from 'lucide-react';
 
 export default function Home() {
   const [devices] = useState<Device[]>(INITIAL_DEVICES);
   const [lastSync, setLastSync] = useState<string>('');
+  const [publicIP, setPublicIP] = useState<string>('LOADING...');
+  const [ipLoading, setIpLoading] = useState(true);
+
+  // Fetch public IP address
+  useEffect(() => {
+    async function fetchPublicIP() {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json', {
+          cache: 'no-cache'
+        });
+        const data = await response.json();
+        setPublicIP(data.ip);
+      } catch (error) {
+        setPublicIP('UNAVAILABLE');
+      } finally {
+        setIpLoading(false);
+      }
+    }
+
+    fetchPublicIP();
+  }, []);
 
   // Last sync timestamp update - Runs on mount and every 15s
   useEffect(() => {
@@ -42,6 +63,10 @@ export default function Home() {
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
                 <RefreshCw className="w-3 h-3" />
                 LAST SYNC: {lastSync || 'CHECKING...'}
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 border border-primary/10 rounded-full text-primary/70">
+                <Globe className="w-3 h-3" />
+                PUBLIC IP: {publicIP}
               </span>
             </div>
           </div>
