@@ -6,12 +6,14 @@ import { Clock } from '@/components/Clock';
 import { DeviceCard } from '@/components/DeviceCard';
 import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
 import { NetworkTools } from '@/components/NetworkTools';
-import { RefreshCw, Globe } from 'lucide-react';
+import { RefreshCw, Globe, Wifi } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   const [devices] = useState<Device[]>(INITIAL_DEVICES);
   const [lastSync, setLastSync] = useState<string>('');
   const [publicIP, setPublicIP] = useState<string>('LOADING...');
+  const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
   const [ipLoading, setIpLoading] = useState(true);
 
   // Fetch public IP address
@@ -33,9 +35,25 @@ export default function Home() {
     fetchPublicIP();
   }, []);
 
-  // Last sync timestamp update - Runs on mount and every 15s
+  // Check internet connectivity and update sync timestamp
   useEffect(() => {
-    async function updateSync() {
+    async function checkConnectivity() {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        await fetch('https://www.google.com/favicon.ico', { 
+          mode: 'no-cors', 
+          cache: 'no-cache',
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        setInternetStatus('ONLINE');
+      } catch {
+        setInternetStatus('OFFLINE');
+      }
+      
       setLastSync(new Date().toLocaleTimeString('en-US', { 
         hour: '2-digit', 
         minute: '2-digit', 
@@ -44,8 +62,8 @@ export default function Home() {
       }));
     }
     
-    updateSync();
-    const interval = setInterval(updateSync, 15000); 
+    checkConnectivity();
+    const interval = setInterval(checkConnectivity, 15000); 
     return () => clearInterval(interval);
   }, []);
 
@@ -60,6 +78,15 @@ export default function Home() {
               NETPULSE <span className="text-primary neon-text font-bold">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
+              <span className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
+                internetStatus === 'ONLINE' ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-400/80" : 
+                internetStatus === 'OFFLINE' ? "bg-rose-500/5 border-rose-500/10 text-rose-400/80" :
+                "bg-amber-500/5 border-amber-500/10 text-amber-400/80"
+              )}>
+                <Wifi className="w-3 h-3" />
+                INTERNET: {internetStatus}
+              </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
                 <RefreshCw className="w-3 h-3" />
                 LAST SYNC: {lastSync || 'CHECKING...'}
