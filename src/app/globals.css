@@ -4,41 +4,50 @@
 
 @layer base {
   :root {
-    /* Neutral dark theme */
-    --background: 222 18% 8%;
-    --foreground: 220 14% 88%;
+    /* LuCI Bootstrap Dark inspired */
+    --background: 220 18% 12%;
+    --foreground: 220 12% 82%;
 
-    --card: 222 18% 10%;
-    --card-foreground: 220 14% 88%;
+    --card: 220 16% 15%;
+    --card-foreground: 220 12% 82%;
 
-    --popover: 222 18% 8%;
-    --popover-foreground: 220 14% 88%;
+    --popover: 220 16% 14%;
+    --popover-foreground: 220 12% 82%;
 
-    /* Soft gray primary instead of purple */
-    --primary: 220 10% 72%;
-    --primary-foreground: 222 18% 8%;
+    /* Bootstrap-like blue */
+    --primary: 210 70% 58%;
+    --primary-foreground: 0 0% 100%;
 
-    /* Muted secondary */
-    --secondary: 222 14% 18%;
-    --secondary-foreground: 220 14% 88%;
+    --secondary: 220 14% 20%;
+    --secondary-foreground: 220 12% 82%;
 
-    --muted: 222 12% 16%;
-    --muted-foreground: 220 10% 62%;
+    --muted: 220 12% 18%;
+    --muted-foreground: 220 8% 60%;
 
-    /* subtle accent */
-    --accent: 222 14% 22%;
-    --accent-foreground: 220 14% 88%;
+    --accent: 210 30% 24%;
+    --accent-foreground: 220 12% 82%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    /* Softer borders */
-    --border: 220 12% 24% / 0.35;
-    --input: 220 12% 24% / 0.18;
-    --ring: 220 10% 60%;
+    /* semantic bootstrap colors */
+    --success: 142 55% 45%;
+    --success-foreground: 0 0% 100%;
 
-    /* unchanged */
-    --radius: 1.5rem;
+    --info: 210 70% 58%;
+    --info-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 10%;
+
+    --danger: 0 70% 55%;
+    --danger-foreground: 0 0% 100%;
+
+    --border: 220 14% 26%;
+    --input: 220 14% 22%;
+    --ring: 210 70% 58%;
+
+    --radius: 3px;
   }
 }
 
@@ -48,64 +57,55 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary;
+    @apply bg-background text-foreground antialiased;
     overflow-x: hidden;
   }
 }
 
+/* subtle panel grid */
 .grid-background {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
 
   background-size: 40px 40px;
 }
 
+/* LuCI style panels/cards */
 .glass-card {
-  @apply bg-card/60 border border-primary/15 backdrop-blur-xl relative overflow-hidden rounded-[2.5rem];
+  @apply bg-card border backdrop-blur-sm relative overflow-hidden rounded-[3px];
 
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
+/* remove glow border */
 .glass-card::before {
-  content: "";
-
-  @apply absolute inset-0 pointer-events-none rounded-[inherit];
-
-  padding: 1px;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.06),
-    rgba(255, 255, 255, 0.02)
-  );
-
-  mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
+  content: none;
 }
 
+/* remove neon */
 .neon-text {
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.08);
+  text-shadow: none;
 }
 
+/* subtle sweep */
 .sweep-line {
   @apply absolute inset-0 pointer-events-none z-[1];
 
   background: linear-gradient(
     transparent 0%,
-    rgba(255, 255, 255, 0.005) 50%,
+    rgba(255, 255, 255, 0.02) 50%,
     transparent 100%
   );
 }
 
+/* Bootstrap/LuCI style buttons */
+.btn-luci {
+  @apply h-9 px-4 text-sm font-medium border rounded-[3px]
+         transition-colors duration-150;
+}
+
+/* scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -115,5 +115,5 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary/10 rounded-full hover:bg-primary/30 transition-colors;
+  @apply bg-primary/20 rounded-full hover:bg-primary/40 transition-colors;
 }
