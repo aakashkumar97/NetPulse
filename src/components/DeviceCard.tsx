@@ -1,10 +1,22 @@
+"use client";
 
-'use client';
-
-import React, { useState } from 'react';
-import { Device } from '@/app/lib/network-data';
-import { Info, Wifi, Server, Terminal, Router as RouterIcon, Shield, Cpu, Lock, User, Eye, EyeOff, QrCode } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React, { useState } from "react";
+import { Device } from "@/app/lib/network-data";
+import {
+  Info,
+  Wifi,
+  Server,
+  Terminal,
+  Router as RouterIcon,
+  Shield,
+  Cpu,
+  Lock,
+  User,
+  Eye,
+  EyeOff,
+  QrCode,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface DeviceCardProps {
   device: Device;
@@ -21,15 +33,16 @@ export function DeviceCard({ device }: DeviceCardProps) {
     gpon: <Server className="w-10 h-10 text-primary" />,
   };
 
-  const ssid = device.wireless24?.ssid || device.wireless5?.ssid || 'N/A';
-  const wifiPass = device.wireless24?.password || device.wireless5?.password || 'N/A';
-  
+  const ssid = device.wireless24?.ssid || device.wireless5?.ssid || "N/A";
+  const wifiPass =
+    device.wireless24?.password || device.wireless5?.password || "N/A";
+
   const wifiQrString = `WIFI:S:${ssid};T:WPA;P:${wifiPass};;`;
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
     <div className="glass-card group p-6 flex flex-col items-center text-center transition-all duration-500 relative border-white/5 h-full min-h-[400px]">
-      <button 
+      <button
         onClick={() => {
           setShowInfo(!showInfo);
           setShowQR(false);
@@ -40,19 +53,25 @@ export function DeviceCard({ device }: DeviceCardProps) {
         <Info className="w-5 h-5 text-primary" />
       </button>
 
-      <div className="w-20 h-20 rounded-[1.5rem] bg-primary/5 border border-primary/15 flex items-center justify-center mb-4 group-hover:bg-primary/10 transition-colors duration-500">
-        <div className="drop-shadow-[0_0_8px_rgba(139,92,246,0.3)]">
+      <div className="w-20 h-20 rounded-sm bg-primary/10 border border-primary/30 flex items-center justify-center mb-4 group-hover:bg-primary/15 transition-colors duration-500">
+        <div className="drop-shadow-[0_0_8px_rgba(60,141,188,0.2)]">
           {icons[device.type]}
         </div>
       </div>
 
-      <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-300">{device.name}</h3>
-      
+      <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-300">
+        {device.name}
+      </h3>
+
       <div className="flex flex-col items-center gap-1 mb-6">
-        <span className="font-code text-[12px] font-medium tracking-[0.2em] uppercase text-primary/70">{device.manufacturer}</span>
-        <span className="font-code text-[12px] font-medium tracking-[0.1em] text-muted-foreground">{device.ipAddress}</span>
+        <span className="font-code text-[12px] font-medium tracking-[0.2em] uppercase text-primary/70">
+          {device.manufacturer}
+        </span>
+        <span className="font-code text-[12px] font-medium tracking-[0.1em] text-muted-foreground">
+          {device.ipAddress}
+        </span>
       </div>
-      
+
       {device.description && (
         <p className="text-[13px] text-muted-foreground font-medium mb-8 font-body leading-relaxed max-w-[220px] line-clamp-2">
           {device.description}
@@ -60,22 +79,22 @@ export function DeviceCard({ device }: DeviceCardProps) {
       )}
 
       <div className="mt-auto w-full space-y-2">
-        <button 
+        <button
           onClick={() => {
             setShowQR(true);
             setShowInfo(false);
           }}
-          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-white/5 border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(139,92,246,0.3)] text-slate-300 hover:text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-primary text-white border border-primary hover:bg-primary/90 hover:shadow-[0_0_12px_rgba(60,141,188,0.3)] text-white transition-all duration-300 rounded-sm h-9 text-[10px]"
         >
-          <QrCode className="mr-2 h-3.5 w-3.5 text-primary" />
+          <QrCode className="mr-2 h-3.5 w-3.5" />
           SHOW WIFI QR
         </button>
 
-        <a 
-          href={device.webGuiUrl} 
-          target="_blank" 
+        <a
+          href={device.webGuiUrl}
+          target="_blank"
           rel="noopener noreferrer"
-          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-primary/5 border border-primary/20 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] text-slate-300 hover:text-slate-300 transition-all duration-300 rounded-xl h-10 text-[10px]"
+          className="w-full flex items-center justify-center font-headline font-medium tracking-widest bg-success text-black border border-success hover:bg-success/80 hover:shadow-[0_0_12px_rgba(85,87,83,0.3)] text-white transition-all duration-300 rounded-sm h-9 text-[10px]"
         >
           <Terminal className="mr-2 h-3.5 w-3.5" />
           LAUNCH ADMIN
@@ -83,21 +102,27 @@ export function DeviceCard({ device }: DeviceCardProps) {
       </div>
 
       {/* Info Slide-over */}
-      <div className={cn(
-        "absolute inset-0 bg-[#06091a] z-50 p-6 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/30",
-        showInfo ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
-      )}>
+      <div
+        className={cn(
+          "absolute inset-0 bg-card z-50 p-6 flex flex-col transition-all duration-500 rounded-sm border border-border",
+          showInfo
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-full pointer-events-none",
+        )}
+      >
         <h4 className="text-lg font-headline font-bold text-primary/90 mb-6 text-center tracking-[0.1em] uppercase">
           Device Info
         </h4>
-        
+
         <div className="flex-1 space-y-4 text-left overflow-y-auto pr-1 scrollbar-hide">
           <div className="space-y-0.5">
             <div className="flex items-center gap-2 text-[8px] text-muted-foreground uppercase font-bold tracking-widest">
               <Shield className="w-2.5 h-2.5 text-primary/30" />
               Manufacturer
             </div>
-            <p className="text-xs text-slate-300 font-medium pl-4">{device.manufacturer}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4">
+              {device.manufacturer}
+            </p>
           </div>
 
           <div className="space-y-0.5">
@@ -105,7 +130,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Cpu className="w-2.5 h-2.5 text-primary/30" />
               Hardware Model
             </div>
-            <p className="text-xs text-slate-300 font-medium pl-4">{device.model}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4">
+              {device.model}
+            </p>
           </div>
 
           <div className="space-y-0.5">
@@ -113,7 +140,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
               <Terminal className="w-2.5 h-2.5 text-primary/30" />
               Firmware
             </div>
-            <p className="text-xs text-slate-300 font-medium pl-4 break-all">{device.firmware}</p>
+            <p className="text-xs text-slate-300 font-medium pl-4 break-all">
+              {device.firmware}
+            </p>
           </div>
 
           <div className="pt-3 border-t border-primary/5 space-y-4">
@@ -122,7 +151,9 @@ export function DeviceCard({ device }: DeviceCardProps) {
                 <User className="w-2.5 h-2.5 text-primary/30" />
                 Username
               </div>
-              <p className="text-xs text-slate-300 font-medium pl-4">{device.username || 'admin'}</p>
+              <p className="text-xs text-slate-300 font-medium pl-4">
+                {device.username || "admin"}
+              </p>
             </div>
 
             <div className="space-y-0.5">
@@ -131,59 +162,69 @@ export function DeviceCard({ device }: DeviceCardProps) {
                   <Lock className="w-2.5 h-2.5 text-primary/30" />
                   Password
                 </div>
-                <button 
+                <button
                   onClick={() => setShowPassword(!showPassword)}
                   className="p-1 hover:text-primary transition-colors duration-300"
                 >
-                  {showPassword ? <EyeOff className="w-3 h-3 text-slate-300" /> : <Eye className="w-3 h-3 text-slate-300" />}
+                  {showPassword ? (
+                    <EyeOff className="w-3 h-3 text-slate-300" />
+                  ) : (
+                    <Eye className="w-3 h-3 text-slate-300" />
+                  )}
                 </button>
               </div>
               <p className="text-xs text-slate-300 font-medium pl-4 tracking-widest">
-                {showPassword ? (device.adminPassword || 'N/A') : '••••••••'}
+                {showPassword ? device.adminPassword || "N/A" : "••••••••"}
               </p>
             </div>
           </div>
         </div>
 
-        <button 
+        <button
           onClick={() => {
             setShowInfo(false);
             setShowPassword(false);
           }}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary text-white border border-primary hover:bg-primary/90 hover:shadow-[0_0_12px_rgba(60,141,188,0.3)] rounded-sm font-headline font-medium h-9 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           BACK
         </button>
       </div>
 
       {/* QR Slide-over */}
-      <div className={cn(
-        "absolute inset-0 bg-[#06091a] z-50 p-6 flex flex-col transition-all duration-500 rounded-[2.5rem] border-2 border-primary/30",
-        showQR ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
-      )}>
+      <div
+        className={cn(
+          "absolute inset-0 bg-card z-50 p-6 flex flex-col transition-all duration-500 rounded-sm border border-border",
+          showQR
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-full pointer-events-none",
+        )}
+      >
         <h4 className="text-lg font-headline font-bold text-primary/90 mb-4 text-center tracking-[0.1em] uppercase">
           Scan to Connect
         </h4>
-        
+
         <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-          <div className="bg-white p-3 rounded-2xl">
-            <img 
-              src={qrCodeUrl} 
-              alt="WiFi QR Code" 
+          <div className="bg-white p-3 rounded-sm">
+            <img
+              src={qrCodeUrl}
+              alt="WiFi QR Code"
               className="w-32 h-32 rounded-none"
             />
           </div>
           <div className="text-center space-y-1">
-            <p className="text-xs font-headline font-bold text-slate-300 tracking-wide">{ssid}</p>
+            <p className="text-xs font-headline font-bold text-slate-300 tracking-wide">
+              {ssid}
+            </p>
             <p className="text-xs font-headline font-bold text-slate-300 tracking-wide">
               {wifiPass}
             </p>
           </div>
         </div>
 
-        <button 
+        <button
           onClick={() => setShowQR(false)}
-          className="mt-4 flex items-center justify-center bg-primary/5 border border-primary/20 text-slate-300 hover:text-slate-300 hover:border-primary/60 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] rounded-xl font-headline font-medium h-10 text-[10px] tracking-widest transition-all duration-300 shrink-0"
+          className="mt-4 flex items-center justify-center bg-primary text-white border border-primary hover:bg-primary/90 hover:shadow-[0_0_12px_rgba(60,141,188,0.3)] rounded-sm font-headline font-medium h-9 text-[10px] tracking-widest transition-all duration-300 shrink-0"
         >
           HIDE QR
         </button>

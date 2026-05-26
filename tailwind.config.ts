@@ -51,19 +51,9 @@ export default {
           foreground: "hsl(var(--accent-foreground))",
         },
 
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
-        },
-
-        info: {
-          DEFAULT: "hsl(var(--info))",
-          foreground: "hsl(var(--info-foreground))",
         },
 
         warning: {
@@ -76,16 +66,25 @@ export default {
           foreground: "hsl(var(--danger-foreground))",
         },
 
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
+
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
       },
 
-      /* compact LuCI radius */
       borderRadius: {
-        lg: "3px",
-        md: "3px",
-        sm: "3px",
+        lg: "0.25rem",
+        md: "0.25rem",
+        sm: "0.25rem",
       },
 
       keyframes: {
@@ -98,25 +97,11 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-
-        sweep: {
-          "0%": { transform: "translateY(-100%)" },
-          "100%": { transform: "translateY(100%)" },
-        },
-
-        float: {
-          "0%, 100%": { transform: "translate(0, 0)" },
-          "50%": { transform: "translate(4px, -4px)" },
-        },
       },
 
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-
-        sweep: "sweep 10s linear infinite",
-
-        float: "float 12s ease-in-out infinite alternate",
       },
     },
   },

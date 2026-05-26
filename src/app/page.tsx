@@ -1,32 +1,34 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { BackgroundEffects } from '@/components/BackgroundEffects';
-import { Clock } from '@/components/Clock';
-import { DeviceCard } from '@/components/DeviceCard';
-import { INITIAL_DEVICES, Device } from '@/app/lib/network-data';
-import { NetworkTools } from '@/components/NetworkTools';
-import { RefreshCw, Globe, Wifi } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import React, { useState, useEffect } from "react";
+import { BackgroundEffects } from "@/components/BackgroundEffects";
+import { Clock } from "@/components/Clock";
+import { DeviceCard } from "@/components/DeviceCard";
+import { INITIAL_DEVICES, Device } from "@/app/lib/network-data";
+import { NetworkTools } from "@/components/NetworkTools";
+import { RefreshCw, Globe, Wifi } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const [devices] = useState<Device[]>(INITIAL_DEVICES);
-  const [lastSync, setLastSync] = useState<string>('');
-  const [publicIP, setPublicIP] = useState<string>('LOADING...');
-  const [internetStatus, setInternetStatus] = useState<'CHECKING' | 'ONLINE' | 'OFFLINE'>('CHECKING');
+  const [lastSync, setLastSync] = useState<string>("");
+  const [publicIP, setPublicIP] = useState<string>("LOADING...");
+  const [internetStatus, setInternetStatus] = useState<
+    "CHECKING" | "ONLINE" | "OFFLINE"
+  >("CHECKING");
   const [ipLoading, setIpLoading] = useState(true);
 
   // Fetch public IP address
   useEffect(() => {
     async function fetchPublicIP() {
       try {
-        const response = await fetch('https://api.ipify.org?format=json', {
-          cache: 'no-cache'
+        const response = await fetch("https://api.ipify.org?format=json", {
+          cache: "no-cache",
         });
         const data = await response.json();
         setPublicIP(data.ip);
       } catch (error) {
-        setPublicIP('UNAVAILABLE');
+        setPublicIP("UNAVAILABLE");
       } finally {
         setIpLoading(false);
       }
@@ -41,29 +43,31 @@ export default function Home() {
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
-        
-        await fetch('https://www.google.com/favicon.ico', { 
-          mode: 'no-cors', 
-          cache: 'no-cache',
-          signal: controller.signal
+
+        await fetch("https://www.google.com/favicon.ico", {
+          mode: "no-cors",
+          cache: "no-cache",
+          signal: controller.signal,
         });
-        
+
         clearTimeout(timeoutId);
-        setInternetStatus('ONLINE');
+        setInternetStatus("ONLINE");
       } catch {
-        setInternetStatus('OFFLINE');
+        setInternetStatus("OFFLINE");
       }
-      
-      setLastSync(new Date().toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit', 
-        hour12: true 
-      }));
+
+      setLastSync(
+        new Date().toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: true,
+        }),
+      );
     }
-    
+
     checkConnectivity();
-    const interval = setInterval(checkConnectivity, 15000); 
+    const interval = setInterval(checkConnectivity, 15000);
     return () => clearInterval(interval);
   }, []);
 
@@ -75,21 +79,26 @@ export default function Home() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div className="space-y-6">
             <h1 className="text-5xl md:text-6xl font-headline font-bold tracking-tighter text-slate-200 uppercase">
-              NETPULSE <span className="text-primary neon-text font-bold">HOME</span>
+              NETPULSE{" "}
+              <span className="text-primary neon-text font-bold">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
-              <span className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
-                internetStatus === 'ONLINE' ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-400/80" : 
-                internetStatus === 'OFFLINE' ? "bg-rose-500/5 border-rose-500/10 text-rose-400/80" :
-                "bg-amber-500/5 border-amber-500/10 text-amber-400/80"
-              )}>
+              <span
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
+                  internetStatus === "ONLINE"
+                    ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-400/80"
+                    : internetStatus === "OFFLINE"
+                      ? "bg-rose-500/5 border-rose-500/10 text-rose-400/80"
+                      : "bg-amber-500/5 border-amber-500/10 text-amber-400/80",
+                )}
+              >
                 <Wifi className="w-3 h-3" />
                 INTERNET: {internetStatus}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
                 <RefreshCw className="w-3 h-3" />
-                LAST SYNC: {lastSync || 'CHECKING...'}
+                LAST SYNC: {lastSync || "CHECKING..."}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 border border-primary/10 rounded-full text-primary/70">
                 <Globe className="w-3 h-3" />
@@ -117,7 +126,7 @@ export default function Home() {
         <section className="mt-20">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
-              <span className="w-2 h-10 bg-accent/80 rounded-full shadow-[0_0_15px_#00D9FF66]" />
+              <span className="w-2 h-10 bg-success/80 rounded-full shadow-[0_0_15px_#10B98144]" />
               Infrastructure Utilities
             </h2>
           </div>

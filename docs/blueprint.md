@@ -1,4 +1,4 @@
-# **App Name**: NetVigil
+# **App Name**: NetPulse Home
 
 ## Core Features:
 
