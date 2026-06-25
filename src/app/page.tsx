@@ -13,6 +13,7 @@ export default function Home() {
   const [devices] = useState<Device[]>(INITIAL_DEVICES);
   const [lastSync, setLastSync] = useState<string>("");
   const [publicIP, setPublicIP] = useState<string>("LOADING...");
+  const [publicIPv6, setPublicIPv6] = useState<string | null>(null);
   const [internetStatus, setInternetStatus] = useState<
     "CHECKING" | "ONLINE" | "OFFLINE"
   >("CHECKING");
@@ -22,11 +23,10 @@ export default function Home() {
   useEffect(() => {
     async function fetchPublicIP() {
       try {
-        const response = await fetch("https://api.ipify.org?format=json", {
-          cache: "no-cache",
-        });
+        const response = await fetch("/api/public-ip", { cache: "no-cache" });
         const data = await response.json();
         setPublicIP(data.ip);
+        setPublicIPv6(data.ipv6 ?? null);
       } catch (error) {
         setPublicIP("UNAVAILABLE");
       } finally {
@@ -103,6 +103,9 @@ export default function Home() {
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 border border-primary/10 rounded-full text-primary/70">
                 <Globe className="w-3 h-3" />
                 PUBLIC IP: {publicIP}
+                {publicIPv6 && (
+                  <span className="ml-1">/ IPv6: {publicIPv6}</span>
+                )}
               </span>
             </div>
           </div>
