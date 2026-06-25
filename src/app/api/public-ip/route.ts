@@ -47,7 +47,21 @@ async function fetchPublicIPv6(): Promise<string | null> {
     const data = await fetchWithTimeout("https://api6.ipify.org?format=json");
     return data.ip?.includes(":") ? data.ip : null; // only accept if truly IPv6
   } catch {
-    return null; // no IPv6 connectivity — this is expected and fine
+    return null; // no IPv6 connectivity — expected and fine
+  }
+}
+
+async function fetchISP(ip: string): Promise<string | null> {
+  try {
+    // Note: ip-api.com's free tier is HTTP only — fine here since this
+    // request happens server-side, not in the browser.
+    const data = await fetchWithTimeout(
+      `http://ip-api.com/json/${ip}?fields=status,isp,org,as`,
+    );
+    if (data.status !== "success") return null;
+    return data.isp || data.org || null;
+  } catch {
+    return null;
   }
 }
 
@@ -56,26 +70,31 @@ export async function GET(request: NextRequest) {
   const rawIp = forwardedHeader ? forwardedHeader.split(",")[0].trim() : "";
   const { ip: trimmedIp, wasV6Mapped } = stripV4MappedPrefix(rawIp);
 
-  // Case 1: private/loopback (local dev) or no usable header at all
+  let finalIPv4: string | null = null;
+  let finalIPv6: string | null = null;
+
   if (!trimmedIp || isPrivateOrLocalIP(trimmedIp)) {
+    // Local dev / private network — look up the real public IP(s)
     const [ipv4, ipv6] = await Promise.all([
       fetchPublicIPv4(),
       fetchPublicIPv6(),
     ]);
-    return NextResponse.json({ ip: ipv4 ?? "UNAVAILABLE", ipv6 });
+    finalIPv4 = ipv4;
+    finalIPv6 = ipv6;
+  } else if (wasV6Mapped) {
+    finalIPv4 = trimmedIp;
+  } else if (isRealIPv6(trimmedIp)) {
+    finalIPv4 = await fetchPublicIPv4();
+    finalIPv6 = trimmedIp;
+  } else {
+    finalIPv4 = trimmedIp;
   }
 
-  // Case 2: "::ffff:1.2.3.4" — IPv6 wasn't really used, just show v4
-  if (wasV6Mapped) {
-    return NextResponse.json({ ip: trimmedIp, ipv6: null });
-  }
+  const isp = finalIPv4 ? await fetchISP(finalIPv4) : null;
 
-  // Case 3: genuine public IPv6 — fetch v4 too and show both
-  if (isRealIPv6(trimmedIp)) {
-    const ipv4 = await fetchPublicIPv4();
-    return NextResponse.json({ ip: ipv4 ?? "UNAVAILABLE", ipv6: trimmedIp });
-  }
-
-  // Case 4: genuine public IPv4 — just show it
-  return NextResponse.json({ ip: trimmedIp, ipv6: null });
+  return NextResponse.json({
+    ip: finalIPv4 ?? "UNAVAILABLE",
+    ipv6: finalIPv6,
+    isp: isp ?? "UNKNOWN",
+  });
 }

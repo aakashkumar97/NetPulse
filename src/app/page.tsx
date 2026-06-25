@@ -6,7 +6,7 @@ import { Clock } from "@/components/Clock";
 import { DeviceCard } from "@/components/DeviceCard";
 import { INITIAL_DEVICES, Device } from "@/app/lib/network-data";
 import { NetworkTools } from "@/components/NetworkTools";
-import { RefreshCw, Globe, Wifi } from "lucide-react";
+import { Activity, RefreshCw, Globe, Wifi } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
@@ -14,12 +14,13 @@ export default function Home() {
   const [lastSync, setLastSync] = useState<string>("");
   const [publicIP, setPublicIP] = useState<string>("LOADING...");
   const [publicIPv6, setPublicIPv6] = useState<string | null>(null);
+  const [isp, setIsp] = useState<string>("LOADING...");
   const [internetStatus, setInternetStatus] = useState<
     "CHECKING" | "ONLINE" | "OFFLINE"
   >("CHECKING");
   const [ipLoading, setIpLoading] = useState(true);
 
-  // Fetch public IP address
+  // Fetch public IP address and ISP information on component mount
   useEffect(() => {
     async function fetchPublicIP() {
       try {
@@ -27,8 +28,10 @@ export default function Home() {
         const data = await response.json();
         setPublicIP(data.ip);
         setPublicIPv6(data.ipv6 ?? null);
+        setIsp(data.isp ?? "UNKNOWN");
       } catch (error) {
         setPublicIP("UNAVAILABLE");
+        setIsp("UNAVAILABLE");
       } finally {
         setIpLoading(false);
       }
@@ -93,7 +96,7 @@ export default function Home() {
                       : "bg-amber-500/5 border-amber-500/10 text-amber-400/80",
                 )}
               >
-                <Wifi className="w-3 h-3" />
+                <Activity className="w-3 h-3" />
                 INTERNET: {internetStatus}
               </span>
               <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
@@ -106,6 +109,10 @@ export default function Home() {
                 {publicIPv6 && (
                   <span className="ml-1">/ IPv6: {publicIPv6}</span>
                 )}
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/50">
+                <Wifi className="w-3 h-3" />
+                ISP: {isp}
               </span>
             </div>
           </div>
