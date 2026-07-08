@@ -9,7 +9,6 @@ import {
   MapPin,
   Gauge,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 export function NetworkTools() {
   const tools = [
