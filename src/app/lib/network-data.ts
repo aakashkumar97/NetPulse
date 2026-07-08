@@ -52,8 +52,8 @@ export const INITIAL_DEVICES: Device[] = [
     ipAddress: "192.168.10.1",
     webGuiUrl: "http://192.168.10.1",
     manufacturer: "Sercomm",
-    model: "JioRouter AX6000",
-    firmware: "OpenWrt SNAPSHOT r34517-98cadde477",
+    model: "JIDU6401 AX6000",
+    firmware: "OpenWrt 25.12.5 r33051-f5dae5ece4",
     mac: "9C:D4:A6:E8:65:FA",
     type: "router",
     description:
@@ -81,8 +81,8 @@ export const INITIAL_DEVICES: Device[] = [
     ipAddress: "192.168.10.2",
     webGuiUrl: "http://192.168.10.2",
     manufacturer: "Sercomm",
-    model: "JioRouter AX6000",
-    firmware: "OpenWrt SNAPSHOT r34517-98cadde477",
+    model: "JIDU6401 AX6000",
+    firmware: "OpenWrt 25.12.5 r33051-f5dae5ece4",
     mac: "9C:D4:A6:07:CF:8C",
     type: "extender",
     description:
