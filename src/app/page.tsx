@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { BackgroundEffects } from "@/components/BackgroundEffects";
 import { Clock } from "@/components/Clock";
 import { DeviceCard } from "@/components/DeviceCard";
 import { INITIAL_DEVICES, Device } from "@/app/lib/network-data";
 import { NetworkTools } from "@/components/NetworkTools";
-import { Activity, RefreshCw, Globe, Wifi } from "lucide-react";
+import { Activity, RefreshCw, Globe, Wifi, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Home() {
@@ -20,25 +20,51 @@ export default function Home() {
   >("CHECKING");
   const [ipLoading, setIpLoading] = useState(true);
 
-  // Fetch public IP address and ISP information on component mount
-  useEffect(() => {
-    async function fetchPublicIP() {
-      try {
-        const response = await fetch("/api/public-ip", { cache: "no-cache" });
-        const data = await response.json();
-        setPublicIP(data.ip);
-        setPublicIPv6(data.ipv6 ?? null);
-        setIsp(data.isp ?? "UNKNOWN");
-      } catch (error) {
-        setPublicIP("UNAVAILABLE");
-        setIsp("UNAVAILABLE");
-      } finally {
-        setIpLoading(false);
-      }
-    }
+  // Theme support
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [mounted, setMounted] = useState(false);
 
-    fetchPublicIP();
+  useEffect(() => {
+    setMounted(true);
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    } else {
+      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme = systemPrefersDark ? "dark" : "light";
+      setTheme(initialTheme);
+      document.documentElement.classList.toggle("dark", systemPrefersDark);
+    }
   }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+  };
+
+  // Ref to track previous internet status for transition detection
+  const prevStatusRef = useRef<"CHECKING" | "ONLINE" | "OFFLINE">("CHECKING");
+
+  // Fetch public IP address and ISP information
+  const fetchPublicIP = async () => {
+    setIpLoading(true);
+    try {
+      const response = await fetch("/api/public-ip", { cache: "no-cache" });
+      const data = await response.json();
+      setPublicIP(data.ip);
+      setPublicIPv6(data.ipv6 ?? null);
+      setIsp(data.isp ?? "UNKNOWN");
+    } catch (error) {
+      setPublicIP("UNAVAILABLE");
+      setIsp("UNAVAILABLE");
+      setPublicIPv6(null);
+    } finally {
+      setIpLoading(false);
+    }
+  };
 
   // Check internet connectivity and update sync timestamp
   useEffect(() => {
@@ -54,9 +80,25 @@ export default function Home() {
         });
 
         clearTimeout(timeoutId);
+
+        const shouldFetch =
+          prevStatusRef.current === "OFFLINE" ||
+          prevStatusRef.current === "CHECKING";
+        prevStatusRef.current = "ONLINE";
         setInternetStatus("ONLINE");
+
+        if (shouldFetch) {
+          // Fetch IP/ISP on initial load (CHECKING) or when recovering from OFFLINE
+          fetchPublicIP();
+        }
       } catch {
+        prevStatusRef.current = "OFFLINE";
         setInternetStatus("OFFLINE");
+        // Immediately clear IP/ISP when going offline
+        setPublicIP("UNAVAILABLE");
+        setIsp("UNAVAILABLE");
+        setPublicIPv6(null);
+        setIpLoading(false);
       }
 
       setLastSync(
@@ -75,55 +117,77 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen relative font-body text-slate-300 selection:bg-primary/30">
+    <main className="min-h-screen relative font-body text-slate-800 dark:text-slate-200 bg-background selection:bg-primary/20">
       <BackgroundEffects />
 
+      {/* Main Content Area */}
       <div className="container mx-auto px-6 py-12 relative z-10 max-w-7xl">
+        {/* Header */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div className="space-y-6">
-            <h1 className="text-5xl md:text-6xl font-headline font-bold tracking-tighter text-slate-200 uppercase">
+            <h1 className="text-5xl md:text-6xl font-headline font-bold tracking-tighter text-slate-800 dark:text-slate-200 uppercase">
               NETPULSE{" "}
-              <span className="text-primary neon-text font-bold">HOME</span>
+              <span className="text-[#3c8dbc] font-bold">HOME</span>
             </h1>
-            <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-muted-foreground uppercase">
+            <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-slate-500 dark:text-slate-400 uppercase">
               <span
                 className={cn(
                   "flex items-center gap-1.5 px-3 py-1.5 border rounded-full transition-colors duration-500",
                   internetStatus === "ONLINE"
-                    ? "bg-emerald-500/5 border-emerald-500/10 text-emerald-400/80"
+                    ? "bg-[#00a65a]/10 border-[#00a65a]/30 text-[#00a65a]"
                     : internetStatus === "OFFLINE"
-                      ? "bg-rose-500/5 border-rose-500/10 text-rose-400/80"
-                      : "bg-amber-500/5 border-amber-500/10 text-amber-400/80",
+                      ? "bg-[#dd4b39]/10 border-[#dd4b39]/30 text-[#dd4b39]"
+                      : "bg-[#f39c12]/10 border-[#f39c12]/30 text-[#f39c12]",
                 )}
               >
                 <Activity className="w-3 h-3" />
                 INTERNET: {internetStatus}
               </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/30">
-                <RefreshCw className="w-3 h-3" />
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-card border border-border rounded-full text-slate-600 dark:text-slate-400">
+                <RefreshCw className="w-3 h-3 text-[#3c8dbc]" />
                 LAST SYNC: {lastSync || "CHECKING..."}
               </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-primary/5 border border-primary/10 rounded-full text-primary/70">
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-[#ecf5fc] dark:bg-[#1c2c3a] border border-[#d2e2ef] dark:border-[#2b4c63] rounded-full text-[#3c8dbc]">
                 <Globe className="w-3 h-3" />
                 PUBLIC IP: {publicIP}
                 {publicIPv6 && (
                   <span className="ml-1">/ IPv6: {publicIPv6}</span>
                 )}
               </span>
-              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-white/50">
-                <Wifi className="w-3 h-3" />
+              <span className="flex items-center gap-1.5 px-3 py-1.5 bg-card border border-border rounded-full text-slate-600 dark:text-slate-400">
+                <Wifi className="w-3 h-3 text-[#3c8dbc]" />
                 ISP: {isp}
               </span>
             </div>
           </div>
-          <Clock />
+          <div className="flex flex-col items-start md:items-end gap-2">
+            <Clock />
+            <button
+              onClick={toggleTheme}
+              className="flex items-center gap-2 px-3 py-1.5 bg-card hover:bg-muted text-slate-800 dark:text-slate-200 border border-border rounded transition-all duration-150 text-[10px] font-semibold uppercase tracking-wider mt-2"
+              title="Toggle Theme"
+            >
+              {mounted && theme === "dark" ? (
+                <>
+                  <Sun className="w-3 h-3 text-amber-500" />
+                  Light Mode
+                </>
+              ) : (
+                <>
+                  <Moon className="w-3.5 h-3.5 text-indigo-500" />
+                  Dark Mode
+                </>
+              )}
+            </button>
+          </div>
         </header>
 
-        <section className="mb-20">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
-              <span className="w-2 h-10 bg-primary/80 rounded-full shadow-[0_0_15px_#8B5CF666]" />
-              Network Node Control
+
+        {/* Network Nodes Grid */}
+        <section className="mb-10">
+          <div className="border-b border-border pb-2 mb-6">
+            <h2 className="text-xl font-headline font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wide">
+              Network Control Nodes
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -133,19 +197,23 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mt-20">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-xl font-headline font-bold tracking-widest uppercase flex items-center gap-4">
-              <span className="w-2 h-10 bg-success/80 rounded-full shadow-[0_0_15px_#10B98144]" />
+        {/* Utilities */}
+        <section className="mt-12">
+          <div className="border-b border-border pb-2 mb-6">
+            <h2 className="text-xl font-headline font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wide">
               Infrastructure Utilities
             </h2>
           </div>
           <NetworkTools />
         </section>
 
-        <footer className="mt-20 py-8 border-t border-primary/5 flex flex-col md:flex-row justify-between items-center gap-6 text-muted-foreground">
-          <p className="text-[10px] font-code tracking-[0.3em] uppercase">
+        {/* Footer */}
+        <footer className="mt-16 py-6 border-t border-border flex justify-between items-center text-slate-500 dark:text-slate-400 text-xs">
+          <p className="font-code tracking-wider">
             &copy; 2026 NETPULSE SYSTEMS • PRIVATE HOME INFRASTRUCTURE
+          </p>
+          <p className="font-code tracking-wider text-slate-400 dark:text-slate-500 uppercase">
+            VERSION: 1.0.0
           </p>
         </footer>
       </div>

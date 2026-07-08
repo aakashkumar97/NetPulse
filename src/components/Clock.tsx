@@ -27,14 +27,14 @@ export function Clock() {
     return () => clearInterval(interval);
   }, []);
 
-  if (!time) return <div className="animate-pulse h-16 w-32 bg-white/5 rounded-lg" />;
+  if (!time) return <div className="animate-pulse h-16 w-32 bg-slate-200 dark:bg-slate-800 rounded-sm" />;
 
   return (
-    <div className="text-right">
-      <div className="text-4xl font-headline font-bold text-primary neon-text tracking-wider">
+    <div className="text-left md:text-right">
+      <div className="text-4xl font-headline font-bold text-[#3c8dbc] tracking-wider">
         {time}
       </div>
-      <div className="text-sm font-medium text-muted-foreground mt-1 tracking-widest">
+      <div className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-1 tracking-widest">
         {date}
       </div>
     </div>

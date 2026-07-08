@@ -4,37 +4,82 @@
 
 @layer base {
   :root {
-    /* LuCI Bootstrap Dark Theme - Complete */
-
-    /* Main backgrounds */
-    --background: 220 13% 9%;
-    --foreground: 220 10% 82%;
+    /* LuCI Classic Bootstrap Light Theme */
+    --background: 220 15% 97%; /* #f7f7f7 */
+    --foreground: 220 15% 20%; /* #333333 */
 
     /* Card & Container */
-    --card: 220 12% 13%;
+    --card: 0 0% 100%; /* #ffffff */
+    --card-foreground: 220 15% 20%;
+
+    /* Popover / Overlays */
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 20%;
+
+    /* Primary - LuCI Bootstrap Blue */
+    --primary: 202 52% 49%; /* #3c8dbc */
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary - Light Grey */
+    --secondary: 0 0% 95%; /* #f2f2f2 */
+    --secondary-foreground: 220 15% 20%;
+
+    /* Muted */
+    --muted: 220 10% 94%;
+    --muted-foreground: 220 10% 45%;
+
+    /* Accent */
+    --accent: 202 52% 49%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Bootstrap semantic colors */
+    --success: 145 63% 42%; /* #00a65a */
+    --success-foreground: 0 0% 100%;
+
+    --warning: 36 91% 50%; /* #f39c12 */
+    --warning-foreground: 0 0% 100%;
+
+    --danger: 3 100% 61%; /* #dd4b39 */
+    --danger-foreground: 0 0% 100%;
+
+    --info: 188 100% 50%;
+    --info-foreground: 0 0% 100%;
+
+    --destructive: 3 100% 61%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Border & Input */
+    --border: 0 0% 86%; /* #dbdbdb */
+    --input: 0 0% 100%;
+    --ring: 202 52% 49%;
+
+    /* Compact radius */
+    --radius: 4px;
+  }
+
+  .dark {
+    /* LuCI Classic Bootstrap Dark Theme */
+    --background: 220 13% 9%; /* #121417 */
+    --foreground: 220 10% 82%; /* #cccccc */
+
+    --card: 220 12% 13%; /* #1c1e22 */
     --card-foreground: 220 10% 82%;
 
-    /* Popover */
     --popover: 220 12% 13%;
     --popover-foreground: 220 10% 82%;
 
-    /* Primary - Bootstrap Blue */
-    --primary: 207 89% 46%;
+    --primary: 202 52% 49%; /* #3c8dbc */
     --primary-foreground: 0 0% 100%;
 
-    /* Secondary - Dark gray */
     --secondary: 220 10% 18%;
     --secondary-foreground: 220 10% 82%;
 
-    /* Muted */
     --muted: 220 10% 16%;
     --muted-foreground: 220 8% 60%;
 
-    /* Accent */
     --accent: 220 10% 20%;
     --accent-foreground: 220 10% 82%;
 
-    /* Bootstrap semantic colors */
     --success: 145 63% 49%;
     --success-foreground: 0 0% 100%;
 
@@ -50,13 +95,11 @@
     --destructive: 3 100% 61%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Border & Input */
-    --border: 220 10% 24%;
+    --border: 220 10% 24%; /* #3b3f46 */
     --input: 220 12% 15%;
-    --ring: 207 89% 46%;
+    --ring: 202 52% 49%;
 
-    /* Compact radius */
-    --radius: 0.25rem;
+    --radius: 4px;
   }
 }
 
@@ -77,21 +120,18 @@
       "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
       sans-serif;
     background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    transition: background-color 0.15s, color 0.15s;
   }
 }
 
-/* LuCI Bootstrap Dark panel/card */
+/* LuCI panel/card style */
 .glass-card {
-  @apply bg-card border relative overflow-hidden;
-
-  border: 1px solid hsl(220 10% 24%);
-  border-radius: 0.25rem;
-
-  background: hsl(var(--card));
-
-  box-shadow:
-    0 1px 0 rgba(0, 0, 0, 0.2),
-    0 1px 3px rgba(0, 0, 0, 0.4);
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
 }
 
 /* Inputs */
@@ -101,7 +141,7 @@ select {
   background: hsl(var(--input));
   border: 1px solid hsl(var(--border));
   color: hsl(var(--foreground));
-  border-radius: 0.25rem;
+  border-radius: 4px;
   padding: 0.5rem;
   font-size: 0.875rem;
 }
@@ -116,122 +156,78 @@ textarea:focus,
 select:focus {
   border-color: hsl(var(--primary));
   outline: none;
-  box-shadow: 0 0 0 2px rgba(32, 126, 189, 0.1);
+  box-shadow: 0 0 0 2px rgba(60, 141, 188, 0.15);
 }
 
-/* Bootstrap/LuCI style buttons - Base */
-.btn-primary,
-.btn-secondary,
-.btn-success,
-.btn-danger,
-.btn-warning,
-.btn-info {
-  @apply px-3 py-2 text-sm font-medium rounded-[0.25rem]
-         transition-all duration-150 border-0 cursor-pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-}
-
-/* Button Variants */
+/* Bootstrap/LuCI style buttons */
 .btn-primary {
-  background: #3c8dbc;
-  color: white;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border: 1px solid hsl(var(--primary));
+  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.15s, border-color 0.15s;
 }
 
 .btn-primary:hover {
-  background: #367fa9;
-}
-
-.btn-primary:active {
-  background: #2f6a8f;
-}
-
-.btn-secondary {
-  background: #555753;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #3d3f3d;
+  background-color: hsl(var(--primary)/90);
 }
 
 .btn-success {
-  background: #00a65a;
-  color: white;
+  background-color: hsl(var(--success));
+  color: hsl(var(--success-foreground));
+  border: 1px solid hsl(var(--success));
+  border-radius: 4px;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.15s, border-color 0.15s;
 }
 
 .btn-success:hover {
-  background: #008d4c;
+  background-color: hsl(var(--success)/90);
 }
 
-.btn-danger {
-  background: #dd4b39;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #d73925;
-}
-
-.btn-warning {
-  background: #f39c12;
-  color: white;
-}
-
-.btn-warning:hover {
-  background: #e08e0b;
-}
-
-.btn-info {
-  background: #00c0ef;
-  color: white;
-}
-
-.btn-info:hover {
-  background: #00acd6;
-}
-
-/* Button disabled state */
-.btn-primary:disabled,
-.btn-secondary:disabled,
-.btn-success:disabled,
-.btn-danger:disabled,
-.btn-warning:disabled,
-.btn-info:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* Tables */
+/* Tables - styled like authentic LuCI status tables */
 table {
   border-collapse: collapse;
   width: 100%;
   border: 1px solid hsl(var(--border));
+  background-color: hsl(var(--card));
+  transition: background-color 0.15s, border-color 0.15s;
 }
 
 thead {
-  background: #222d32;
+  background: hsl(var(--secondary));
 }
 
 th {
-  background: #222d32;
-  color: #b8c7ce;
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
   font-weight: 600;
-  padding: 0.75rem;
+  padding: 0.5rem 0.75rem;
   border: 1px solid hsl(var(--border));
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   text-align: left;
 }
 
 td {
   border: 1px solid hsl(var(--border));
-  padding: 0.75rem;
+  padding: 0.625rem 0.75rem;
   color: hsl(var(--foreground));
+  font-size: 0.8125rem;
+}
+
+tbody tr:nth-child(even) {
+  background-color: hsl(var(--background)/50);
 }
 
 tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.02);
+  background-color: hsl(var(--muted));
 }
 
 /* scrollbar */
@@ -241,46 +237,19 @@ tbody tr:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: #15181a;
+  background: hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3a3d40;
-  border-radius: 0.25rem;
+  background: hsl(var(--border));
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4b4f52;
+  background: hsl(var(--muted-foreground));
 }
 
-/* Grid background */
+/* Grid/Main background */
 .grid-background {
   background-color: hsl(var(--background));
-}
-
-/* Border utilities */
-.border-luci {
-  border: 1px solid hsl(var(--border));
-  border-radius: 0.25rem;
-}
-
-/* Text utilities */
-.text-muted-luci {
-  color: hsl(var(--muted-foreground));
-}
-
-.text-success {
-  color: hsl(var(--success));
-}
-
-.text-warning {
-  color: hsl(var(--warning));
-}
-
-.text-danger {
-  color: hsl(var(--danger));
-}
-
-.text-info {
-  color: hsl(var(--info));
 }
