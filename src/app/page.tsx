@@ -31,7 +31,9 @@ export default function Home() {
       setTheme(savedTheme);
       document.documentElement.classList.toggle("dark", savedTheme === "dark");
     } else {
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const systemPrefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
       const initialTheme = systemPrefersDark ? "dark" : "light";
       setTheme(initialTheme);
       document.documentElement.classList.toggle("dark", systemPrefersDark);
@@ -126,8 +128,7 @@ export default function Home() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16">
           <div className="space-y-6">
             <h1 className="text-5xl md:text-6xl font-headline font-bold tracking-tighter text-slate-800 dark:text-slate-200 uppercase">
-              NETPULSE{" "}
-              <span className="text-[#3c8dbc] font-bold">HOME</span>
+              NETPULSE <span className="text-[#3c8dbc] font-bold">HOME</span>
             </h1>
             <div className="flex flex-wrap gap-3 items-center font-code text-[10px] tracking-widest text-slate-500 dark:text-slate-400 uppercase">
               <span
@@ -182,7 +183,6 @@ export default function Home() {
           </div>
         </header>
 
-
         {/* Network Nodes Grid */}
         <section className="mb-10">
           <div className="border-b border-border pb-2 mb-6">
@@ -213,7 +213,7 @@ export default function Home() {
             &copy; 2026 NETPULSE SYSTEMS • PRIVATE HOME INFRASTRUCTURE
           </p>
           <p className="font-code tracking-wider text-slate-400 dark:text-slate-500 uppercase">
-            VERSION: 1.0.0
+            VERSION: 2.0.3
           </p>
         </footer>
       </div>
