@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Device } from "@/app/lib/network-data";
 import {
   Wifi,
@@ -13,6 +13,7 @@ import {
   User,
   QrCode,
   Fingerprint,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +24,20 @@ interface DeviceCardProps {
 export function DeviceCard({ device }: DeviceCardProps) {
   const [showInfo, setShowInfo] = useState(false);
   const [showQR, setShowQR] = useState(false);
+  const [qrOrigin, setQrOrigin] = useState("center center");
+  const cardRef = useRef<HTMLDivElement>(null);
+  const qrBtnRef = useRef<HTMLButtonElement>(null);
+
+  const handleShowQR = () => {
+    if (qrBtnRef.current && cardRef.current) {
+      const btnRect = qrBtnRef.current.getBoundingClientRect();
+      const cardRect = cardRef.current.getBoundingClientRect();
+      const x = btnRect.left + btnRect.width / 2 - cardRect.left;
+      const y = btnRect.top + btnRect.height / 2 - cardRect.top;
+      setQrOrigin(`${x}px ${y}px`);
+    }
+    setShowQR(true);
+  };
 
   const icons = {
     router: <RouterIcon className="w-10 h-10 text-[#3c8dbc]" />,
@@ -38,7 +53,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div className="glass-card group p-6 flex flex-col items-center text-center relative h-full min-h-[400px]">
+    <div ref={cardRef} className="glass-card group p-6 flex flex-col items-center text-center relative h-full min-h-[400px] overflow-hidden">
       <div className="w-20 h-20 rounded-sm bg-[#ecf5fc] dark:bg-[#1c2c3a] border border-[#d2e2ef] dark:border-[#2b4c63] flex items-center justify-center mb-4">
         <div>
           {icons[device.type]}
@@ -95,9 +110,18 @@ export function DeviceCard({ device }: DeviceCardProps) {
             : "opacity-0 translate-y-full pointer-events-none",
         )}
       >
-        <h4 className="text-lg font-headline font-bold text-[#3c8dbc] mb-6 text-center tracking-[0.1em] uppercase">
-          Device Info
-        </h4>
+        <div className="flex items-center justify-between mb-6">
+          <h4 className="text-lg font-headline font-bold text-[#3c8dbc] tracking-[0.1em] uppercase">
+            Device Info
+          </h4>
+          <button
+            onClick={() => setShowInfo(false)}
+            className="p-1 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors duration-150"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
         <div className="flex-1 space-y-4 text-left overflow-y-auto pr-1 scrollbar-hide">
           <div className="space-y-0.5">
@@ -180,7 +204,8 @@ export function DeviceCard({ device }: DeviceCardProps) {
                   Wi-Fi Password
                 </div>
                 <button
-                  onClick={() => setShowQR(true)}
+                  ref={qrBtnRef}
+                  onClick={handleShowQR}
                   className="p-1 hover:text-[#3c8dbc] transition-colors duration-150"
                   title="Show WiFi QR Code"
                 >
@@ -194,53 +219,58 @@ export function DeviceCard({ device }: DeviceCardProps) {
           </div>
         </div>
 
-        <button
-          onClick={() => {
-            setShowInfo(false);
-          }}
-          className="mt-4 flex items-center justify-center bg-[#555753] text-white border border-[#3d3f3d] hover:bg-[#3d3f3d] rounded-sm font-headline font-medium h-9 text-[10px] tracking-widest transition-all duration-150 shrink-0"
-        >
-          BACK
-        </button>
+
       </div>
 
-      {/* QR Slide-over */}
+      {/* QR Zoom-in overlay */}
       <div
         className={cn(
-          "absolute inset-0 bg-card z-50 p-6 flex flex-col transition-all duration-500 rounded-sm border border-border",
+          "absolute inset-0 bg-card z-50 p-6 flex flex-col rounded-sm border border-border",
+          "transition-[transform,opacity] duration-500",
           showQR
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-full pointer-events-none",
+            ? "opacity-100 scale-100 pointer-events-auto"
+            : "opacity-0 scale-0 pointer-events-none",
         )}
+        style={{
+          transformOrigin: qrOrigin,
+          transitionTimingFunction: showQR
+            ? "cubic-bezier(0.34, 1.56, 0.64, 1)"
+            : "cubic-bezier(0.4, 0, 1, 1)",
+        }}
       >
-        <h4 className="text-lg font-headline font-bold text-[#3c8dbc] mb-4 text-center tracking-[0.1em] uppercase">
-          Scan to Connect
-        </h4>
+        <div className="flex items-center justify-between mb-4">
+          <h4 className="text-lg font-headline font-bold text-[#3c8dbc] tracking-[0.1em] uppercase">
+            Scan to Connect
+          </h4>
+          <button
+            onClick={() => setShowQR(false)}
+            className="p-1 rounded-sm hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors duration-150"
+            title="Close"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-          <div className="bg-white p-3 border border-border rounded-sm">
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div
+            className={cn(
+              "bg-white p-3 border border-border rounded-sm transition-[transform,opacity] duration-500",
+              showQR ? "opacity-100 scale-100" : "opacity-0 scale-50",
+            )}
+            style={{
+              transitionDelay: showQR ? "80ms" : "0ms",
+              transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+            }}
+          >
             <img
               src={qrCodeUrl}
               alt="WiFi QR Code"
-              className="w-32 h-32 rounded-none"
+              className="w-40 h-40 rounded-none"
             />
-          </div>
-          <div className="text-center space-y-1">
-            <p className="text-xs font-headline font-bold text-slate-800 dark:text-slate-200 tracking-wide">
-              {ssid}
-            </p>
-            <p className="text-xs font-headline font-bold text-slate-800 dark:text-slate-200 tracking-wide">
-              {wifiPass}
-            </p>
           </div>
         </div>
 
-        <button
-          onClick={() => setShowQR(false)}
-          className="mt-4 flex items-center justify-center bg-[#555753] text-white border border-[#3d3f3d] hover:bg-[#3d3f3d] rounded-sm font-headline font-medium h-9 text-[10px] tracking-widest transition-all duration-150 shrink-0"
-        >
-          HIDE QR
-        </button>
+
       </div>
     </div>
   );
