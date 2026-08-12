@@ -15,7 +15,7 @@ export type Device = {
   model: string;
   firmware: string;
   mac: string;
-  type: "router" | "extender" | "gpon";
+  type: "router" | "extender" | "modem";
   username?: string;
   adminPassword?: string;
   wireless24?: WirelessSettings;
@@ -25,24 +25,31 @@ export type Device = {
 
 export const INITIAL_DEVICES: Device[] = [
   {
-    id: "gpon-1",
+    id: "modem-1",
     name: "Home Gateway",
     ipAddress: "192.168.100.1",
     webGuiUrl: "http://192.168.100.1",
-    manufacturer: "Nokia",
-    model: "G-2425G-A",
-    firmware: "3FE49362IJJK17(1.2203.417)",
-    mac: "24:0B:88:44:5B:90",
-    type: "gpon",
+    manufacturer: "China Mobile",
+    model: "GS2101-XP",
+    firmware: "	V9.0.7",
+    mac: "A8:41:22:BA:8D:F0",
+    type: "modem",
     description:
       "Main ISP Entry Node converting fiber optic signals into internet connectivity.",
-    username: "AdminGPON",
-    adminPassword: "ALC#FGU",
+    username: "superadmin",
+    adminPassword: "Admin@123",
     wireless24: {
       ssid: "Akanksha Communication",
       password: "Infinity@123",
       channel: "1",
-      bandwidth: "20 MHz",
+      bandwidth: "20/40 MHz",
+      transmitPower: "High",
+    },
+    wireless5: {
+      ssid: "Akanksha Communication",
+      password: "Infinity@123",
+      channel: "165",
+      bandwidth: "20/40/80 MHz",
       transmitPower: "High",
     },
   },

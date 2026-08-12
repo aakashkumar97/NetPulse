@@ -4,7 +4,7 @@ import React, { useState, useRef } from "react";
 import { Device } from "@/app/lib/network-data";
 import {
   Wifi,
-  Server,
+  EthernetPort,
   Terminal,
   Router as RouterIcon,
   Shield,
@@ -42,7 +42,7 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const icons = {
     router: <RouterIcon className="w-10 h-10 text-[#3c8dbc]" />,
     extender: <Wifi className="w-10 h-10 text-[#3c8dbc]" />,
-    gpon: <Server className="w-10 h-10 text-[#3c8dbc]" />,
+    modem: <EthernetPort className="w-10 h-10 text-[#3c8dbc]" />,
   };
 
   const ssid = device.wireless24?.ssid || device.wireless5?.ssid || "N/A";
@@ -53,11 +53,12 @@ export function DeviceCard({ device }: DeviceCardProps) {
   const qrCodeUrl = `https://quickchart.io/qr?text=${encodeURIComponent(wifiQrString)}&size=300&margin=2&ecLevel=M`;
 
   return (
-    <div ref={cardRef} className="glass-card group p-6 flex flex-col items-center text-center relative h-full min-h-[400px] overflow-hidden">
+    <div
+      ref={cardRef}
+      className="glass-card group p-6 flex flex-col items-center text-center relative h-full min-h-[400px] overflow-hidden"
+    >
       <div className="w-20 h-20 rounded-sm bg-[#ecf5fc] dark:bg-[#1c2c3a] border border-[#d2e2ef] dark:border-[#2b4c63] flex items-center justify-center mb-4">
-        <div>
-          {icons[device.type]}
-        </div>
+        <div>{icons[device.type]}</div>
       </div>
 
       <h3 className="text-2xl font-headline font-bold mb-1 tracking-tight text-slate-800 dark:text-slate-200">
@@ -218,8 +219,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
             </div>
           </div>
         </div>
-
-
       </div>
 
       {/* QR Zoom-in overlay */}
@@ -269,8 +268,6 @@ export function DeviceCard({ device }: DeviceCardProps) {
             />
           </div>
         </div>
-
-
       </div>
     </div>
   );
