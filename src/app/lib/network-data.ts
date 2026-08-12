@@ -31,7 +31,7 @@ export const INITIAL_DEVICES: Device[] = [
     webGuiUrl: "http://192.168.100.1",
     manufacturer: "China Mobile",
     model: "GS2101-XP",
-    firmware: "	V9.0.7",
+    firmware: "V9.0.7",
     mac: "A8:41:22:BA:8D:F0",
     type: "modem",
     description:
