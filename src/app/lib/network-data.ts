@@ -49,7 +49,7 @@ export const INITIAL_DEVICES: Device[] = [
       ssid: "Akanksha Communication",
       password: "Infinity@123",
       channel: "161",
-      bandwidth: "20/40/80 MHz",
+      bandwidth: "80 MHz",
       transmitPower: "High",
     },
   },
