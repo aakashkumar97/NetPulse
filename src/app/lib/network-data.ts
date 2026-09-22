@@ -99,7 +99,7 @@ export const INITIAL_DEVICES: Device[] = [
     wireless24: {
       ssid: "SkyNet",
       password: "#0m3!nt3rn3t",
-      channel: "1",
+      channel: "6",
       bandwidth: "20 MHz",
       transmitPower: "High",
     },
